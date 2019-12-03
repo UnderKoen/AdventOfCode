@@ -21,8 +21,7 @@ public class Day2 {
                 int result = process(numbers, j, k);
                 if (result == 19690720) {
                     System.out.println("\nResult day2b:");
-                    System.out.println(j);
-                    System.out.println(k);
+                    System.out.println(100 * j + k);
                 }
             }
         }
