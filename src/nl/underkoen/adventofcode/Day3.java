@@ -1,73 +1,52 @@
 package nl.underkoen.adventofcode;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by Under_Koen on 02/12/2019.
  */
 public class Day3 {
     public static void main(String[] args) {
+        Map<Character, Consumer<Integer[]>> directions = Map.of('R', l -> l[0]++, 'L', l -> l[0]--, 'U', l -> l[1]++, 'D', l -> l[1]--);
+
+        List<String> input = Utils.getInput(3);
+
         Map<List<Integer>, Integer> points = new HashMap<>();
         Map<List<Integer>, Integer> dup = new HashMap<>();
 
-        List<String> input = Utils.getInput(3);
-        for (int i = 0; i < input.size(); i++) {
-            List<String> path = Arrays.asList(input.get(i).split(","));
-            int x = 0;
-            int y = 0;
-            Map<List<Integer>, Integer> line = new HashMap<>();
-            int steps = 0;
-            for (int j = 0; j < path.size(); j++) {
-                String code = path.get(j);
-                int amount = Integer.parseInt(path.get(j).substring(1));
-                for (int k = 0; k < amount; k++) {
-                    steps++;
-                    switch (code.charAt(0)) {
-                        case 'R':
-                            x++;
-                            break;
-                        case 'U':
-                            y++;
-                            break;
-                        case 'D':
-                            y--;
-                            break;
-                        case 'L':
-                            x--;
-                            break;
-                        default:
-                            System.out.println(code);
-                            break;
-                    }
-                    List<Integer> point = Arrays.asList(x, y);
-                    int minSteps = line.containsKey(point) ? Math.min(steps, line.get(point)) : steps;
+        for (String line : input) {
+            String[] path = line.split(",");
 
-                    line.put(point, minSteps);
+            Integer[] position = new Integer[]{0, 0};
+            int steps = 0;
+            Set<List<Integer>> linePoints = new HashSet<>();
+
+            for (String code : path) {
+                int amount = Integer.parseInt(code.substring(1)) + steps;
+                for (steps++; ++steps < amount;) {
+                    directions.get(code.charAt(0)).accept(position);
+
+                    List<Integer> point = List.of(position);
+                    if (!linePoints.add(point)) continue;
+
+                    Integer old;
+                    if ((old = points.put(point, steps)) != null) dup.put(point, steps + old);
                 }
             }
-
-            line.forEach((integers, integer) -> {
-                if (points.containsKey(integers)) {
-                    dup.put(integers, integer + points.get(integers));
-                } else {
-                    points.put(integers, integer);
-                }
-            });
         }
 
-        points.remove(Arrays.asList(0,0));
-
-        int d = dup.entrySet().stream()
-                .map(Map.Entry::getValue)
-//                .map(entry -> calculateDistance(entry.getKey().get(0), entry.getKey().get(1)))
-                .mapToInt(Integer::intValue)
+        int minDistance = dup.keySet().stream()
+                .mapToInt(Day3::calculateDistance)
                 .min()
                 .orElse(0);
+        int steps = Collections.min(dup.values());
 
-        System.out.println(d);
+        System.out.printf("Result day3a:\n%s\n\n", minDistance);
+        System.out.printf("Result day3b:\n%s", steps);
     }
 
-    public static int calculateDistance(int x, int y) {
-        return Math.abs(x) + Math.abs(y);
+    public static int calculateDistance(List<Integer> list) {
+        return Math.abs(list.get(0)) + Math.abs(list.get(1));
     }
 }
