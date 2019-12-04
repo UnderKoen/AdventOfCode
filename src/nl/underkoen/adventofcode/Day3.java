@@ -8,9 +8,9 @@ import java.util.function.Consumer;
  */
 public class Day3 {
     public static void main(String[] args) {
-        Map<Character, Consumer<Integer[]>> directions = Map.of('R', l -> l[0]++, 'L', l -> l[0]--, 'U', l -> l[1]++, 'D', l -> l[1]--);
-
         List<String> input = Utils.getInput(3);
+
+        Map<Character, Consumer<Integer[]>> directions = Map.of('R', l -> l[0]++, 'L', l -> l[0]--, 'U', l -> l[1]++, 'D', l -> l[1]--);
 
         Map<List<Integer>, Integer> points = new HashMap<>();
         Map<List<Integer>, Integer> dup = new HashMap<>();
@@ -18,13 +18,12 @@ public class Day3 {
         for (String line : input) {
             String[] path = line.split(",");
 
+            int steps = 1;
             Integer[] position = new Integer[]{0, 0};
-            int steps = 0;
             Set<List<Integer>> linePoints = new HashSet<>();
 
             for (String code : path) {
-                int amount = Integer.parseInt(code.substring(1)) + steps;
-                for (steps++; ++steps < amount;) {
+                for(int amount = Integer.parseInt(code.substring(1)) + steps--; ++steps < amount;) {
                     directions.get(code.charAt(0)).accept(position);
 
                     List<Integer> point = List.of(position);
