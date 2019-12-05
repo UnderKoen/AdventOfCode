@@ -8,26 +8,35 @@ import java.util.function.BiFunction;
 /**
  * Created by Under_Koen on 01/12/2019.
  */
-public class Day2 {
+public class Day2 extends AdventOfCode {
     public static Map<Integer, BiFunction<Integer, Integer, Integer>> methods = Map.of(
             1, Integer::sum,
             2, (i1, i2) -> i1 * i2
     );
 
-    public static void main(String[] args) {
-        List<String> input = Utils.getInput(2);
+    @Override
+    int getDay() {
+        return 2;
+    }
+
+    @Override
+    public int[] getCorrectOutput() {
+        return new int[]{4330636, 6086};
+    }
+
+    @Override
+    void run(List<String> input) {
         String line = input.get(0);
         input = Arrays.asList(line.split(","));
         int[] numbers = input.stream().mapToInt(Integer::parseInt).toArray();
-        System.out.println("Result day2a:");
-        System.out.println(process(numbers, 12, 2));
 
+        a = process(numbers, 12, 2);
         for (int j = 0; j < 100; j++) {
             for (int k = 0; k < 100; k++) {
                 int result = process(numbers, j, k);
                 if (result == 19690720) {
-                    System.out.println("\nResult day2b:");
-                    System.out.println(100 * j + k);
+                    b = 100 * j + k;
+                    return;
                 }
             }
         }

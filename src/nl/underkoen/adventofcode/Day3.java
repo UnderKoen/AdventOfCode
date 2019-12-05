@@ -6,10 +6,19 @@ import java.util.function.Consumer;
 /**
  * Created by Under_Koen on 02/12/2019.
  */
-public class Day3 {
-    public static void main(String[] args) {
-        List<String> input = Utils.getInput(3);
+public class Day3 extends AdventOfCode {
+    @Override
+    int getDay() {
+        return 3;
+    }
 
+    @Override
+    public int[] getCorrectOutput() {
+        return new int[]{403, 4158};
+    }
+
+    @Override
+    void run(List<String> input) {
         Map<Character, Consumer<Integer[]>> directions = Map.of('R', l -> l[0]++, 'L', l -> l[0]--, 'U', l -> l[1]++, 'D', l -> l[1]--);
 
         Map<List<Integer>, Integer> points = new HashMap<>();
@@ -35,14 +44,12 @@ public class Day3 {
             }
         }
 
-        int minDistance = dup.keySet().stream()
+        a = dup.keySet().stream()
                 .mapToInt(Day3::calculateDistance)
                 .min()
                 .orElse(0);
-        int steps = Collections.min(dup.values());
 
-        System.out.printf("Result day3a:\n%s\n\n", minDistance);
-        System.out.printf("Result day3b:\n%s", steps);
+        b = Collections.min(dup.values());
     }
 
     public static int calculateDistance(List<Integer> list) {
