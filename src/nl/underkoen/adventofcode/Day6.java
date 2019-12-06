@@ -42,7 +42,7 @@ public class Day6 extends AdventOfCode {
 
     private static List<String> getAllParents(Map<String, String> orbits, String begin) {
         List<String> parents = new ArrayList<>();
-        for (; orbits.containsKey(begin); parents.add(begin = orbits.get(begin))) ;
+        while (orbits.containsKey(begin)) parents.add(begin = orbits.get(begin));
         return parents;
     }
 }
