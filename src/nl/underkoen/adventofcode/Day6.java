@@ -1,9 +1,9 @@
 package nl.underkoen.adventofcode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Under_Koen on 05/12/2019.
@@ -23,7 +23,7 @@ public class Day6 extends AdventOfCode {
     void run(List<String> input) {
         Map<String, String> orbits = input.stream()
                 .map(s -> s.split("\\)"))
-                .collect(HashMap::new, (h, s) -> h.put(s[1], s[0]), HashMap::putAll);
+                .collect(Collectors.toMap(s -> s[1], s -> s[0]));
 
         a = orbits.keySet().stream()
                 .map(s -> getAllParents(orbits, s))
