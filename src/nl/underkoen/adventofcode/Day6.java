@@ -21,11 +21,9 @@ public class Day6 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        Map<String, String> orbits = new HashMap<>();
-
-        input.stream()
+        Map<String, String> orbits = input.stream()
                 .map(s -> s.split("\\)"))
-                .forEach(s -> orbits.put(s[1], s[0]));
+                .collect(HashMap::new, (h, s) -> h.put(s[1], s[0]), HashMap::putAll);
 
         a = orbits.keySet().stream()
                 .map(s -> getAllParents(orbits, s))
@@ -35,11 +33,11 @@ public class Day6 extends AdventOfCode {
         List<String> parentsYou = getAllParents(orbits, "YOU");
         List<String> parentsSanta = getAllParents(orbits, "SAN");
 
-        for (int i = 0; i < parentsYou.size(); i++) {
-            String current = parentsYou.get(i);
-            b = i + parentsSanta.indexOf(current);
-            if (b != i - 1) break;
-        }
+        b = parentsYou.stream()
+                .filter(parentsSanta::contains)
+                .mapToInt(s -> parentsYou.indexOf(s) + parentsSanta.indexOf(s))
+                .min()
+                .orElse(0);
     }
 
     private static List<String> getAllParents(Map<String, String> orbits, String begin) {
