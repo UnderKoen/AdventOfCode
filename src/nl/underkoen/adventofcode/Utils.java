@@ -13,7 +13,7 @@ public class Utils {
         Scanner scanner = new Scanner(Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream("day" + day + ".txt")));
 
         List<String> result = new ArrayList<>();
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             result.add(scanner.nextLine());
         }
 
@@ -24,8 +24,8 @@ public class Utils {
         char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length / 2; i++) {
             char temp = chars[i];
-            chars[i] = chars[chars.length - i -1];
-            chars[chars.length - i -1] = temp;
+            chars[i] = chars[chars.length - i - 1];
+            chars[chars.length - i - 1] = temp;
 
         }
         return String.copyValueOf(chars);

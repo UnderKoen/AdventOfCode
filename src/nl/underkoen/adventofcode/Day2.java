@@ -14,6 +14,25 @@ public class Day2 extends AdventOfCode {
             2, (i1, i2) -> i1 * i2
     );
 
+    public static int process(int[] program, int noun, int verb) {
+        program = Arrays.copyOf(program, program.length);
+        program[1] = noun;
+        program[2] = verb;
+
+        for (int i = 0; i < program.length; i += 4) {
+            int method = program[i];
+            if (method == 99) return program[0];
+            if (!methods.containsKey(method)) continue;
+
+            int arg1 = program[program[i + 1]];
+            int arg2 = program[program[i + 2]];
+            int resultAddres = program[i + 3];
+
+            program[resultAddres] = methods.get(method).apply(arg1, arg2);
+        }
+        return 0;
+    }
+
     @Override
     int getDay() {
         return 2;
@@ -40,24 +59,5 @@ public class Day2 extends AdventOfCode {
                 }
             }
         }
-    }
-
-    public static int process(int[] program, int noun, int verb) {
-        program = Arrays.copyOf(program, program.length);
-        program[1] = noun;
-        program[2] = verb;
-
-        for (int i = 0; i < program.length; i += 4) {
-            int method = program[i];
-            if (method == 99) return program[0];
-            if (!methods.containsKey(method)) continue;
-
-            int arg1 = program[program[i + 1]];
-            int arg2 = program[program[i + 2]];
-            int resultAddres = program[i + 3];
-
-            program[resultAddres] = methods.get(method).apply(arg1, arg2);
-        }
-        return 0;
     }
 }

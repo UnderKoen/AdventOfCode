@@ -8,14 +8,6 @@ import java.util.List;
 public abstract class AdventOfCode {
     int a, b;
 
-    abstract int getDay();
-
-    abstract void run(List<String> input);
-
-    public int[] getCorrectOutput() {
-        return new int[0];
-    }
-
     public static void main(String[] args) throws Exception {
         String clsN = System.getProperty("sun.java.command");
         clsN = clsN.split(" ")[0];
@@ -34,6 +26,14 @@ public abstract class AdventOfCode {
             }
         }
         System.exit(0);
+    }
+
+    abstract int getDay();
+
+    abstract void run(List<String> input);
+
+    public int[] getCorrectOutput() {
+        return new int[0];
     }
 
     private void output() {

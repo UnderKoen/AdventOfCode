@@ -7,6 +7,10 @@ import java.util.function.Consumer;
  * Created by Under_Koen on 02/12/2019.
  */
 public class Day3 extends AdventOfCode {
+    public static int calculateDistance(List<Integer> list) {
+        return Math.abs(list.get(0)) + Math.abs(list.get(1));
+    }
+
     @Override
     int getDay() {
         return 3;
@@ -32,7 +36,7 @@ public class Day3 extends AdventOfCode {
             Set<List<Integer>> linePoints = new HashSet<>();
 
             for (String code : path) {
-                for(int amount = Integer.parseInt(code.substring(1)) + steps--; ++steps < amount;) {
+                for (int amount = Integer.parseInt(code.substring(1)) + steps--; ++steps < amount; ) {
                     directions.get(code.charAt(0)).accept(position);
 
                     List<Integer> point = List.of(position);
@@ -50,9 +54,5 @@ public class Day3 extends AdventOfCode {
                 .orElse(0);
 
         b = Collections.min(dup.values());
-    }
-
-    public static int calculateDistance(List<Integer> list) {
-        return Math.abs(list.get(0)) + Math.abs(list.get(1));
     }
 }

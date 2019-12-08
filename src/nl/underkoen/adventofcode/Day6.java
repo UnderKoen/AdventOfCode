@@ -9,6 +9,12 @@ import java.util.stream.Collectors;
  * Created by Under_Koen on 05/12/2019.
  */
 public class Day6 extends AdventOfCode {
+    private static List<String> getAllParents(Map<String, String> orbits, String begin) {
+        List<String> parents = new ArrayList<>();
+        while (orbits.containsKey(begin)) parents.add(begin = orbits.get(begin));
+        return parents;
+    }
+
     @Override
     int getDay() {
         return 6;
@@ -38,11 +44,5 @@ public class Day6 extends AdventOfCode {
                 .mapToInt(s -> parentsYou.indexOf(s) + parentsSanta.indexOf(s))
                 .min()
                 .orElse(0);
-    }
-
-    private static List<String> getAllParents(Map<String, String> orbits, String begin) {
-        List<String> parents = new ArrayList<>();
-        while (orbits.containsKey(begin)) parents.add(begin = orbits.get(begin));
-        return parents;
     }
 }
