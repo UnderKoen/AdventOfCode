@@ -18,8 +18,8 @@ public class Day1 extends AdventOfCode {
     }
 
     @Override
-    public int[] getCorrectOutput() {
-        return new int[]{3471229, 5203967};
+    public long[] getCorrectOutput() {
+        return new long[]{3471229, 5203967};
     }
 
     @Override

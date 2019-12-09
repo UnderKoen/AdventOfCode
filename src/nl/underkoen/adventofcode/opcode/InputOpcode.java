@@ -1,21 +1,29 @@
 package nl.underkoen.adventofcode.opcode;
 
-import java.util.function.IntSupplier;
-import java.util.function.IntUnaryOperator;
+import java.util.Map;
+import java.util.function.LongSupplier;
+import java.util.function.LongUnaryOperator;
 
 /**
  * Created by Under_Koen on 07/12/2019.
  */
 public class InputOpcode implements Opcode {
-    private IntSupplier input;
+    private LongSupplier input;
 
-    public InputOpcode(IntSupplier input) {
+    public InputOpcode(LongSupplier input) {
         this.input = input;
     }
 
     @Override
-    public int execute(IntUnaryOperator getArg, int i, int[] program, int[] result) {
-        program[program[i + 1]] = input.getAsInt();
-        return i + 2;
+    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, long i, long[] program, long[] result, Map<Long, Long> storage) {
+        long val = input.getAsLong();
+        long pos = getArgPos.applyAsLong(1);
+
+        if (pos >= program.length) {
+            storage.put(pos, val);
+        } else {
+            program[(int) pos] = val;
+        }
+        return (int) i + 2;
     }
 }

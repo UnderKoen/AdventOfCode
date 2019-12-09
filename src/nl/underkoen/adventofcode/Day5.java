@@ -2,7 +2,6 @@ package nl.underkoen.adventofcode;
 
 import nl.underkoen.adventofcode.opcode.OpcodeRunner;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,15 +14,13 @@ public class Day5 extends AdventOfCode {
     }
 
     @Override
-    public int[] getCorrectOutput() {
-        return new int[]{5346030, 513116};
+    public long[] getCorrectOutput() {
+        return new long[]{5346030, 513116};
     }
 
     @Override
     void run(List<String> input) {
-        String line = input.get(0);
-        input = Arrays.asList(line.split(","));
-        int[] numbers = input.stream().mapToInt(Integer::parseInt).toArray();
+        long[] numbers = OpcodeRunner.parse(input);
         a = OpcodeRunner.process(numbers, 1);
         b = OpcodeRunner.process(numbers, 5);
     }

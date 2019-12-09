@@ -1,10 +1,11 @@
 package nl.underkoen.adventofcode.opcode;
 
-import java.util.function.IntUnaryOperator;
+import java.util.Map;
+import java.util.function.LongUnaryOperator;
 
 /**
  * Created by Under_Koen on 07/12/2019.
  */
 public interface Opcode {
-    int execute(IntUnaryOperator getArg, int i, int[] program, int[] result);
+    int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, long i, long[] program, long[] result, Map<Long, Long> storage);
 }

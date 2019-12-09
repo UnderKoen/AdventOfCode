@@ -15,8 +15,14 @@ public class Day8 extends AdventOfCode {
     }
 
     @Override
+    public long[] getCorrectOutput() {
+        return new long[]{1330};
+    }
+
+    @Override
     void run(List<String> input) {
         Map<Integer, List<Character>> layers = new HashMap<>();
+
 
         int layer = 0;
         int x = 0;
