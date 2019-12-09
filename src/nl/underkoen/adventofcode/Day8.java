@@ -1,14 +1,17 @@
 package nl.underkoen.adventofcode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Under_Koen on 07/12/2019.
  */
 public class Day8 extends AdventOfCode {
+    public static long countChar(char which, List<Character> characters) {
+        return characters.stream().filter(c -> c == which).count();
+    }
+
     @Override
     int getDay() {
         return 8;
@@ -21,69 +24,38 @@ public class Day8 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        Map<Integer, List<Character>> layers = new HashMap<>();
+        String line = input.get(0);
+        List<List<Character>> layers = new ArrayList<>();
 
+        for (int l = 0; l < line.length() / 150; l++) {
+            List<Character> layer = new ArrayList<>();
+            layers.add(layer);
 
-        int layer = 0;
-        int x = 0;
-        int y = 0;
-        for (char c : input.get(0).toCharArray()) {
-            List<Character> l = layers.getOrDefault(layer, new ArrayList<>());
-            l.add(c);
-            layers.put(layer, l);
-            x++;
-            if (x == 25) {
-                y++;
-                x = 0;
-                if (y == 6) {
-                    layer++;
-                    y = 0;
-                }
-            }
+            line.substring(l * 150, (l + 1) * 150).chars()
+                    .forEach((c) -> layer.add((char) c));
         }
 
-        int min = -1;
-        layer = 0;
-        for (Map.Entry<Integer, List<Character>> integerListEntry : layers.entrySet()) {
-            int min2 = (int) integerListEntry.getValue().stream()
-                    .filter(c -> c == '0')
-                    .count();
-            if (min == -1 || min2 < min) {
-                min = min2;
-                layer = integerListEntry.getKey();
-            }
-        }
+        a = layers.stream()
+                .sorted(Comparator.comparingLong((l) -> countChar('0', l)))
+                .map(l -> countChar('1', l) * countChar('2', l))
+                .findFirst()
+                .orElse(0L);
 
-        int c1 = 0;
-        int c2 = 0;
-        for (Character character : layers.get(layer)) {
-            if (character == '1') c1++;
-            if (character == '2') c2++;
-        }
+        ArrayList<Character> image = layers.stream()
+                .collect(ArrayList::new, (l1, l2) -> {
+                    if (l1.isEmpty()) l1.addAll(l2);
+                    else for (int j = 0; j < l2.size(); j++) {
+                        if (l1.get(j) != '2') continue;
+                        l1.set(j, l2.get(j));
+                    }
+                }, (l1, l2) -> {
+                });
 
-        a = c1 * c2;
-
-        List<Character> f = new ArrayList<>();
-        for (int i = 0; i < layers.get(0).size(); i++) {
-            char k = 0;
-            for (int i1 = 0; i1 < layers.size(); i1++) {
-                k = layers.get(i1).get(i);
-                if (k != '2') {
-                    break;
-                }
-            }
-            f.add(k);
-        }
-
-        int z = 0;
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 25; j++) {
-                char k = f.get(z);
-                if (k == '0') System.out.print(" ");
-                else System.out.print(k);
-                z++;
-            }
-            System.out.println();
+        for (int j = 0; j < image.size(); j++) {
+            char c = image.get(j);
+            if (c == '0') c = ' ';
+            System.out.print(c);
+            if (j % 25 == 24) System.out.println();
         }
     }
 }
