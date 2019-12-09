@@ -15,8 +15,8 @@ public class MoveOpcode implements Opcode {
     }
 
     @Override
-    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, long i, long[] program, long[] result, Map<Long, Long> storage) {
+    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, int i, long[] program, long[] result, Map<Long, Long> storage) {
         if (move.test(getArg.applyAsLong(1))) return (int) getArg.applyAsLong(2);
-        return (int) i + 3;
+        return i + 3;
     }
 }

@@ -22,11 +22,11 @@ public class OutputOpcode implements Opcode {
 
 
     @Override
-    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, long i, long[] program, long[] result, Map<Long, Long> storage) {
+    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, int i, long[] program, long[] result, Map<Long, Long> storage) {
         long out = getArg.applyAsLong(1);
         if (print) System.out.printf("OUTPUT: %s\n", out);
         output.accept(out);
         result[0] = out;
-        return (int) i + 2;
+        return i + 2;
     }
 }

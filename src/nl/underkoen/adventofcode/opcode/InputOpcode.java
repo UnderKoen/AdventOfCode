@@ -15,7 +15,7 @@ public class InputOpcode implements Opcode {
     }
 
     @Override
-    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, long i, long[] program, long[] result, Map<Long, Long> storage) {
+    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, int i, long[] program, long[] result, Map<Long, Long> storage) {
         long val = input.getAsLong();
         long pos = getArgPos.applyAsLong(1);
 
@@ -24,6 +24,6 @@ public class InputOpcode implements Opcode {
         } else {
             program[(int) pos] = val;
         }
-        return (int) i + 2;
+        return i + 2;
     }
 }

@@ -15,7 +15,7 @@ public class ResultOpcode implements Opcode {
     }
 
     @Override
-    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, long i, long[] program, long[] result, Map<Long, Long> storage) {
+    public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, int i, long[] program, long[] result, Map<Long, Long> storage) {
         long pos = getArgPos.applyAsLong(3);
         long val = calculate.applyAsLong(getArg.applyAsLong(1), getArg.applyAsLong(2));
 
@@ -24,7 +24,7 @@ public class ResultOpcode implements Opcode {
         } else {
             program[(int) pos] = val;
         }
-        return (int) i + 4;
+        return i + 4;
     }
 
 }

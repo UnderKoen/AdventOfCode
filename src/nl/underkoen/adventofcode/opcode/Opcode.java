@@ -7,5 +7,10 @@ import java.util.function.LongUnaryOperator;
  * Created by Under_Koen on 07/12/2019.
  */
 public interface Opcode {
-    int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, long i, long[] program, long[] result, Map<Long, Long> storage);
+    int execute(LongUnaryOperator getArg,
+                LongUnaryOperator getArgPos,
+                int i,
+                long[] program,
+                long[] result,
+                Map<Long, Long> storage);
 }

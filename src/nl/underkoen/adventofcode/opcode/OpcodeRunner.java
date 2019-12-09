@@ -25,15 +25,23 @@ public class OpcodeRunner {
                 8, new ResultOpcode((i1, i2) -> (i1 == i2) ? 1 : 0),
                 9, (getArg, getArgPos, i, program, result, storage) -> {
                     relative += getArg.applyAsLong(1);
-                    return (int) i + 2;
+                    return i + 2;
                 }
         );
     }
 
-    public static long process(long[] program, Map<Integer, Opcode> opcodes) {
-        relative = 0;
+    public static Map<Character, Mode> getDefaultModes() {
+        return Map.of(
+                '0', new Mode.PositionMode(),
+                '1', new Mode.ImmediateMode(),
+                '2', new Mode.RelativeMode()
+        );
+    }
+
+    public static long process(long[] program, Map<Integer, Opcode> opcodes, Map<Character, Mode> modes) {
         program = Arrays.copyOf(program, program.length);
 
+        relative = 0;
         Map<Long, Long> storage = new HashMap<>();
 
         long[] r = new long[1];
@@ -44,40 +52,27 @@ public class OpcodeRunner {
             if (optcode == 99) break;
 
             long mode = method / 100;
-            char[] modes = Utils.reverse(Long.toString(mode)).toCharArray();
+            char[] modeChars = Utils.reverse(Long.toString(mode)).toCharArray();
+
             int j = i;
             long[] p = program;
+
             LongUnaryOperator getArgPos = (arg) -> {
-                char position = arg > modes.length ? '0' : modes[(int) arg - 1];
-                long pos = 0;
-                switch (position) {
-                    case '0':
-                        pos = p[(int) (j + arg)];
-                        break;
-                    case '1':
-                        pos = j + arg;
-                        break;
-                    case '2':
-                        long r2 = p[(int) (j + arg)];
-                        pos = relative + r2;
-                        break;
-                    default:
-                        System.out.println("ERROR");
-                        return 0;
+                char modeC = arg > modeChars.length ? '0' : modeChars[(int) arg - 1];
+                if (modes.containsKey(modeC)) {
+                    return modes.get(modeC).getPosition(p, j, arg);
+                } else {
+                    System.out.println("ERROR: Unkown mode: " + modeC);
+                    return 0;
                 }
-
-                return pos;
             };
 
-            LongUnaryOperator getArg = (arg) -> {
-                long pos = getArgPos.applyAsLong(arg);
-
-                if (pos >= p.length) {
-                    return storage.getOrDefault(pos, 0L);
+            LongUnaryOperator getArg = getArgPos.andThen((arg) -> {
+                if (arg >= p.length) {
+                    return storage.getOrDefault(arg, 0L);
                 }
-
-                return p[(int) pos];
-            };
+                return p[(int) arg];
+            });
 
             Opcode opcode = opcodes.get((int) optcode);
             i = opcode.execute(getArg, getArgPos, i, program, r, storage);
@@ -87,19 +82,19 @@ public class OpcodeRunner {
     }
 
     public static long process(long[] program, LongSupplier input, LongConsumer output) {
-        return process(program, getDefaultOpcodes(input, output));
+        return process(program, getDefaultOpcodes(input, output), getDefaultModes());
     }
 
     public static long process(long[] program, long input) {
-        return process(program, getDefaultOpcodes(() -> input, p -> {
-        }));
+        return process(program, () -> input, p -> {
+        });
     }
 
     public static long process(long[] program, long[] input) {
         Stack<Long> inputS = new Stack<>();
         for (long i : input) inputS.add(i);
-        return process(program, getDefaultOpcodes(inputS::pop, p -> {
-        }));
+        return process(program, inputS::pop, p -> {
+        });
     }
 
 
