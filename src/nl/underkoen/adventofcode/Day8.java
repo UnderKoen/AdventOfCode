@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Under_Koen on 07/12/2019.
@@ -19,7 +20,7 @@ public class Day8 extends AdventOfCode {
 
     @Override
     public long[] getCorrectOutput() {
-        return new long[]{1330};
+        return new long[]{1330, 20132171};
     }
 
     @Override
@@ -28,11 +29,11 @@ public class Day8 extends AdventOfCode {
         List<List<Character>> layers = new ArrayList<>();
 
         for (int l = 0; l < line.length() / 150; l++) {
-            List<Character> layer = new ArrayList<>();
-            layers.add(layer);
-
-            line.substring(l * 150, (l + 1) * 150).chars()
-                    .forEach((c) -> layer.add((char) c));
+            layers.add(
+                    line.substring(l * 150, (l + 1) * 150).chars()
+                            .mapToObj(c -> (char) c)
+                            .collect(Collectors.toList())
+            );
         }
 
         a = layers.stream()
@@ -41,21 +42,25 @@ public class Day8 extends AdventOfCode {
                 .findFirst()
                 .orElse(0L);
 
-        ArrayList<Character> image = layers.stream()
+        ArrayList<Character> imageLayer = layers.stream()
                 .collect(ArrayList::new, (l1, l2) -> {
                     if (l1.isEmpty()) l1.addAll(l2);
                     else for (int j = 0; j < l2.size(); j++) {
-                        if (l1.get(j) != '2') continue;
-                        l1.set(j, l2.get(j));
+                        if (l1.get(j) == '2') l1.set(j, l2.get(j));
                     }
                 }, (l1, l2) -> {
                 });
 
-        for (int j = 0; j < image.size(); j++) {
-            char c = image.get(j);
+        StringBuilder image = new StringBuilder();
+
+        for (int j = 0; j < imageLayer.size(); j++) {
+            char c = imageLayer.get(j);
             if (c == '0') c = ' ';
-            System.out.print(c);
-            if (j % 25 == 24) System.out.println();
+            image.append(c);
+            if (j % 25 == 24) image.append('\n');
         }
+
+        b = image.hashCode();
+        System.out.println(image);
     }
 }
