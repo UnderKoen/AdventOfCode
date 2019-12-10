@@ -20,7 +20,7 @@ public class Day8 extends AdventOfCode {
 
     @Override
     public long[] getCorrectOutput() {
-        return new long[]{1330, 20132171};
+        return new long[]{1330};
     }
 
     @Override
@@ -42,14 +42,14 @@ public class Day8 extends AdventOfCode {
                 .findFirst()
                 .orElse(0L);
 
-        ArrayList<Character> imageLayer = layers.stream()
-                .collect(ArrayList::new, (l1, l2) -> {
-                    if (l1.isEmpty()) l1.addAll(l2);
-                    else for (int j = 0; j < l2.size(); j++) {
+        List<Character> imageLayer = layers.stream()
+                .reduce((l1, l2) -> {
+                    for (int j = 0; j < l2.size(); j++) {
                         if (l1.get(j) == '2') l1.set(j, l2.get(j));
                     }
-                }, (l1, l2) -> {
-                });
+                    return l1;
+                })
+                .orElseThrow();
 
         StringBuilder image = new StringBuilder();
 
@@ -60,7 +60,7 @@ public class Day8 extends AdventOfCode {
             if (j % 25 == 24) image.append('\n');
         }
 
-        b = image.hashCode();
+        //Should print FAHEF
         System.out.println(image);
     }
 }
