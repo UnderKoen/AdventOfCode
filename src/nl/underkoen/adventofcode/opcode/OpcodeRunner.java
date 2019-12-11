@@ -11,6 +11,7 @@ import java.util.function.LongUnaryOperator;
  * Created by Under_Koen on 07/12/2019.
  */
 public class OpcodeRunner {
+    //todo move this to inside the process
     public static int relative = 0;
 
     public static Map<Integer, Opcode> getDefaultOpcodes(LongSupplier input, LongConsumer output) {
