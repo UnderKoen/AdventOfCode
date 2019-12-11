@@ -55,8 +55,8 @@ public class Day8 extends AdventOfCode {
 
         for (int j = 0; j < imageLayer.size(); j++) {
             char c = imageLayer.get(j);
-            if (c == '0') c = ' ';
-            image.append(c);
+            if (c == '0') image.append("  ");
+            else image.append("##");
             if (j % 25 == 24) image.append('\n');
         }
 
