@@ -26,9 +26,9 @@ public class Day2 extends AdventOfCode {
 
             int arg1 = program[program[i + 1]];
             int arg2 = program[program[i + 2]];
-            int resultAddres = program[i + 3];
+            int resultAddress = program[i + 3];
 
-            program[resultAddres] = methods.get(method).apply(arg1, arg2);
+            program[resultAddress] = methods.get(method).apply(arg1, arg2);
         }
         return 0;
     }

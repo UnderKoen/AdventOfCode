@@ -74,6 +74,14 @@ public class Position {
         return pos;
     }
 
+    public long distance(Position position) {
+        return Math.abs(getX() - position.getX()) + Math.abs(getY() - position.getY());
+    }
+
+    public long distanceOrigin() {
+        return Math.abs(getX()) + Math.abs(getY());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

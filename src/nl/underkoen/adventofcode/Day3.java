@@ -1,5 +1,7 @@
 package nl.underkoen.adventofcode;
 
+import nl.underkoen.adventofcode.general.Position;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -7,9 +9,12 @@ import java.util.function.Consumer;
  * Created by Under_Koen on 02/12/2019.
  */
 public class Day3 extends AdventOfCode {
-    public static int calculateDistance(List<Integer> list) {
-        return Math.abs(list.get(0)) + Math.abs(list.get(1));
-    }
+    private static Map<Character, Consumer<Position>> directions = Map.of(
+            'R', l -> l.addX(1),
+            'L', l -> l.addX(-1),
+            'U', l -> l.addY(1),
+            'D', l -> l.addY(-1)
+    );
 
     @Override
     int getDay() {
@@ -23,23 +28,20 @@ public class Day3 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        Map<Character, Consumer<Integer[]>> directions = Map.of('R', l -> l[0]++, 'L', l -> l[0]--, 'U', l -> l[1]++, 'D', l -> l[1]--);
-
-        Map<List<Integer>, Integer> points = new HashMap<>();
-        Map<List<Integer>, Integer> dup = new HashMap<>();
+        Map<Position, Integer> points = new HashMap<>();
+        Map<Position, Integer> dup = new HashMap<>();
 
         for (String line : input) {
             String[] path = line.split(",");
 
             int steps = 1;
-            Integer[] position = new Integer[]{0, 0};
-            Set<List<Integer>> linePoints = new HashSet<>();
+            Position position = new Position();
+            Set<Position> linePoints = new HashSet<>();
 
             for (String code : path) {
                 for (int amount = Integer.parseInt(code.substring(1)) + steps--; ++steps < amount; ) {
                     directions.get(code.charAt(0)).accept(position);
-
-                    List<Integer> point = List.of(position);
+                    Position point = position.copy();
                     if (!linePoints.add(point)) continue;
 
                     Integer old;
@@ -49,7 +51,7 @@ public class Day3 extends AdventOfCode {
         }
 
         a = dup.keySet().stream()
-                .mapToInt(Day3::calculateDistance)
+                .mapToLong(Position::distanceOrigin)
                 .min()
                 .orElse(0);
 
