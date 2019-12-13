@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode;
 
-import java.util.AbstractMap.SimpleEntry;
+import nl.underkoen.adventofcode.general.BiHolder;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -30,7 +31,7 @@ public class Day10 extends AdventOfCode {
         }
 
         Entry<int[], Long> best = asteroids.stream()
-                .map(a -> new SimpleEntry<>(a, asteroids.stream()
+                .map(a -> new BiHolder<>(a, asteroids.stream()
                                 .map(pos -> Math.atan2(a[1] - pos[1], a[0] - pos[0]))
                                 .distinct()
                                 .count()
@@ -43,7 +44,7 @@ public class Day10 extends AdventOfCode {
 
         Map<Double, int[]> degrees = asteroids.stream()
                 .filter(pos -> !Arrays.equals(pos, best.getKey()))
-                .map(a -> new SimpleEntry<>(a, Math.atan2(best.getKey()[1] - a[1], best.getKey()[0] - a[0])))
+                .map(a -> new BiHolder<>(a, Math.atan2(best.getKey()[1] - a[1], best.getKey()[0] - a[0])))
                 .peek(e -> e.setValue(Math.toDegrees(e.getValue()) - 90))
                 .peek(e -> e.setValue(e.getValue() < 0 ? e.getValue() + 360 : e.getValue()))
                 .collect(HashMap::new, (map, i) -> {
