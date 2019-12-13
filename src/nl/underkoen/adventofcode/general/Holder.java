@@ -17,8 +17,10 @@ public class Holder<T> {
         return value;
     }
 
-    public void setValue(T value) {
+    public T setValue(T value) {
+        T old = this.value;
         this.value = value;
+        return old;
     }
 
     @Override
