@@ -71,7 +71,7 @@ public class Day15 extends AdventOfCode {
         a = dis.get(position);
 
         dis.clear();
-        checkDistance(dis, new HashSet<>(all), new Position(), 0);
+        checkDistance(dis, new HashSet<>(all), position, 0);
         b = Collections.max(dis.values());
     }
 }
