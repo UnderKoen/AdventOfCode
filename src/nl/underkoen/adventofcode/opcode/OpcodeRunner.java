@@ -76,7 +76,11 @@ public class OpcodeRunner {
             });
 
             Opcode opcode = opcodes.get((int) optcode);
-            i = opcode.execute(getArg, getArgPos, i, program, r, storage);
+            try {
+                i = opcode.execute(getArg, getArgPos, i, program, r, storage);
+            } catch (StopOpcode e) {
+                return r[0];
+            }
         }
 
         return r[0];

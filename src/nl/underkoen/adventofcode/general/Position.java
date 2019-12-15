@@ -1,9 +1,28 @@
 package nl.underkoen.adventofcode.general;
 
+import java.util.Collection;
+import java.util.function.ToLongBiFunction;
+
 /**
  * Created by Under_Koen on 11/12/2019.
  */
 public class Position {
+    public static Position min(Collection<Position> positions) {
+        return reduce(positions, Math::min);
+    }
+
+    public static Position max(Collection<Position> positions) {
+        return reduce(positions, Math::max);
+    }
+
+    public static Position reduce(Collection<Position> positions, ToLongBiFunction<Long, Long> func) {
+        return positions.stream().reduce((p, p2) -> {
+            long x = func.applyAsLong(p.getX(), p2.getX());
+            long y = func.applyAsLong(p.getY(), p2.getY());
+            return new Position(x, y);
+        }).orElseThrow();
+    }
+
     private long x;
     private long y;
 

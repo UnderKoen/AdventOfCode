@@ -53,17 +53,8 @@ public class Day11 extends AdventOfCode {
 
         Map<Position, Long> canvas = run(program, 1);
 
-        Position min = canvas.keySet().stream().reduce((p, p2) -> {
-            long x = Math.min(p.getX(), p2.getX());
-            long y = Math.min(p.getY(), p2.getY());
-            return new Position(x, y);
-        }).orElseThrow();
-
-        Position max = canvas.keySet().stream().reduce((p, p2) -> {
-            long x = Math.max(p.getX(), p2.getX());
-            long y = Math.max(p.getY(), p2.getY());
-            return new Position(x, y);
-        }).orElseThrow();
+        Position min = Position.min(canvas.keySet());
+        Position max = Position.max(canvas.keySet());
 
         LongStream.range(min.getY(), max.getY() + 1)
                 .map(y -> -y).sorted().map(y -> -y)

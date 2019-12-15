@@ -1,11 +1,12 @@
 package nl.underkoen.adventofcode;
 
+import nl.underkoen.adventofcode.general.Holder;
 import nl.underkoen.adventofcode.general.Position;
 import nl.underkoen.adventofcode.opcode.OutputOpcode;
+import nl.underkoen.adventofcode.opcode.StopOpcode;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 
 import static nl.underkoen.adventofcode.opcode.OpcodeRunner.parse;
 import static nl.underkoen.adventofcode.opcode.OpcodeRunner.process;
@@ -27,33 +28,14 @@ public class Day15 extends AdventOfCode {
         }
     }
 
-    public static void printMap(Map<Position, Integer> map) {
-        Position min = map.keySet().stream().reduce((p, p2) -> {
-            long x = Math.min(p.getX(), p2.getX());
-            long y = Math.min(p.getY(), p2.getY());
-            return new Position(x, y);
-        }).orElseThrow();
-
-        Position max = map.keySet().stream().reduce((p, p2) -> {
-            long x = Math.max(p.getX(), p2.getX());
-            long y = Math.max(p.getY(), p2.getY());
-            return new Position(x, y);
-        }).orElseThrow();
-
-        LongStream.range(min.getY(), max.getY() + 1)
-                .mapToObj(y -> LongStream.range(min.getX(), max.getX() + 1)
-                        .mapToObj(x -> new Position(x, y))
-                        .mapToLong(pos -> map.getOrDefault(pos, 0))
-                        .mapToObj(l -> l == 0 ? "##" : l == 2 ? "||" : l == 4 ? "==" : "  ")
-                        .reduce(String::concat)
-                        .orElse("")
-                )
-                .forEachOrdered(System.out::println);
-    }
-
     @Override
     int getDay() {
         return 15;
+    }
+
+    @Override
+    public long[] getCorrectOutput() {
+        return new long[]{250, 332};
     }
 
     @Override
@@ -65,85 +47,31 @@ public class Day15 extends AdventOfCode {
         Position position = new Position();
         Map<Position, Integer> dir = new HashMap<>();
         Map<Position, Integer> map = new HashMap<>();
+        Holder<Long> dup = new Holder<>(0L);
 
-        try {
-            process(program, () -> dir.getOrDefault(position, 1), l -> {
-                int d = dir.getOrDefault(position, 1);
-                Position nPos = position.copy();
-                switch (d) {
-                    case 1:
-                        nPos.addY(1);
-                        break;
-                    case 2:
-                        nPos.addY(-1);
-                        break;
-                    case 3:
-                        nPos.addX(-1);
-                        break;
-                    case 4:
-                        nPos.addX(1);
-                        break;
-                }
+        process(program, () -> dir.getOrDefault(position, 1), l -> {
+            int d = dir.getOrDefault(position, 1);
+            Position nPos = position.copyAdd(((d * 2) - 7) % 3 % 2, (3 - (d * 2)) % 3 % 2);
+            dir.put(position.copy(), d % 4 + 1);
 
-                dir.put(position.copy(), d % 4 + 1);
-
-                switch ((int) l) {
-                    case 0:
-                        map.put(nPos, 0);
-                        break;
-                    case 1:
-                        position.set(nPos);
-                        map.put(nPos, 1);
-                        break;
-                    case 2:
-                        position.set(nPos);
-                        map.put(nPos, 2);
-
-                        Position min = map.keySet().stream().reduce((p, p2) -> {
-                            long x = Math.min(p.getX(), p2.getX());
-                            long y = Math.min(p.getY(), p2.getY());
-                            return new Position(x, y);
-                        }).orElseThrow();
-
-                        Position max = map.keySet().stream().reduce((p, p2) -> {
-                            long x = Math.max(p.getX(), p2.getX());
-                            long y = Math.max(p.getY(), p2.getY());
-                            return new Position(x, y);
-                        }).orElseThrow();
-
-                        long t = LongStream.range(min.getY(), max.getY() + 1)
-                                .flatMap(y -> LongStream.range(min.getX(), max.getX() + 1)
-                                        .map(x -> (long) map.getOrDefault(new Position(x, y), 10)))
-                                .filter(v -> v == 10)
-                                .count();
-
-                        if (t == 21) throw new IllegalArgumentException();
-                }
-            });
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        System.out.println(position);
-
-        map.put(new Position(), 4);
-        printMap(map);
+            map.put(nPos, (int) l);
+            if (l != 0) position.set(nPos);
+            if (l == 2) {
+                long size = map.size();
+                if (dup.setValue(size) == size) throw new StopOpcode();
+            }
+        });
 
         Map<Position, Integer> dis = new HashMap<>();
-
         Set<Position> all = map.keySet().stream()
                 .filter(p -> map.get(p) != 0)
                 .collect(Collectors.toSet());
 
-        checkDistance(dis, all, new Position(), 0);
-
+        checkDistance(dis, new HashSet<>(all), new Position(), 0);
         a = dis.get(position);
 
         dis.clear();
-        all = map.keySet().stream()
-                .filter(p -> map.get(p) != 0)
-                .collect(Collectors.toSet());
-
-        checkDistance(dis, all, position, 0);
+        checkDistance(dis, new HashSet<>(all), new Position(), 0);
         b = Collections.max(dis.values());
     }
 }

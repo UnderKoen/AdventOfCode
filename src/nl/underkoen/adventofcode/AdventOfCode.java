@@ -18,8 +18,12 @@ public abstract class AdventOfCode {
             Class<? extends AdventOfCode> day = (Class<? extends AdventOfCode>) cls;
             AdventOfCode adventOfCode = day.getConstructor().newInstance();
             try {
+                long start = System.currentTimeMillis();
                 adventOfCode.execute();
+                long end = System.currentTimeMillis();
+
                 adventOfCode.test();
+                System.out.printf("Toke:\n%s ms\n", end - start);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.exit(1);
