@@ -49,6 +49,10 @@ public class Position {
         setY(y);
     }
 
+    public void set(Position position) {
+        set(position.getX(), position.getY());
+    }
+
     public void add(long x, long y) {
         addX(x);
         addY(y);
