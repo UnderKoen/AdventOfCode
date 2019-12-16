@@ -30,4 +30,25 @@ public class Utils {
         }
         return String.copyValueOf(chars);
     }
+
+    public static int[] getDigits(String line) {
+        return line.chars()
+                .mapToObj(c -> (char) c)
+                .map(c -> Character.toString(c))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+    }
+
+    public static long toNumber(int[] digits) {
+        return toNumber(digits, digits.length);
+    }
+
+    public static long toNumber(int[] digits, int max) {
+        long r = 0;
+        int until = Math.min(digits.length, max) - 1;
+        for (int i = 0; i <= until; i++) {
+            r += Math.pow(10, until - i) * digits[i];
+        }
+        return r;
+    }
 }
