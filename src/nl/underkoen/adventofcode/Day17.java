@@ -35,6 +35,22 @@ public class Day17 extends AdventOfCode {
         return new long[]{5056, 942367};
     }
 
+    public static String getCommandos(String path, int max, char c) {
+        if (max == 0) return (path.contains("R") || path.contains("L")) ? null : path;
+        List<String> part = new ArrayList<>();
+        for (String piece : path.split(",(?!\\d)")) {
+            if (piece.length() == 1) continue;
+            part.add(piece);
+            String text = String.join(",", part);
+            if (text.length() > 20) continue;
+            String replaced = path.replace(text, Character.toString(c));
+            String s = getCommandos(replaced, max - 1, (char) (c - 1));
+            if (s == null) continue;
+            return s + "\n" + text;
+        }
+        return null;
+    }
+
     @Override
     void run(List<String> input) {
         OutputOpcode.setDefaultPrint(false);
@@ -64,36 +80,7 @@ public class Day17 extends AdventOfCode {
         program[0] = 2;
 
         String path = "R,12,L,8,R,6,R,12,L,8,R,6,R,12,L,6,R,6,R,8,R,6,L,8,R,8,R,6,R,12,R,12,L,8,R,6,L,8,R,8,R,6,R,12,R,12,L,8,R,6,R,12,L,6,R,6,R,8,R,6,L,8,R,8,R,6,R,12,R,12,L,6,R,6,R,8,R,6";
-        String cmdS = "";
-
-        String[] pieces = path.split(",(?!\\d)");
-        List<String> aList = new ArrayList<>();
-        for (String aPiece : pieces) {
-            aList.add(aPiece);
-            String aS = String.join(",", aList);
-            String p = path.replace(aS, "A");
-            List<String> bList = new ArrayList<>();
-            if (aS.length() > 20) continue;
-            for (String bPiece : p.split(",(?!\\d)")) {
-                if (bPiece.contains("A")) continue;
-                bList.add(bPiece);
-                String bS = String.join(",", bList);
-                String bP = p.replace(bS, "B");
-                List<String> cList = new ArrayList<>();
-                if (bS.length() > 20) continue;
-                for (String cPiece : bP.split(",(?!\\d)")) {
-                    if (cPiece.contains("A") || cPiece.contains("B")) continue;
-                    cList.add(cPiece);
-                    String cS = String.join(",", cList);
-                    String cP = bP.replace(cS, "C");
-                    if (cS.length() > 20) continue;
-                    if (cP.split("[RL]").length == 1) {
-                        cmdS = String.format("%s\n%s\n%s\n%s\nn\n", cP, aS, bS, cS);
-                    }
-                }
-            }
-        }
-
+        String cmdS = getCommandos(path, 3, 'C') + "\nn\n";
         List<Character> cmd = cmdS.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
 
         IntHolder i = new IntHolder();
