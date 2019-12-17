@@ -94,11 +94,8 @@ public class Day17 extends AdventOfCode {
             if (!n[l] && !n[r]) break;
             path.add(n[r] ? "R" : "L");
 
-            int dx = (dir - 2) % 2;
-            int dy = (dir - 1) % 2;
-
-            int i;
-            for (i = 0; lines.contains(loc.copyAdd(dx, dy)); i++) loc.add(dx, dy);
+            int i = 0;
+            for (int dx = (dir - 2) % 2, dy = (dir - 1) % 2; lines.contains(loc.copyAdd(dx, dy)); i++) loc.add(dx, dy);
             path.add(Integer.toString(i));
         }
 
