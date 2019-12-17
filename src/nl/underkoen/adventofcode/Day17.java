@@ -6,6 +6,7 @@ import nl.underkoen.adventofcode.opcode.OutputOpcode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static nl.underkoen.adventofcode.opcode.OpcodeRunner.parse;
 import static nl.underkoen.adventofcode.opcode.OpcodeRunner.process;
@@ -14,20 +15,19 @@ import static nl.underkoen.adventofcode.opcode.OpcodeRunner.process;
  * Created by Under_Koen on 16/12/2019.
  */
 public class Day17 extends AdventOfCode {
-    @Override
-    int getDay() {
-        return 17;
-    }
-
-    public static int getNeighbours(List<Position> positions, Position position) {
-        int n = 0;
+    public static boolean getNeighbours(List<Position> positions, Position position) {
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 if ((x == 0) == (y == 0)) continue;
-                if (positions.contains(position.copyAdd(x, y))) n++;
+                if (!positions.contains(position.copyAdd(x, y))) return false;
             }
         }
-        return n;
+        return true;
+    }
+
+    @Override
+    int getDay() {
+        return 17;
     }
 
     @Override
@@ -38,56 +38,66 @@ public class Day17 extends AdventOfCode {
     @Override
     void run(List<String> input) {
         OutputOpcode.setDefaultPrint(false);
-
         long[] program = parse(input);
 
-        Position position = new Position();
-        Position loc = new Position();
         List<Position> lines = new ArrayList<>();
+
+        Position position = new Position();
         process(program, () -> 0, l -> {
-            char c = (char) l;
-            position.addX(1);
-            if (c == '\n') {
-                position.setX(0);
-                position.addY(1);
-            } else if (c == '#') {
-                lines.add(position.copyAdd(-1, 0));
-            } else if (c != '.') {
-                loc.set(position);
-                loc.addX(-1);
-                lines.add(loc);
+            switch ((char) l) {
+                case '\n':
+                    position.setX(0);
+                    position.addY(1);
+                    break;
+                case '#':
+                    lines.add(position.copy());
+                default:
+                    position.addX(1);
             }
         });
 
         a = lines.stream()
-                .filter(p -> getNeighbours(lines, p) == 4)
+                .filter(p -> getNeighbours(lines, p))
                 .mapToLong(p -> p.getX() * p.getY())
                 .sum();
 
         program[0] = 2;
-        position.set(0, 0);
 
-        char[] a = "R,12,L,8,R,6".toCharArray();
-        char[] bC = "L,8,R,8,R,6,R,12".toCharArray();
-        char[] c = "R,12,L,6,R,6,R,8,R,6".toCharArray();
+        String path = "R,12,L,8,R,6,R,12,L,8,R,6,R,12,L,6,R,6,R,8,R,6,L,8,R,8,R,6,R,12,R,12,L,8,R,6,L,8,R,8,R,6,R,12,R,12,L,8,R,6,R,12,L,6,R,6,R,8,R,6,L,8,R,8,R,6,R,12,R,12,L,6,R,6,R,8,R,6";
+        String cmdS = "";
 
-        String chainS = "A,A,C,B,A,B,A,C,B,C";
-        char[] chain = chainS.toCharArray();
+        String[] pieces = path.split(",(?!\\d)");
+        List<String> aList = new ArrayList<>();
+        for (String aPiece : pieces) {
+            aList.add(aPiece);
+            String aS = String.join(",", aList);
+            String p = path.replace(aS, "A");
+            List<String> bList = new ArrayList<>();
+            if (aS.length() > 20) continue;
+            for (String bPiece : p.split(",(?!\\d)")) {
+                if (bPiece.contains("A")) continue;
+                bList.add(bPiece);
+                String bS = String.join(",", bList);
+                String bP = p.replace(bS, "B");
+                List<String> cList = new ArrayList<>();
+                if (bS.length() > 20) continue;
+                for (String cPiece : bP.split(",(?!\\d)")) {
+                    if (cPiece.contains("A") || cPiece.contains("B")) continue;
+                    cList.add(cPiece);
+                    String cS = String.join(",", cList);
+                    String cP = bP.replace(cS, "C");
+                    if (cS.length() > 20) continue;
+                    if (cP.split("[RL]").length == 1) {
+                        cmdS = String.format("%s\n%s\n%s\n%s\nn\n", cP, aS, bS, cS);
+                    }
+                }
+            }
+        }
 
-        List<Character> cmd = new ArrayList<>();
-        for (char ch : chain) cmd.add(ch);
-        cmd.add('\n');
-        for (char ch : a) cmd.add(ch);
-        cmd.add('\n');
-        for (char ch : bC) cmd.add(ch);
-        cmd.add('\n');
-        for (char ch : c) cmd.add(ch);
-        cmd.add('\n');
-        cmd.add('n');
-        cmd.add('\n');
+        List<Character> cmd = cmdS.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
 
-        IntHolder i = new IntHolder(0);
-        b = process(program, () -> cmd.get(i.addValue(1)).charValue(), l -> {
+        IntHolder i = new IntHolder();
+        b = process(program, () -> cmd.get(i.addValue(1)), l -> {
         });
     }
 }
