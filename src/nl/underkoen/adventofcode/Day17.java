@@ -1,10 +1,12 @@
 package nl.underkoen.adventofcode;
 
+import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.general.IntHolder;
 import nl.underkoen.adventofcode.general.Position;
 import nl.underkoen.adventofcode.opcode.OutputOpcode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,18 +29,18 @@ public class Day17 extends AdventOfCode {
 
     public static String getCommandos(String path, int max, char c) {
         if (max == 0) return (path.contains("R") || path.contains("L")) ? null : path;
-        List<String> part = new ArrayList<>();
-        for (String piece : path.split(",(?!\\d)")) {
-            if (piece.length() == 1) continue;
-            part.add(piece);
-            String text = String.join(",", part);
-            if (text.length() > 20) continue;
-            String replaced = path.replace(text, Character.toString(c));
-            String s = getCommandos(replaced, max - 1, (char) (c - 1));
-            if (s == null) continue;
-            return s + "\n" + text;
-        }
-        return null;
+
+        StringBuilder b = new StringBuilder();
+        return Arrays.stream(path.split(",(?!\\d)"))
+                .filter(s -> s.length() != 1)
+                .map(s -> b.append(b.length() == 0 ? "" : ",").append(s).toString())
+                .filter(s -> s.length() <= 20)
+                .map(BiHolder.hold(s -> path.replace(s, Character.toString(c))))
+                .map(BiHolder.keepKey(e -> getCommandos(e.getValue(), max - 1, (char) (c - 1))))
+                .filter(e -> e.getValue() != null)
+                .map(e -> e.getValue() + "\n" + e.getKey())
+                .findAny()
+                .orElse(null);
     }
 
     @Override
