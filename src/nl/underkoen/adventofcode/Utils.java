@@ -51,4 +51,14 @@ public class Utils {
         }
         return r;
     }
+
+    public static boolean any(boolean[] array) {
+        for (boolean b : array) if (b) return true;
+        return false;
+    }
+
+    public static boolean all(boolean[] array) {
+        for (boolean b : array) if (!b) return false;
+        return true;
+    }
 }
