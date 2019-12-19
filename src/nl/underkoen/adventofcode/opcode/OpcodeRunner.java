@@ -96,8 +96,8 @@ public class OpcodeRunner {
     }
 
     public static long process(long[] program, long[] input) {
-        Stack<Long> inputS = new Stack<>();
-        for (long i : input) inputS.add(i);
+        Deque<Long> inputS = new ArrayDeque<>();
+        for (long l : input) inputS.add(l);
         return process(program, inputS::pop, p -> {
         });
     }

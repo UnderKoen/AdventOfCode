@@ -105,6 +105,10 @@ public class Position {
         return Math.abs(getX()) + Math.abs(getY());
     }
 
+    public long[] asArray() {
+        return new long[]{x, y};
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
