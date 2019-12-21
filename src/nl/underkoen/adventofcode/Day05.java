@@ -8,7 +8,7 @@ import static nl.underkoen.adventofcode.opcode.OpcodeRunner.process;
 /**
  * Created by Under_Koen on 04/12/2019.
  */
-public class Day5 extends AdventOfCode {
+public class Day05 extends AdventOfCode {
     @Override
     int getDay() {
         return 5;

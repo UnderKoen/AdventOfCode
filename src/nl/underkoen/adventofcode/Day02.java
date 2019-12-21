@@ -8,7 +8,7 @@ import java.util.function.BiFunction;
 /**
  * Created by Under_Koen on 01/12/2019.
  */
-public class Day2 extends AdventOfCode {
+public class Day02 extends AdventOfCode {
     public static Map<Integer, BiFunction<Integer, Integer, Integer>> methods = Map.of(
             1, Integer::sum,
             2, (i1, i2) -> i1 * i2

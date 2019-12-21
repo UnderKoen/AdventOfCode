@@ -13,7 +13,7 @@ import static nl.underkoen.adventofcode.opcode.OpcodeRunner.process;
 /**
  * Created by Under_Koen on 06/12/2019.
  */
-public class Day7 extends AdventOfCode {
+public class Day07 extends AdventOfCode {
     public static long processPhase(long[] program, Collection<Integer> phase) {
         long out = 0;
         for (Integer i : phase) out = process(program, new long[]{i, out});

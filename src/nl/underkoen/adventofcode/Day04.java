@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 /**
  * Created by Under_Koen on 03/12/2019.
  */
-public class Day4 extends AdventOfCode {
+public class Day04 extends AdventOfCode {
     public static boolean check(int i, boolean a) {
         int s = -1;
         int[] doubles = new int[10];

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Under_Koen on 05/12/2019.
  */
-public class Day6 extends AdventOfCode {
+public class Day06 extends AdventOfCode {
     private static List<String> getAllParents(Map<String, String> orbits, String begin) {
         List<String> parents = new ArrayList<>();
         while (orbits.containsKey(begin)) parents.add(begin = orbits.get(begin));

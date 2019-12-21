@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 /**
  * Created by Under_Koen on 02/12/2019.
  */
-public class Day3 extends AdventOfCode {
+public class Day03 extends AdventOfCode {
     private static Map<Character, Consumer<Position>> directions = Map.of(
             'R', l -> l.addX(1),
             'L', l -> l.addX(-1),

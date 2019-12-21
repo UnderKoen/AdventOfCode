@@ -10,7 +10,8 @@ import java.util.Scanner;
  */
 public class Utils {
     public static List<String> getInput(int day) {
-        Scanner scanner = new Scanner(Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream("day" + day + ".txt")));
+        String file = String.format("day%02d.txt", day);
+        Scanner scanner = new Scanner(Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(file)));
 
         List<String> result = new ArrayList<>();
         while (scanner.hasNextLine()) {

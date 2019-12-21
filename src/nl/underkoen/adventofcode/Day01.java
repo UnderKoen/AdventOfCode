@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Under_Koen on 01/12/2019.
  */
-public class Day1 extends AdventOfCode {
+public class Day01 extends AdventOfCode {
     public static int calculate(int i) {
         int fuel = Math.max(i / 3 - 2, 0);
         return fuel + (fuel > 0 ? calculate(fuel) : 0);
@@ -31,7 +31,7 @@ public class Day1 extends AdventOfCode {
 
         b = input.stream()
                 .mapToInt(Integer::parseInt)
-                .map(Day1::calculate)
+                .map(Day01::calculate)
                 .sum();
     }
 }

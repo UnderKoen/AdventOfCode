@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Under_Koen on 07/12/2019.
  */
-public class Day8 extends AdventOfCode {
+public class Day08 extends AdventOfCode {
     public static long countChar(char which, List<Character> characters) {
         return characters.stream().filter(c -> c == which).count();
     }
