@@ -2,7 +2,6 @@ package nl.underkoen.adventofcode;
 
 import nl.underkoen.adventofcode.general.Holder;
 import nl.underkoen.adventofcode.general.Position;
-import nl.underkoen.adventofcode.opcode.OutputOpcode;
 import nl.underkoen.adventofcode.opcode.StopOpcode;
 
 import java.util.*;
@@ -40,8 +39,6 @@ public class Day15 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        OutputOpcode.setDefaultPrint(false);
-
         long[] program = parse(input);
 
         Position position = new Position();

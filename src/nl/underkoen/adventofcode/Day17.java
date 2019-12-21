@@ -1,17 +1,13 @@
 package nl.underkoen.adventofcode;
 
 import nl.underkoen.adventofcode.general.BiHolder;
-import nl.underkoen.adventofcode.general.IntHolder;
 import nl.underkoen.adventofcode.general.Position;
-import nl.underkoen.adventofcode.opcode.OutputOpcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static nl.underkoen.adventofcode.opcode.OpcodeRunner.parse;
-import static nl.underkoen.adventofcode.opcode.OpcodeRunner.process;
+import static nl.underkoen.adventofcode.opcode.OpcodeRunner.*;
 
 /**
  * Created by Under_Koen on 16/12/2019.
@@ -55,7 +51,6 @@ public class Day17 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        OutputOpcode.setDefaultPrint(false);
         long[] program = parse(input);
 
         List<Position> lines = new ArrayList<>();
@@ -102,10 +97,6 @@ public class Day17 extends AdventOfCode {
         }
 
         String cmdS = getCommandos(String.join(",", path), 3, 'C') + "\nn\n";
-        List<Character> cmd = cmdS.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-
-        IntHolder i = new IntHolder();
-        b = process(program, () -> cmd.get(i.addValue(1)), l -> {
-        });
+        b = processAscii(program, cmdS);
     }
 }

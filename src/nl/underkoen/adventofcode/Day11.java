@@ -2,7 +2,6 @@ package nl.underkoen.adventofcode;
 
 import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.general.Position;
-import nl.underkoen.adventofcode.opcode.OutputOpcode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,8 +44,6 @@ public class Day11 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        OutputOpcode.setDefaultPrint(false);
-
         long[] program = parse(input);
 
         a = run(program, 0).size();

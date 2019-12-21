@@ -1,7 +1,6 @@
 package nl.underkoen.adventofcode;
 
 import nl.underkoen.adventofcode.general.Position;
-import nl.underkoen.adventofcode.opcode.OutputOpcode;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -29,8 +28,6 @@ public class Day19 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        OutputOpcode.setDefaultPrint(false);
-
         long[] program = parse(input);
         a = IntStream.range(0, 50)
                 .boxed()

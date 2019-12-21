@@ -8,7 +8,7 @@ import java.util.function.LongUnaryOperator;
  * Created by Under_Koen on 07/12/2019.
  */
 public class OutputOpcode implements Opcode {
-    private static boolean defaultPrint = true;
+    private static boolean defaultPrint = false;
 
     public static void setDefaultPrint(boolean defaultPrint) {
         OutputOpcode.defaultPrint = defaultPrint;

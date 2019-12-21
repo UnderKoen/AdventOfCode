@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.opcode;
 
 import nl.underkoen.adventofcode.Utils;
+import nl.underkoen.adventofcode.general.IntHolder;
 
 import java.util.*;
 import java.util.function.LongConsumer;
@@ -99,6 +100,26 @@ public class OpcodeRunner {
         Deque<Long> inputS = new ArrayDeque<>();
         for (long l : input) inputS.add(l);
         return process(program, inputS::pop, p -> {
+        });
+    }
+
+    public static long processAscii(long[] program, String input) {
+        return processAscii(program, input, false);
+    }
+
+    public static long processAscii(long[] program, String input, boolean output) {
+        char[] chars = input.toCharArray();
+        return processAscii(program, chars, output);
+    }
+
+    public static long processAscii(long[] program, char[] chars) {
+        return processAscii(program, chars, false);
+    }
+
+    public static long processAscii(long[] program, char[] chars, boolean output) {
+        IntHolder i = new IntHolder();
+        return process(program, () -> chars[i.addValue(1)], l -> {
+            if (output) System.out.print((char) l);
         });
     }
 

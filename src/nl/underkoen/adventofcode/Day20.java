@@ -16,7 +16,7 @@ import java.util.*;
 public class Day20 extends AdventOfCode {
     public static Map<BiHolder<Position, Integer>, Integer> cache = new HashMap<>();
 
-    public static int check(Graph<Position, DefaultWeightedEdge> graph, Graph<Position, DefaultWeightedEdge> top, int indent, Position start, Position end, Map<Position, Position> portals, Set<Position> done, Set<Set<Position>> depth, int o) {
+    public static int check(Graph<Position, DefaultWeightedEdge> top, int indent, Position start, Position end, Map<Position, Position> portals, Set<Position> done, Set<Set<Position>> depth, int o) {
         var e = new BiHolder<>(start, indent);
         if (cache.containsKey(e)) return cache.get(e);
         if (start == null || o > 200) return -1;
@@ -42,7 +42,7 @@ public class Day20 extends AdventOfCode {
             Position po = portals.get(p);
             if (po == null) continue;
 
-            int r = check(graph, top, indent + (inner ? 1 : -1), po, end, portals, d, d2, o + 1);
+            int r = check(top, indent + (inner ? 1 : -1), po, end, portals, d, d2, o + 1);
             if (r == -1) continue;
             r = r + (int) top.getEdgeWeight(edge);
             i.add(r);
@@ -91,6 +91,11 @@ public class Day20 extends AdventOfCode {
     @Override
     int getDay() {
         return 20;
+    }
+
+    @Override
+    public long[] getCorrectOutput() {
+        return new long[]{568, 6546};
     }
 
     @Override
@@ -156,12 +161,9 @@ public class Day20 extends AdventOfCode {
         for (Map.Entry<String, Set<Position>> e : dups.entrySet()) {
             Position pO = null;
             for (Position p : e.getValue()) {
-                if (pO != null) {
-                    graph.setEdgeWeight(graph.addEdge(p, pO), 0);
-                }
+                if (pO != null) graph.setEdgeWeight(graph.addEdge(p, pO), 0);
                 pO = p;
             }
-
         }
 
         Position aa = dups.get("AA").iterator().next();
@@ -183,6 +185,6 @@ public class Day20 extends AdventOfCode {
             portals.put(p2, p1);
         }
 
-        b = check(graph, top, 0, aa, zz, portals, Set.of(aa), Set.of(), 0) - 1;
+        b = check(top, 0, aa, zz, portals, Set.of(aa), Set.of(), 0) - 1;
     }
 }

@@ -1,8 +1,9 @@
 package nl.underkoen.adventofcode;
 
-import nl.underkoen.adventofcode.opcode.OpcodeRunner;
-
 import java.util.List;
+
+import static nl.underkoen.adventofcode.opcode.OpcodeRunner.parse;
+import static nl.underkoen.adventofcode.opcode.OpcodeRunner.process;
 
 /**
  * Created by Under_Koen on 04/12/2019.
@@ -20,8 +21,8 @@ public class Day5 extends AdventOfCode {
 
     @Override
     void run(List<String> input) {
-        long[] numbers = OpcodeRunner.parse(input);
-        a = OpcodeRunner.process(numbers, 1);
-        b = OpcodeRunner.process(numbers, 5);
+        long[] numbers = parse(input);
+        a = process(numbers, 1);
+        b = process(numbers, 5);
     }
 }
