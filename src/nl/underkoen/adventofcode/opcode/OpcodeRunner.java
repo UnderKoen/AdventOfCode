@@ -78,7 +78,13 @@ public class OpcodeRunner {
 
             Opcode opcode = opcodes.get((int) optcode);
             try {
-                i = opcode.execute(getArg, getArgPos, i, program, r, storage);
+                if (opcode == null) {
+                    System.out.println("Encountered incorrect opcode: ");
+                    System.out.println(optcode);
+                    System.exit(-1);
+                } else {
+                    i = opcode.execute(getArg, getArgPos, i, program, r, storage);
+                }
             } catch (StopOpcode e) {
                 return r[0];
             }

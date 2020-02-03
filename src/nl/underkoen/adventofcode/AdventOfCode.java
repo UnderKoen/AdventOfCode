@@ -49,7 +49,7 @@ public abstract class AdventOfCode {
         output();
     }
 
-    private void test() {
+    public void test() {
         long[] correct = getCorrectOutput();
         if (correct.length == 0) return;
         if (a != correct[0]) throw new IllegalArgumentException("Result A is incorrect");

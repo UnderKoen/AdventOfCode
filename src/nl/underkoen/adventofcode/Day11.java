@@ -39,6 +39,7 @@ public class Day11 extends AdventOfCode {
 
     @Override
     public long[] getCorrectOutput() {
+        System.out.println("Should out put AHCHZEPK in big letters");
         return new long[]{2184};
     }
 

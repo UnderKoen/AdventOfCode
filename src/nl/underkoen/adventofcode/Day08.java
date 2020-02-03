@@ -20,6 +20,7 @@ public class Day08 extends AdventOfCode {
 
     @Override
     public long[] getCorrectOutput() {
+        System.out.println("Should out put FAHEF in big letters");
         return new long[]{1330};
     }
 
