@@ -18,11 +18,14 @@ import java.util.Scanner;
  * Created by Under_Koen on 01/12/2019.
  */
 public class Utils {
-    private static final File resources = new File(System.getProperty("user.dir") + "\\inputs");
+    private static final File resources = getResources();
     private static final String session = getSession();
 
-    static {
-        if (!resources.exists() && !resources.mkdir()) throw new IllegalArgumentException("Cant create input folder");
+    private static File getResources() {
+        File file = new File(System.getProperty("user.dir") + "\\inputs");
+        if (!file.exists() && !file.mkdir()) throw new IllegalArgumentException("Cant create input folder");
+        System.out.println(file);
+        return file;
     }
 
     @SneakyThrows

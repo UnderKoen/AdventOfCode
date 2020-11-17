@@ -1,4 +1,5 @@
 inputs
+.idea/**/discord.xml
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,gradle,macos,windows,kotlin
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,gradle,macos,windows,kotlin
