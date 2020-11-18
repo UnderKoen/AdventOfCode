@@ -4,7 +4,7 @@
     <module name="AdventOfCode.main" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="nl.underkoen.adventofcode.*" />
+        <option name="PATTERN" value="nl.underkoen.adventofcode.solutions.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

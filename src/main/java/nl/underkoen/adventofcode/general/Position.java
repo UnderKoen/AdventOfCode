@@ -1,11 +1,18 @@
 package nl.underkoen.adventofcode.general;
 
+import lombok.*;
+
 import java.util.Collection;
 import java.util.function.ToLongBiFunction;
 
 /**
  * Created by Under_Koen on 11/12/2019.
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@With
 public class Position {
     public static Position min(Collection<Position> positions) {
         return reduce(positions, Math::min);
@@ -23,44 +30,15 @@ public class Position {
         }).orElseThrow();
     }
 
-    private long x;
-    private long y;
+    private long x = 0;
+    private long y = 0;
 
-    public Position() {
-        this(0, 0);
+    public void addX(long x) {
+        setX(getX() + x);
     }
 
-    public Position(long x, long y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public long getX() {
-        return x;
-    }
-
-    public long setX(long x) {
-        long old = this.x;
-        this.x = x;
-        return old;
-    }
-
-    public long addX(long x) {
-        return setX(getX() + x);
-    }
-
-    public long getY() {
-        return y;
-    }
-
-    public long setY(long y) {
-        long old = this.y;
-        this.y = y;
-        return old;
-    }
-
-    public long addY(long y) {
-        return setY(getY() + y);
+    public void addY(long y) {
+        setY(getY() + y);
     }
 
     public void set(long x, long y) {
@@ -113,11 +91,9 @@ public class Position {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Position)) return false;
-
         Position position = (Position) o;
-
-        if (getX() != position.getX()) return false;
-        return getY() == position.getY();
+        return getX() == position.getX() &&
+                getY() == position.getY();
     }
 
     @Override

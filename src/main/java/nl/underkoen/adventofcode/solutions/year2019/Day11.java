@@ -38,11 +38,6 @@ public class Day11 extends Solution {
     }
 
     @Override
-    public int getDay() {
-        return 11;
-    }
-
-    @Override
     public long[] getCorrectOutput() {
         System.out.println("Should out put AHCHZEPK in big letters");
         return new long[]{2184};

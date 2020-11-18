@@ -1,4 +1,4 @@
-package nl.underkoen.adventofcode;
+package nl.underkoen.adventofcode.solutions;
 
 import lombok.SneakyThrows;
 import org.apache.http.HttpEntity;
@@ -17,7 +17,7 @@ import java.util.Scanner;
 /**
  * Created by Under_Koen on 01/12/2019.
  */
-public class Utils {
+class SolutionUtils {
     private static final File resources = getResources();
     private static final String session = getSession();
 
@@ -84,47 +84,5 @@ public class Utils {
             }
             return scanner.next();
         }
-    }
-
-    public static String reverse(String str) {
-        char[] chars = str.toCharArray();
-        for (int i = 0; i < chars.length / 2; i++) {
-            char temp = chars[i];
-            chars[i] = chars[chars.length - i - 1];
-            chars[chars.length - i - 1] = temp;
-
-        }
-        return String.copyValueOf(chars);
-    }
-
-    public static int[] getDigits(String line) {
-        return line.chars()
-                .mapToObj(c -> (char) c)
-                .map(c -> Character.toString(c))
-                .mapToInt(Integer::parseInt)
-                .toArray();
-    }
-
-    public static long toNumber(int[] digits) {
-        return toNumber(digits, digits.length);
-    }
-
-    public static long toNumber(int[] digits, int max) {
-        long r = 0;
-        int until = Math.min(digits.length, max) - 1;
-        for (int i = 0; i <= until; i++) {
-            r += Math.pow(10, until - i) * digits[i];
-        }
-        return r;
-    }
-
-    public static boolean any(boolean[] array) {
-        for (boolean b : array) if (b) return true;
-        return false;
-    }
-
-    public static boolean all(boolean[] array) {
-        for (boolean b : array) if (!b) return false;
-        return true;
     }
 }

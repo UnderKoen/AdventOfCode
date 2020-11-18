@@ -22,11 +22,6 @@ public class Day03 extends Solution {
     );
 
     @Override
-    public int getDay() {
-        return 3;
-    }
-
-    @Override
     public long[] getCorrectOutput() {
         return new long[]{403, 4158};
     }

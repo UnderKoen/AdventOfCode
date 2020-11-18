@@ -1,7 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019.opcode;
 
-import nl.underkoen.adventofcode.Utils;
 import nl.underkoen.adventofcode.general.IntHolder;
+import nl.underkoen.adventofcode.utils.StringUtils;
 
 import java.util.*;
 import java.util.function.LongConsumer;
@@ -54,7 +54,7 @@ public class OpcodeRunner {
             if (optcode == 99) break;
 
             long mode = method / 100;
-            char[] modeChars = Utils.reverse(Long.toString(mode)).toCharArray();
+            char[] modeChars = StringUtils.reverse(Long.toString(mode)).toCharArray();
 
             int j = i;
             long[] p = program;

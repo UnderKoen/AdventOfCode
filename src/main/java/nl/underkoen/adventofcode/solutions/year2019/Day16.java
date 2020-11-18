@@ -2,7 +2,8 @@ package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.Utils;
+import nl.underkoen.adventofcode.utils.NumberUtils;
+import nl.underkoen.adventofcode.utils.StringUtils;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Day16 extends Solution {
     @Getter private final int year = 2019;
 
     public static Long calcPart(String line, int start) {
-        int[] nums = Utils.getDigits(line.substring(start));
+        int[] nums = StringUtils.getDigits(line.substring(start));
 
         int length = nums.length;
         for (int i = 0; i < 100; i++) {
@@ -25,11 +26,11 @@ public class Day16 extends Solution {
             }
         }
 
-        return Utils.toNumber(nums, 8);
+        return NumberUtils.toNumber(nums, 8);
     }
 
     public static Long calc(String line) {
-        int[] nums = Utils.getDigits(line);
+        int[] nums = StringUtils.getDigits(line);
 
         int length = nums.length;
         for (int i = 0; i < 100; i++) {
@@ -40,7 +41,7 @@ public class Day16 extends Solution {
             }
         }
 
-        return Utils.toNumber(nums, 8);
+        return NumberUtils.toNumber(nums, 8);
     }
 
     public static int getPhase(int phase, int pos) {

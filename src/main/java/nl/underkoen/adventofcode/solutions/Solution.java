@@ -1,7 +1,5 @@
 package nl.underkoen.adventofcode.solutions;
 
-import nl.underkoen.adventofcode.Utils;
-
 import java.util.List;
 
 /**
@@ -49,7 +47,7 @@ public abstract class Solution implements SolutionInfo {
     }
 
     public void execute(boolean output) {
-        run(Utils.getInput(getYear(), getDay()));
+        run(SolutionUtils.getInput(getYear(), getDay()));
         if (output) output();
     }
 

@@ -2,9 +2,9 @@ package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.Utils;
 import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.general.Position;
+import nl.underkoen.adventofcode.utils.BoolUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,7 +74,7 @@ public class Day17 extends Solution {
         });
 
         a = lines.stream()
-                .filter(p -> Utils.all(getNeighbours(lines, p)))
+                .filter(p -> BoolUtils.all(getNeighbours(lines, p)))
                 .mapToLong(p -> p.getX() * p.getY())
                 .sum();
 

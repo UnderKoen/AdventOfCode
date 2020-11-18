@@ -14,8 +14,8 @@ public class OutputOpcode implements Opcode {
         OutputOpcode.defaultPrint = defaultPrint;
     }
 
-    private boolean print;
-    private LongConsumer output;
+    private final boolean print;
+    private final LongConsumer output;
 
     public OutputOpcode(LongConsumer output) {
         this(defaultPrint, output);
@@ -25,7 +25,6 @@ public class OutputOpcode implements Opcode {
         this.print = print;
         this.output = output;
     }
-
 
     @Override
     public int execute(LongUnaryOperator getArg, LongUnaryOperator getArgPos, int i, long[] program, long[] result, Map<Long, Long> storage) {
