@@ -18,6 +18,8 @@ public class Main {
 
     public static void main(String[] args) {
         PrintStream out = System.out;
+
+        if (args.length >= 1 && args[0].equals("--show-ouput"))
         System.setOut(new PrintStream(new OutputStream() {
             @Override
             public void write(int b) {
@@ -67,14 +69,30 @@ public class Main {
 
     public static class RunToday {
         public static void main(String[] args) {
-            Map<Integer, List<Solution>> solutions = getAllSolutions();
-
             LocalDateTime date = LocalDateTime.now();
-            List<Solution> yearSolutions = solutions.get(date.getYear());
-            Solution solution = yearSolutions.stream()
+
+            Solution solution = getAllSolutions()
+                    .get(date.getYear())
+                    .stream()
                     .filter(s -> s.getDay() == date.getDayOfMonth())
                     .findAny()
                     .orElseThrow(() -> new IllegalStateException("Today's solution not found"));
+
+            solution.execute();
+        }
+    }
+
+    public static class RunLast {
+        public static void main(String[] args) {
+            Solution solution = getAllSolutions()
+                    .entrySet()
+                    .stream()
+                    .max(Comparator.comparingInt(Map.Entry::getKey))
+                    .orElseThrow(RuntimeException::new)
+                    .getValue()
+                    .stream()
+                    .max(Comparator.comparingInt(SolutionInfo::getDay))
+                    .orElseThrow(RuntimeException::new);
 
             solution.execute();
         }
