@@ -1,7 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Last" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="nl.underkoen.adventofcode.Main$RunLast" />
+    <option name="MAIN_CLASS_NAME" value="nl.underkoen.adventofcode.solutions.SolutionRunner" />
     <module name="AdventOfCode.main" />
+    <option name="PROGRAM_PARAMETERS" value="-l" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="nl.underkoen.adventofcode.*" />
