@@ -20,8 +20,8 @@ import java.util.*;
  */
 @UtilityClass
 class SolutionUtils {
-    File resources;
-    boolean download;
+    File resources = new File(System.getProperty("user.dir") + "\\inputs");
+    boolean download = true;
     private String session;
 
     private File getResources() {
