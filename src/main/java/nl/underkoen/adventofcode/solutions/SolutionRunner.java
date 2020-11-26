@@ -9,10 +9,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Command(name = "AdventOfCode",
         aliases = "aoc",
@@ -52,6 +49,9 @@ public class SolutionRunner implements Runnable {
     @Option(names = {"--no-download"}, description = "Enables downloads of the input.", showDefaultValue = Help.Visibility.ALWAYS, negatable = true)
     boolean download = true;
 
+    @Option(names = {"-s", "--submit"}, description = "Prompts you if you want to submit your answer.", negatable = true)
+    Boolean submit;
+
     @Option(names = {"--inputs"}, description = "Custom location for the inputs.", showDefaultValue = Help.Visibility.ALWAYS)
     File inputs = new File(System.getProperty("user.dir") + "\\inputs");
 
@@ -67,15 +67,6 @@ public class SolutionRunner implements Runnable {
         if (today || thisYear) year = date.getYear();
         if (today) day = date.getDayOfMonth();
 
-        PrintStream out = System.out;
-        if (!verbose) {
-            System.setOut(new PrintStream(new OutputStream() {
-                @Override
-                public void write(int b) {
-                }
-            }));
-        }
-
         if (last && year == null) year = yearSolutions.stream()
                 .mapToInt(Map.Entry::getKey)
                 .max()
@@ -86,7 +77,7 @@ public class SolutionRunner implements Runnable {
         }
 
         for (Map.Entry<Integer, List<Solution>> entry : yearSolutions) {
-            out.printf("%n%n=== YEAR %d ===%n%n%n", entry.getKey());
+            System.out.printf("%n=== YEAR %d ===%n%n", entry.getKey());
 
             if (last && day == null) day = entry.getValue().stream()
                     .mapToInt(SolutionInfo::getDay)
@@ -99,20 +90,58 @@ public class SolutionRunner implements Runnable {
 
             entry.getValue().sort(Comparator.comparingInt(SolutionInfo::getDay));
             for (Solution solution : entry.getValue()) {
-                long start = System.currentTimeMillis();
-                try {
-                    solution.execute(output);
-                    long end = System.currentTimeMillis();
-                    solution.test();
-                    if (times) out.printf("Day %s succeeded and took %s ms%n", solution.getDay(), end - start);
-                    else out.printf("Day %s succeeded", solution.getDay());
-                } catch (Exception e) {
-                    long end = System.currentTimeMillis();
-                    if (times) System.err.printf("Day %s failed, after %s ms%n", solution.getDay(), end - start);
-                    else System.err.printf("Day %s failed", solution.getDay());
-                }
+                run(solution, output, times, verbose, submit);
             }
         }
+    }
+
+    public static void run(Solution solution, boolean output, boolean times, boolean verbose, Boolean submit) {
+        PrintStream out = System.out;
+        if (!verbose) {
+            System.setOut(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) {
+                }
+            }));
+        }
+
+        long start = System.currentTimeMillis();
+        try {
+            solution.execute(output);
+            long end = System.currentTimeMillis();
+            solution.test();
+
+            if (submit == null ? solution.isSubmit() : submit) {
+                boolean a = solution.b == 0;
+
+
+                 String value = a ? solution.getA() : solution.getB();
+                int part = a ? 1 : 2;
+
+                out.printf("Are you sure you want to submit %s as your answer for part %d from day %d, year %d%n", value, part, solution.getDay(), solution.getYear());
+                out.print("Please answer y/n: ");
+                Scanner scanner = new Scanner(System.in);
+                String in = scanner.next();
+                scanner.close();
+
+                out.println();
+                if (in.equals("y")) {
+                    out.println(SolutionUtils.submit(solution.getYear(), solution.getDay(), value, part));
+                    out.println();
+                }
+            }
+
+            if (times) out.printf("Day %s succeeded and took %s ms%n", solution.getDay(), end - start);
+            else out.printf("Day %s succeeded", solution.getDay());
+        } catch (Exception e) {
+            long end = System.currentTimeMillis();
+            if (verbose) e.printStackTrace();
+
+            if (times) System.err.printf("Day %s failed, after %s ms%n", solution.getDay(), end - start);
+            else System.err.printf("Day %s failed", solution.getDay());
+        }
+
+        System.setOut(out);
     }
 
     public static void main(String[] args) {

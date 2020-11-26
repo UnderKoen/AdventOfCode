@@ -1,5 +1,6 @@
 package nl.underkoen.adventofcode.solutions;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -7,6 +8,8 @@ import java.util.List;
  */
 public abstract class Solution implements SolutionInfo {
     protected long a, b;
+    protected String textA, textB;
+    protected Boolean submit;
 
     public static void main(String[] args) throws Exception {
         String clsN = System.getProperty("sun.java.command");
@@ -17,17 +20,7 @@ public abstract class Solution implements SolutionInfo {
         if (Solution.class.isAssignableFrom(cls)) {
             Class<? extends Solution> day = (Class<? extends Solution>) cls;
             Solution solution = day.getConstructor().newInstance();
-            try {
-                long start = System.currentTimeMillis();
-                solution.execute();
-                long end = System.currentTimeMillis();
-
-                solution.test();
-                System.out.printf("Took:%n%s ms%n", end - start);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.exit(1);
-            }
+            SolutionRunner.run(solution, true, true, true, null);
         }
         System.exit(0);
     }
@@ -38,8 +31,12 @@ public abstract class Solution implements SolutionInfo {
         return new long[0];
     }
 
+    public String[] getCorrectOutputText() {
+        return Arrays.stream(getCorrectOutput()).mapToObj(Long::toString).toArray(String[]::new);
+    }
+
     private void output() {
-        System.out.printf("%nResult day%sa:%n%s%n%nResult day%sb:%n%s%n%n", getDay(), a, getDay(), b);
+        System.out.printf("%nResult day%sa:%n%s%n%nResult day%sb:%n%s%n%n", getDay(), getA(), getDay(), getB());
     }
 
     public void execute() {
@@ -52,9 +49,24 @@ public abstract class Solution implements SolutionInfo {
     }
 
     public void test() {
-        long[] correct = getCorrectOutput();
+        String[] correct = getCorrectOutputText();
         if (correct.length == 0) return;
-        if (a != correct[0]) throw new IllegalArgumentException("Result A is incorrect");
-        if (correct.length >= 2 && b != correct[1]) throw new IllegalArgumentException("Result B is incorrect");
+        if (!getA().equals(correct[0])) throw new IllegalArgumentException("Result A is incorrect");
+        if (correct.length >= 2 && !getB().equals(correct[1])) throw new IllegalArgumentException("Result B is incorrect");
+    }
+
+    public String getA() {
+        if (textA != null) return textA;
+        return Long.toString(a);
+    }
+
+    public String getB() {
+        if (textB != null) return textB;
+        return Long.toString(b);
+    }
+
+    public boolean isSubmit() {
+        if (submit == null) return getCorrectOutputText().length != 2;
+        return submit;
     }
 }

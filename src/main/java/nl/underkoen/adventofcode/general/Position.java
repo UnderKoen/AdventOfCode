@@ -3,7 +3,9 @@ package nl.underkoen.adventofcode.general;
 import lombok.*;
 
 import java.util.Collection;
-import java.util.function.ToLongBiFunction;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 /**
  * Created by Under_Koen on 11/12/2019.
@@ -15,19 +17,28 @@ import java.util.function.ToLongBiFunction;
 @With
 public class Position {
     public static Position min(Collection<Position> positions) {
-        return reduce(positions, Math::min);
+        return positions.stream()
+                .reduce(Position::min)
+                .orElseThrow();
     }
 
     public static Position max(Collection<Position> positions) {
-        return reduce(positions, Math::max);
+        return positions.stream()
+                .reduce(Position::max)
+                .orElseThrow();
     }
 
-    public static Position reduce(Collection<Position> positions, ToLongBiFunction<Long, Long> func) {
-        return positions.stream().reduce((p, p2) -> {
-            long x = func.applyAsLong(p.getX(), p2.getX());
-            long y = func.applyAsLong(p.getY(), p2.getY());
-            return new Position(x, y);
-        }).orElseThrow();
+    public static List<Position> between(Position p1, Position p2) {
+        Position min = p1.min(p2);
+        Position max = p1.max(p2);
+
+        return LongStream.range(min.getX(), max.getX() + 1)
+                .boxed()
+                .flatMap(x -> LongStream
+                        .range(min.getY(), max.getY() + 1)
+                        .boxed()
+                        .map(y -> new Position(x, y)))
+                .collect(Collectors.toList());
     }
 
     private long x = 0;
@@ -73,6 +84,14 @@ public class Position {
         Position pos = copy();
         pos.add(position);
         return pos;
+    }
+
+    public Position min(Position position) {
+        return new Position(Math.min(x, position.x), Math.min(y, position.y));
+    }
+
+    public Position max(Position position) {
+        return new Position(Math.max(x, position.x), Math.max(y, position.y));
     }
 
     public long distance(Position position) {

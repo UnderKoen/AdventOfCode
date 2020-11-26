@@ -5,9 +5,13 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import nl.underkoen.adventofcode.Main;
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
@@ -72,6 +76,29 @@ class SolutionUtils {
             fileWriter.flush();
             fileWriter.close();
         }
+    }
+
+    @SneakyThrows
+    public String submit(int year, int day, String value, int level) {
+        String url = String.format("https://adventofcode.com/%d/day/%d/answer", year, day);
+
+        HttpPost httpPost = new HttpPost(url);
+        if (session == null) session = getSession();
+        httpPost.addHeader("cookie", String.format("session=%s", session));
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("level", Integer.toString(level)));
+        params.add(new BasicNameValuePair("answer", value));
+
+        httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            HttpEntity entity = httpclient.execute(httpPost).getEntity();
+
+            String answer = EntityUtils.toString(entity);
+            return answer.split("article")[1];
+        }
+
     }
 
     @SneakyThrows
