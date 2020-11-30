@@ -1,11 +1,14 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.general.BiHolder;
+import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * Created by Under_Koen on 09/12/2019.
@@ -21,18 +24,13 @@ public class Day10 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<int[]> asteroids = new ArrayList<>();
+        List<Position> asteroids = InputUtils.mapChar(input, (c, p) -> c == '#' ? p : null)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-        for (int y = 0; y < input.size(); y++) {
-            char[] chars = input.get(y).toCharArray();
-            for (int x = 0; x < chars.length; x++) {
-                if (chars[x] == '#') asteroids.add(new int[]{x, y});
-            }
-        }
-
-        Entry<int[], Long> best = asteroids.stream()
+        Entry<Position, Long> best = asteroids.stream()
                 .map(a -> new BiHolder<>(a, asteroids.stream()
-                                .map(pos -> Math.atan2(a[1] - pos[1], a[0] - pos[0]))
+                                .map(a::atan2)
                                 .distinct()
                                 .count()
                         )
@@ -42,11 +40,13 @@ public class Day10 extends Solution {
 
         a = best.getValue();
 
-        Map<Double, int[]> degrees = asteroids.stream()
-                .filter(pos -> !Arrays.equals(pos, best.getKey()))
-                .map(a -> new BiHolder<>(a, Math.atan2(best.getKey()[1] - a[1], best.getKey()[0] - a[0])))
-                .peek(e -> e.setValue(Math.toDegrees(e.getValue()) - 90))
-                .peek(e -> e.setValue(e.getValue() < 0 ? e.getValue() + 360 : e.getValue()))
+        Position bestPos = best.getKey();
+
+        Map<Double, Position> degrees = asteroids.stream()
+                .filter(pos -> pos != bestPos)
+                .map(BiHolder.hold(bestPos::atan2))
+                .map(e -> e.mapValue(r -> Math.toDegrees(r) - 90))
+                .map(e -> e.mapValue(d -> d < 0 ? d + 360 : d))
                 .collect(HashMap::new, (map, i) -> {
                     if (map.containsKey(i.getValue())) i.setValue(i.getValue() + 360);
                     map.put(i.getValue(), i.getKey());
@@ -56,7 +56,7 @@ public class Day10 extends Solution {
         List<Double> ordered = new ArrayList<>(degrees.keySet());
         ordered.sort(Double::compareTo);
 
-        int[] pos = degrees.get(ordered.get(199));
-        b = pos[0] * 100 + pos[1];
+        Position pos = degrees.get(ordered.get(199));
+        b = pos.getX() * 100 + pos.getY();
     }
 }

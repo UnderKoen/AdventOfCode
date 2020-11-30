@@ -44,30 +44,34 @@ public class Position {
     private long x = 0;
     private long y = 0;
 
-    public void addX(long x) {
+    public Position addX(long x) {
         setX(getX() + x);
+        return this;
     }
 
-    public void addY(long y) {
+    public Position addY(long y) {
         setY(getY() + y);
+        return this;
     }
 
-    public void set(long x, long y) {
+    public Position set(long x, long y) {
         setX(x);
         setY(y);
+        return this;
     }
 
-    public void set(Position position) {
-        set(position.getX(), position.getY());
+    public Position set(Position position) {
+        return set(position.getX(), position.getY());
     }
 
-    public void add(long x, long y) {
+    public Position add(long x, long y) {
         addX(x);
         addY(y);
+        return this;
     }
 
-    public void add(Position position) {
-        add(position.getX(), position.getY());
+    public Position add(Position position) {
+        return add(position.getX(), position.getY());
     }
 
     public Position copy() {
@@ -100,6 +104,10 @@ public class Position {
 
     public long distanceOrigin() {
         return Math.abs(getX()) + Math.abs(getY());
+    }
+
+    public double atan2(Position position) {
+        return Math.atan2(getY() - position.getY(), getX() - position.getX());
     }
 
     public long[] asArray() {

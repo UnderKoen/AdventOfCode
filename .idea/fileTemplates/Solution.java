@@ -18,6 +18,11 @@ public class ${NAME} extends Solution {
     public long[] getCorrectOutput() {
         return new long[]{};
     }
+    
+//    @Override
+//    public String[] getCorrectOutputText() {
+//        return new String[]{};
+//    }
 
     @Override
     protected void run(List<String> input) {

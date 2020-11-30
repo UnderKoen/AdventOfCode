@@ -1,7 +1,6 @@
 package nl.underkoen.adventofcode.general;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -42,5 +41,17 @@ public class BiHolder<T, U> implements Map.Entry<T, U> {
         U old = this.value;
         this.value = value;
         return old;
+    }
+
+    public <K> BiHolder<K, U> mapKey(Function<T, K> map) {
+        return map(map, v -> v);
+    }
+
+    public <V> BiHolder<T, V> mapValue(Function<U, V> map) {
+        return map(v -> v, map);
+    }
+
+    public <K, V> BiHolder<K, V> map(Function<T, K> keyMap, Function<U, V> valueMap) {
+        return new BiHolder<>(keyMap.apply(key), valueMap.apply(value));
     }
 }
