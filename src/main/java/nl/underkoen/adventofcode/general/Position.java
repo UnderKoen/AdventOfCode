@@ -41,6 +41,10 @@ public class Position {
                 .collect(Collectors.toList());
     }
 
+    public static List<Position> rectangle(Position origin, long width, long height) {
+        return between(origin, origin.copyAdd(width - 1, height - 1));
+    }
+
     private long x = 0;
     private long y = 0;
 

@@ -20,5 +20,6 @@ public class Day25 extends Solution {
         long[] program = OpcodeRunner.parse(input);
         String s = String.join("\n", input.subList(1, input.size())) + "\n";
         OpcodeRunner.processAscii(program, s, true);
+        submit = false;
     }
 }

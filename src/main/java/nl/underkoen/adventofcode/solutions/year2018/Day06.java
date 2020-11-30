@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.solutions.year2018;
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
 import java.util.HashMap;
@@ -21,10 +22,7 @@ public class Day06 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Position> positions = input.stream()
-                .map(s -> s.split(", "))
-                .map(a -> new Position(Long.parseLong(a[0]), Long.parseLong(a[1])))
-                .collect(Collectors.toList());
+        List<Position> positions = InputUtils.asPositionList(input);
 
         Position min = Position.min(positions);
         Position max = Position.max(positions);

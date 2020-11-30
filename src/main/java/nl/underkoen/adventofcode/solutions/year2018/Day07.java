@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.solutions.year2018;
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
 import java.util.*;
@@ -20,23 +21,19 @@ public class Day07 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        Pattern pattern = Pattern.compile("Step (.) must be finished before step (.) can begin\\.");
-
         Map<String, List<String>> needsMap = new HashMap<>();
         Map<String, List<String>> needsCopy = new HashMap<>();
         Set<String> all = new HashSet<>();
 
-        for (String s : input) {
-            Matcher m = pattern.matcher(s);
-            if (!m.find()) throw new IllegalArgumentException();
-            String needs = m.group(1);
-            String to = m.group(2);
+        InputUtils.asRegexGroupList(input, "Step (.) must be finished before step (.) can begin\\.").forEach(steps -> {
+            String needs = steps.get(0);
+            String to = steps.get(1);
 
             MapUtils.Add(needsMap, to, needs);
             MapUtils.Add(needsCopy, to, needs);
             all.add(needs);
             all.add(to);
-        }
+        });
 
 
         List<String> order = new ArrayList<>();

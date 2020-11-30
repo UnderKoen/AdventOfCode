@@ -22,10 +22,10 @@ public class SolutionRunner implements Runnable {
     @Option(names = {"-p", "--package"}, description = "The package where the solutions are found.", showDefaultValue = Help.Visibility.ALWAYS)
     String pkg = Solution.class.getPackageName();
 
-    @Option(names = {"-y", "--year"}, description = "Filter solutions on this year.")
+    @Option(names = {"-y", "--year"}, description = "Filter solutions on this year.", interactive = true)
     Integer year;
 
-    @Option(names = {"-d", "--day"}, description = "Filter solutions on this day.")
+    @Option(names = {"-d", "--day"}, description = "Filter solutions on this day.", interactive = true)
     Integer day;
 
     @Option(names = {"-t", "--today"}, description = "Run's today's solution.", showDefaultValue = Help.Visibility.ALWAYS)
@@ -62,6 +62,8 @@ public class SolutionRunner implements Runnable {
         System.out.println(inputs);
 
         Set<Map.Entry<Integer, List<Solution>>> yearSolutions = SolutionUtils.getAllSolutions(pkg).entrySet();
+
+        if (year != null && year < 2000) year += 2000;
 
         LocalDateTime date = LocalDateTime.now();
         if (today || thisYear) year = date.getYear();
