@@ -21,17 +21,20 @@ public class Day01 extends Solution {
     @Override
     protected void run(List<String> input) {
         Set<Long> nums = InputUtils.asNumberList(input)
-                .sorted(Long::compareTo)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+                .collect(Collectors.toSet());
 
+        int i = 0;
         for (Long num1 : nums) {
+            i++;
             long num2 = 2020 - num1;
             if (a == 0 && nums.contains(num2)) {
                 a = num1 * num2;
                 if (b != 0) return;
             }
 
+            int j = 0;
             for (Long num3 : nums) {
+                if (i < ++j) continue;
                 long num4 = num2 - num3;
 
                 if (b == 0 && nums.contains(num4)) {
