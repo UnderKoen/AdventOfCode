@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 @UtilityClass
 public class InputUtils {
-    public final String DEFAULT_SPLIT = ", ?";
+    public final String DEFAULT_SPLIT = "[, ] ?";
 
     public List<Long> asNumberList(List<String> input) {
         return asNumberList(input, DEFAULT_SPLIT);

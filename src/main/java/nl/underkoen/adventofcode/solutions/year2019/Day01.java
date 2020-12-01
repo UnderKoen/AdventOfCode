@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.List;
 
@@ -13,8 +14,8 @@ public class Day01 extends Solution {
     @Getter private final int day = 1;
     @Getter private final int year = 2019;
 
-    public static int calculate(int i) {
-        int fuel = Math.max(i / 3 - 2, 0);
+    public static long calculate(long i) {
+        long fuel = Math.max(i / 3 - 2, 0);
         return fuel + (fuel > 0 ? calculate(fuel) : 0);
     }
 
@@ -25,14 +26,14 @@ public class Day01 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        a = input.stream()
-                .mapToInt(Integer::parseInt)
-                .map(i -> i / 3 - 2)
+        a = InputUtils.asNumberList(input)
+                .stream()
+                .mapToLong(i -> i / 3 - 2)
                 .sum();
 
-        b = input.stream()
-                .mapToInt(Integer::parseInt)
-                .map(Day01::calculate)
+        b = InputUtils.asNumberList(input)
+                .stream()
+                .mapToLong(Day01::calculate)
                 .sum();
     }
 }

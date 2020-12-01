@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.solutions.year2018;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,21 +19,12 @@ public class Day01 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        a = input.stream()
-                .mapToInt(v -> {
-                    int i = Integer.parseInt(v.substring(1));
-                    return v.charAt(0) == '+' ? i : -i;
-                }).sum();
+        List<Long> numbers = InputUtils.asNumberList(input);
+        numbers.forEach(n -> a += n);
 
-        int freq = 0;
+        int freq = 0, i = 0;
         Set<Integer> seen = new HashSet<>();
-        int i = 0;
-        while (seen.add(freq)) {
-            String v = input.get(i++);
-            if (i >= input.size()) i = 0;
-            int j = Integer.parseInt(v.substring(1));
-            freq += v.charAt(0) == '+' ? j : -j;
-        }
+        while (seen.add(freq)) freq += numbers.get(i++ % numbers.size());
 
         b = freq;
     }

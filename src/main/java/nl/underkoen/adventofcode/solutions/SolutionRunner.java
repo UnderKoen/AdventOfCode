@@ -59,7 +59,6 @@ public class SolutionRunner implements Runnable {
     public void run() {
         SolutionUtils.download = download;
         SolutionUtils.resources = inputs;
-        System.out.println(inputs);
 
         Set<Map.Entry<Integer, List<Solution>>> yearSolutions = SolutionUtils.getAllSolutions(pkg).entrySet();
 
