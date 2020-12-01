@@ -7,6 +7,7 @@ import nl.underkoen.adventofcode.utils.InputUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Day01 extends Solution {
     @Getter private final int day = 1;
@@ -19,7 +20,7 @@ public class Day01 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Long> numbers = InputUtils.asNumberList(input);
+        List<Long> numbers = InputUtils.asNumberList(input).collect(Collectors.toList());
         numbers.forEach(n -> a += n);
 
         int freq = 0, i = 0;

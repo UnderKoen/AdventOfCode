@@ -27,12 +27,10 @@ public class Day01 extends Solution {
     @Override
     protected void run(List<String> input) {
         a = InputUtils.asNumberList(input)
-                .stream()
                 .mapToLong(i -> i / 3 - 2)
                 .sum();
 
         b = InputUtils.asNumberList(input)
-                .stream()
                 .mapToLong(Day01::calculate)
                 .sum();
     }

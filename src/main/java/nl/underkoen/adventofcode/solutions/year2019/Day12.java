@@ -29,8 +29,8 @@ public class Day12 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        Map<Long[], int[]> planets = InputUtils.asAllNumbers(input).stream()
-                .map(l -> l.toArray(new Long[0]))
+        Map<Long[], int[]> planets = InputUtils.asAllNumbers(input)
+                .map(l -> l.toArray(Long[]::new))
                 .collect(Collectors.toMap(n -> n, n -> new int[]{0, 0, 0}));
 
         long[] pos = new long[]{0L, 0L, 0L};

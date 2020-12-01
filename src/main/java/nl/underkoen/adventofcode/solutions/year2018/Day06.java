@@ -22,7 +22,8 @@ public class Day06 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Position> positions = InputUtils.asPositionList(input);
+        List<Position> positions = InputUtils.asPositionList(input)
+                .collect(Collectors.toList());
 
         Position min = Position.min(positions);
         Position max = Position.max(positions);

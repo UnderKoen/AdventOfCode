@@ -7,8 +7,7 @@ import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Day07 extends Solution {
     @Getter private final int day = 7;
@@ -25,15 +24,17 @@ public class Day07 extends Solution {
         Map<String, List<String>> needsCopy = new HashMap<>();
         Set<String> all = new HashSet<>();
 
-        InputUtils.asRegexGroupList(input, "Step (.) must be finished before step (.) can begin\\.").forEach(steps -> {
-            String needs = steps.get(0);
-            String to = steps.get(1);
+        InputUtils.asRegexGroupList(input, "Step (.) must be finished before step (.) can begin\\.")
+                .map(s -> s.collect(Collectors.toList()))
+                .forEach(steps -> {
+                    String needs = steps.get(0);
+                    String to = steps.get(1);
 
-            MapUtils.Add(needsMap, to, needs);
-            MapUtils.Add(needsCopy, to, needs);
-            all.add(needs);
-            all.add(to);
-        });
+                    MapUtils.Add(needsMap, to, needs);
+                    MapUtils.Add(needsCopy, to, needs);
+                    all.add(needs);
+                    all.add(to);
+                });
 
 
         List<String> order = new ArrayList<>();

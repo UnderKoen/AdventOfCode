@@ -6,6 +6,7 @@ import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Day03 extends Solution {
     @Getter private final int day = 3;
@@ -21,28 +22,30 @@ public class Day03 extends Solution {
         Map<Position, Integer> seen = new HashMap<>();
         Set<Long> ids = new HashSet<>();
         Map<Position, Long> seenIds = new HashMap<>();
-        
-        InputUtils.asAllNumbers(input).forEach(nums -> {
-            long id = nums.get(0);
-            long left = nums.get(1);
-            long top = nums.get(2);
-            long width = nums.get(3);
-            long height = nums.get(4);
 
-            ids.add(id);
-            Position.rectangle(new Position(left, top), width, height) .forEach(position -> {
-                if (seen.containsKey(position)) {
-                    int amount = seen.get(position);
-                    seen.replace(position, amount + 1);
-                    ids.remove(id);
-                    ids.remove(seenIds.get(position));
-                    if (amount == 0) a++;
-                } else {
-                    seen.put(position, 0);
-                    seenIds.put(position, id);
-                }
-            });
-        });
+        InputUtils.asAllNumbers(input)
+                .map(s -> s.collect(Collectors.toList()))
+                .forEach(nums -> {
+                    long id = nums.get(0);
+                    long left = nums.get(1);
+                    long top = nums.get(2);
+                    long width = nums.get(3);
+                    long height = nums.get(4);
+
+                    ids.add(id);
+                    Position.rectangle(new Position(left, top), width, height).forEach(position -> {
+                        if (seen.containsKey(position)) {
+                            int amount = seen.get(position);
+                            seen.replace(position, amount + 1);
+                            ids.remove(id);
+                            ids.remove(seenIds.get(position));
+                            if (amount == 0) a++;
+                        } else {
+                            seen.put(position, 0);
+                            seenIds.put(position, id);
+                        }
+                    });
+                });
 
         b = ids.stream().findAny().orElseThrow();
     }

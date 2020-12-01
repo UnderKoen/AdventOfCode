@@ -35,24 +35,26 @@ public abstract class Solution implements SolutionInfo {
         return Arrays.stream(getCorrectOutput()).mapToObj(Long::toString).toArray(String[]::new);
     }
 
-    private void output() {
+    public void output() {
         System.out.printf("%nResult day%sa:%n%s%n%nResult day%sb:%n%s%n%n", getDay(), getA(), getDay(), getB());
     }
 
-    public void execute() {
-        execute(true);
+    private List<String> input;
+
+    public void loadInput() {
+        input = SolutionUtils.getInput(getYear(), getDay());
     }
 
-    public void execute(boolean output) {
-        run(SolutionUtils.getInput(getYear(), getDay()));
-        if (output) output();
+    public void execute() {
+        run(input);
     }
 
     public void test() {
         String[] correct = getCorrectOutputText();
         if (correct.length == 0) return;
         if (!getA().equals(correct[0])) throw new IllegalArgumentException("Result A is incorrect");
-        if (correct.length >= 2 && !getB().equals(correct[1])) throw new IllegalArgumentException("Result B is incorrect");
+        if (correct.length >= 2 && !getB().equals(correct[1]))
+            throw new IllegalArgumentException("Result B is incorrect");
     }
 
     public String getA() {

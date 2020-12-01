@@ -4,7 +4,10 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Day01 extends Solution {
     @Getter private final int day = 1;
@@ -17,23 +20,23 @@ public class Day01 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Long> nums = InputUtils.asNumberList(input);
+        Set<Long> nums = InputUtils.asNumberList(input)
+                .sorted(Long::compareTo)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        for (int i = 0; i < nums.size(); i++) {
-            long num1 = nums.get(i);
-            for (int j = i; j < nums.size(); j++) {
-                long num2 = nums.get(j);
-                if (num1 + num2 == 2020) {
-                    a = num1 * num2;
-                    if (b != 0) return;
-                }
+        for (Long num1 : nums) {
+            long num2 = 2020 - num1;
+            if (a == 0 && nums.contains(num2)) {
+                a = num1 * num2;
+                if (b != 0) return;
+            }
 
-                for (int k = j; k < nums.size(); k++) {
-                    long num3 = nums.get(k);
-                    if (num1 + num2 + num3 == 2020) {
-                        b = num1 * num2 * num3;
-                        if (a != 0) return;
-                    }
+            for (Long num3 : nums) {
+                long num4 = num2 - num3;
+
+                if (b == 0 && nums.contains(num4)) {
+                    b = num1 * num4 * num3;
+                    if (a != 0) return;
                 }
             }
         }

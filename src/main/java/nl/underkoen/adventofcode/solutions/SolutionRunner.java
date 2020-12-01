@@ -106,17 +106,19 @@ public class SolutionRunner implements Runnable {
             }));
         }
 
-        long start = System.currentTimeMillis();
+        solution.loadInput();
+        long start = System.nanoTime();
         try {
-            solution.execute(output);
-            long end = System.currentTimeMillis();
+            solution.execute();
+            long end = System.nanoTime();
+            if (output) solution.output();
             solution.test();
 
             if (submit == null ? solution.isSubmit() : submit) {
                 boolean a = solution.b == 0;
 
 
-                 String value = a ? solution.getA() : solution.getB();
+                String value = a ? solution.getA() : solution.getB();
                 int part = a ? 1 : 2;
 
                 out.printf("Are you sure you want to submit %s as your answer for part %d from day %d, year %d%n", value, part, solution.getDay(), solution.getYear());
@@ -132,13 +134,13 @@ public class SolutionRunner implements Runnable {
                 }
             }
 
-            if (times) out.printf("Day %s succeeded and took %s ms%n", solution.getDay(), end - start);
+            if (times) out.printf("Day %s succeeded and took %s ms%n", solution.getDay(), (end - start) / 1000000.0);
             else out.printf("Day %s succeeded", solution.getDay());
         } catch (Exception e) {
             long end = System.currentTimeMillis();
             if (verbose) e.printStackTrace();
 
-            if (times) System.err.printf("Day %s failed, after %s ms%n", solution.getDay(), end - start);
+            if (times) System.err.printf("Day %s failed, after %s ms%n", solution.getDay(), (end - start) / 1000000.0);
             else System.err.printf("Day %s failed", solution.getDay());
         }
 

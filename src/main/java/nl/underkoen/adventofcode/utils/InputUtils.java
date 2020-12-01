@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 import nl.underkoen.adventofcode.general.Position;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.regex.Matcher;
@@ -17,41 +16,37 @@ import java.util.stream.Stream;
 public class InputUtils {
     public final String DEFAULT_SPLIT = "[, ] ?";
 
-    public List<Long> asNumberList(List<String> input) {
+    public Stream<Long> asNumberList(List<String> input) {
         return asNumberList(input, DEFAULT_SPLIT);
     }
 
-    public List<Long> asNumberList(List<String> input, String split) {
+    public Stream<Long> asNumberList(List<String> input, String split) {
         return input.stream()
                 .flatMap(s -> Arrays.stream(s.split(split)))
-                .map(Long::parseLong)
-                .collect(Collectors.toList());
+                .map(Long::parseLong);
     }
 
-    public List<List<Long>> asLineNumberList(List<String> input) {
+    public Stream<Stream<Long>> asLineNumberList(List<String> input) {
         return asLineNumberList(input, DEFAULT_SPLIT);
     }
 
-    public List<List<Long>> asLineNumberList(List<String> input, String split) {
+    public Stream<Stream<Long>> asLineNumberList(List<String> input, String split) {
         return input.stream()
                 .map(s -> Arrays.stream(s.split(split)))
-                .map(s -> s.map(Long::parseLong))
-                .map(s -> s.collect(Collectors.toList()))
-                .collect(Collectors.toList());
+                .map(s -> s.map(Long::parseLong));
     }
 
-    public List<Position> asPositionList(List<String> input) {
+    public Stream<Position> asPositionList(List<String> input) {
         return asPositionList(input, DEFAULT_SPLIT);
 
     }
 
-    public List<Position> asPositionList(List<String> input, String split) {
+    public Stream<Position> asPositionList(List<String> input, String split) {
         return input.stream()
                 .map(s -> Arrays.stream(s.split(split)))
                 .map(s -> s.map(Long::parseLong))
                 .map(s -> s.collect(Collectors.toList()))
-                .map(s -> new Position(s.get(0), s.get(1)))
-                .collect(Collectors.toList());
+                .map(s -> new Position(s.get(0), s.get(1)));
     }
 
     public <T> Stream<T> mapChar(List<String> input, BiFunction<Character, Position, T> map) {
@@ -66,7 +61,7 @@ public class InputUtils {
                 });
     }
 
-    public List<List<String>> asRegexGroupList(List<String> input, String regex) {
+    public Stream<Stream<String>> asRegexGroupList(List<String> input, String regex) {
         Pattern pattern = Pattern.compile(regex);
 
         return input.stream()
@@ -74,16 +69,11 @@ public class InputUtils {
                 .map(Matcher::results)
                 .map(s -> s.flatMap(r -> IntStream
                         .range(0, r.groupCount())
-                        .mapToObj(i -> r.group(i + 1))))
-                .map(s -> s.collect(Collectors.toList()))
-                .collect(Collectors.toList());
+                        .mapToObj(i -> r.group(i + 1))));
     }
 
-    public List<List<Long>> asAllNumbers(List<String> input) {
-        return asRegexGroupList(input, "(-?\\d+)").stream()
-                .map(Collection::stream)
-                .map(s -> s.map(Long::parseLong))
-                .map(s -> s.collect(Collectors.toList()))
-                .collect(Collectors.toList());
+    public Stream<Stream<Long>> asAllNumbers(List<String> input) {
+        return asRegexGroupList(input, "(-?\\d+)")
+                .map(s -> s.map(Long::parseLong));
     }
 }
