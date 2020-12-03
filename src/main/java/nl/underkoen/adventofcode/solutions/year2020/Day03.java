@@ -1,13 +1,10 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Day03 extends Solution {
     @Getter private final int day = 3;
@@ -20,25 +17,20 @@ public class Day03 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Position> trees = InputUtils.mapChar(input, (c, p) -> c == '#' ? p : null)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        char[][] trees = InputUtils.as2dArray(input);
 
-        int max = input.size();
-
-        a = check(trees, 3, 1, max);
-        b = check(trees, 1, 1, max) * a * check(trees, 5, 1, max) * check(trees, 7, 1, max) * check(trees, 1, 2, max);
+        a = check(trees, 3, 1);
+        b = check(trees, 1, 1) * a * check(trees, 5, 1) * check(trees, 7, 1) * check(trees, 1, 2);
     }
 
-    public long check(List<Position> trees, int dx, int dy, int max) {
+    public long check(char[][] trees, int dx, int dy) {
         long count = 0;
 
-        Position pos = new Position();
-        for (int i = 0; i < max; i += dy) {
-            if (trees.contains(pos)) count++;
-            pos.add(dx, dy).setX(pos.getX() % 31);
+        int len = trees[0].length;
+        for (int y = 0, x = 0; y < trees.length; y += dy, x += dx) {
+            if (trees[y][x % len] == '#') count++;
         }
-
+    
         return count;
     }
 }

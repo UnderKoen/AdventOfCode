@@ -61,6 +61,12 @@ public class InputUtils {
                 });
     }
 
+    public char[][] as2dArray (List<String> input) {
+        return input.stream()
+                .map(String::toCharArray)
+                .toArray(char[][]::new);
+    }
+
     public Stream<Stream<String>> asRegexGroupList(List<String> input, String regex) {
         Pattern pattern = Pattern.compile(regex);
 
