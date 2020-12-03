@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -66,6 +67,10 @@ public class Position {
 
     public Position set(Position position) {
         return set(position.getX(), position.getY());
+    }
+
+    public Position compute(LongFunction<Long> computeX, LongFunction<Long> computeY) {
+        return set(computeX.apply(x), computeY.apply(y));
     }
 
     public Position add(long x, long y) {
