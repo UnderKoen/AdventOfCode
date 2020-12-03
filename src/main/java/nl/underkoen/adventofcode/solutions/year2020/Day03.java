@@ -17,18 +17,16 @@ public class Day03 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        char[][] trees = InputUtils.as2dArray(input);
-
-        a = check(trees, 3, 1);
-        b = check(trees, 1, 1) * a * check(trees, 5, 1) * check(trees, 7, 1) * check(trees, 1, 2);
+        a = check(input, 3, 1);
+        b = check(input, 1, 1) * a * check(input, 5, 1) * check(input, 7, 1) * check(input, 1, 2);
     }
 
-    public long check(char[][] trees, int dx, int dy) {
+    public long check(List<String> trees, int dx, int dy) {
         long count = 0;
 
-        int len = trees[0].length;
-        for (int y = 0, x = 0; y < trees.length; y += dy, x += dx) {
-            if (trees[y][x % len] == '#') count++;
+        int len = trees.get(0).length();
+        for (int y = 0, x = 0; y < trees.size(); y += dy, x += dx) {
+            if (trees.get(y).charAt(x % len) == '#') count++;
         }
     
         return count;

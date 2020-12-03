@@ -137,7 +137,7 @@ public class SolutionRunner implements Runnable {
             if (times) out.printf("Day %s succeeded and took %s ms%n", solution.getDay(), (end - start) / 1000000.0);
             else out.printf("Day %s succeeded", solution.getDay());
         } catch (Exception e) {
-            long end = System.currentTimeMillis();
+            long end = System.nanoTime();
             if (verbose) e.printStackTrace();
 
             if (times) System.err.printf("Day %s failed, after %s ms%n", solution.getDay(), (end - start) / 1000000.0);
