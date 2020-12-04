@@ -21,48 +21,12 @@ public class Day04 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        StringBuilder s2 = new StringBuilder();
-        for (String line : input) {
-            if (line.isBlank()) {
-                check(s2.toString());
-                s2.setLength(0);
-            } else {
-                s2.append(line).append(" ");
-            }
-        }
-    }
+        String s = String.join("\n", input);
 
-    public static Set<String> validEyeColors = Set.of("amb", "blu", "brn", "grn", "gry", "hzl", "oth");
+        Pattern part1 = Pattern.compile("((byr|iyr|eyr|hgt|hcl|ecl|pid|cid):([^\\n ]+)( |\\n|$)){8}|((byr|iyr|eyr|hgt|hcl|ecl|pid):([^\\n ]+)( |\\n|$)){7}");
+        Pattern part2 = Pattern.compile("(((byr:(19[2-9]\\d|200[01]))|(iyr:(201\\d|2020))|(eyr:(202\\d|2030))|(hgt:(((59|6\\d|7[0-6])in)|(1([5-8]\\d|9[0-3])cm)))|(hcl:#[0-9a-f]{6})|(ecl:(amb|blu|brn|gry|grn|hzl|oth))|(pid:(\\d{9}))|(cid:([^ \\n]*)))( |\\n|$)){8}|(((byr:(19[2-9]\\d|200[01]))|(iyr:(201\\d|2020))|(eyr:(202\\d|2030))|(hgt:(((59|6\\d|7[0-6])in)|(1([5-8]\\d|9[0-3])cm)))|(hcl:#[0-9a-f]{6})|(ecl:(amb|blu|brn|gry|grn|hzl|oth))|(pid:(\\d{9})))( |\\n|$)){7}");
 
-    public void check(String line) {
-        line = line.trim();
-        Map<String, String> map = Arrays.stream(line.split(" "))
-                .map(field -> field.split(":"))
-                .collect(Collectors.toMap(part -> part[0], part -> part[1]));
-        map.remove("cid");
-
-        if (map.size() == 7) {
-            a++;
-
-            if (checkRange(map.get("byr"), 1920, 2002)) return;
-            if (checkRange(map.get("iyr"), 2010, 2020)) return;
-            if (checkRange(map.get("eyr"), 2020, 2030)) return;
-            if (checkRegex(map.get("hgt"), "^((59|6\\d|7[0-6])in)|(1([5-8]\\d|9[0-3])cm)$")) return;
-            if (checkRegex(map.get("hcl"), "^#[0-9a-f]{6}$")) return;
-            if (!validEyeColors.contains(map.get("ecl"))) return;
-            if (checkRegex(map.get("pid"), "^\\d{9}$")) return;
-
-            b++;
-        }
-    }
-
-    public boolean checkRange(String value, int lower, int higher) {
-        int v = Integer.parseInt(value);
-        return v < lower || v > higher;
-    }
-
-    public boolean checkRegex(String value, String regex) {
-        Pattern pattern = Pattern.compile(regex);
-        return !pattern.matcher(value).find();
+        a = part1.matcher(s).results().count();
+        b = part2.matcher(s).results().count();
     }
 }
