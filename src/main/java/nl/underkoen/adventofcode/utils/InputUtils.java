@@ -1,11 +1,15 @@
 package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
+import nl.underkoen.adventofcode.general.IntHolder;
 import nl.underkoen.adventofcode.general.Position;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -81,5 +85,18 @@ public class InputUtils {
     public Stream<Stream<Long>> asAllNumbers(List<String> input) {
         return asRegexGroupList(input, "(-?\\d+)")
                 .map(s -> s.map(Long::parseLong));
+    }
+
+    public List<List<String>> asSubInputs(List<String> input){
+        IntHolder i = new IntHolder(0);
+        return input.stream().collect((Supplier<ArrayList<List<String>>>) ArrayList::new, (l, s) -> {
+            if (s.isBlank()) {
+                l.add(new ArrayList<>());
+                i.addValue(1);
+            } else {
+                if (l.isEmpty()) l.add(new ArrayList<>());
+                l.get(i.getValue()).add(s);
+            }
+        }, (l1, l2) -> {});
     }
 }
