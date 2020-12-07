@@ -24,9 +24,9 @@ public class InputUtils {
         return asNumberList(input, DEFAULT_SPLIT);
     }
 
-    public Stream<Long> asNumberList(List<String> input, String split) {
+    public Stream<Long> asNumberList(List<String> input, String regex) {
         return input.stream()
-                .flatMap(s -> Arrays.stream(s.split(split)))
+                .flatMap(s -> Arrays.stream(s.split(regex)))
                 .map(Long::parseLong);
     }
 
@@ -34,10 +34,20 @@ public class InputUtils {
         return asLineNumberList(input, DEFAULT_SPLIT);
     }
 
-    public Stream<Stream<Long>> asLineNumberList(List<String> input, String split) {
+    public Stream<Stream<Long>> asLineNumberList(List<String> input, String regex) {
         return input.stream()
-                .map(s -> Arrays.stream(s.split(split)))
+                .map(s -> Arrays.stream(s.split(regex)))
                 .map(s -> s.map(Long::parseLong));
+    }
+
+    public Stream<Stream<String>> asSplitLine(List<String> input, String regex) {
+        return input.stream()
+                .map(s -> Arrays.stream(s.split(regex)));
+    }
+
+    public Stream<String> asSplit(List<String> input, String regex) {
+        return input.stream()
+                .flatMap(s -> Arrays.stream(s.split(regex)));
     }
 
     public Stream<Position> asPositionList(List<String> input) {
@@ -45,9 +55,9 @@ public class InputUtils {
 
     }
 
-    public Stream<Position> asPositionList(List<String> input, String split) {
+    public Stream<Position> asPositionList(List<String> input, String regex) {
         return input.stream()
-                .map(s -> Arrays.stream(s.split(split)))
+                .map(s -> Arrays.stream(s.split(regex)))
                 .map(s -> s.map(Long::parseLong))
                 .map(s -> s.collect(Collectors.toList()))
                 .map(s -> new Position(s.get(0), s.get(1)));

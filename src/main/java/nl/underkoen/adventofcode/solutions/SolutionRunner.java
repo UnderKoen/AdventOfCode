@@ -134,14 +134,14 @@ public class SolutionRunner implements Runnable {
                 }
             }
 
-            if (times) out.printf("Day %s succeeded and took %s ms%n", solution.getDay(), (end - start) / 1000000.0);
-            else out.printf("Day %s succeeded", solution.getDay());
+            if (times) out.printf("Day %02d succeeded and took %s ms%n", solution.getDay(), (end - start) / 1000000.0);
+            else out.printf("Day %02d succeeded", solution.getDay());
         } catch (Exception e) {
             long end = System.nanoTime();
             if (verbose) e.printStackTrace();
 
-            if (times) System.err.printf("Day %s failed, after %s ms%n", solution.getDay(), (end - start) / 1000000.0);
-            else System.err.printf("Day %s failed", solution.getDay());
+            if (times) System.err.printf("Day %02d failed, after %s ms%n", solution.getDay(), (end - start) / 1000000.0);
+            else System.err.printf("Day %02d failed", solution.getDay());
         }
 
         System.setOut(out);

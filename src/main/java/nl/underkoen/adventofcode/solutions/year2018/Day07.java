@@ -30,8 +30,8 @@ public class Day07 extends Solution {
                     String needs = steps.get(0);
                     String to = steps.get(1);
 
-                    MapUtils.Add(needsMap, to, needs);
-                    MapUtils.Add(needsCopy, to, needs);
+                    MapUtils.add(needsMap, to, needs);
+                    MapUtils.add(needsCopy, to, needs);
                     all.add(needs);
                     all.add(to);
                 });

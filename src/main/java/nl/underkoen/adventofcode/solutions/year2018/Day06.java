@@ -40,7 +40,7 @@ public class Day06 extends Solution {
         });
 
         Map<Position, Integer> matches = new HashMap<>();
-        closest.forEach((p, point) -> MapUtils.IncreaseInt(matches, point));
+        closest.forEach((p, point) -> MapUtils.increaseInt(matches, point));
 
         Position.between(min, max).stream()
                 .filter(p -> p.getX() == min.getX() || p.getX() == max.getX() || p.getY() == min.getY() || p.getY() == max.getY())
