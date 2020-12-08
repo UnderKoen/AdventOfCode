@@ -4,11 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Value;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Day07 extends Solution {
     @Getter private final int day = 7;
@@ -39,8 +37,7 @@ public class Day07 extends Solution {
     Set<String> doesContain(Map<Bag, List<String>> map, String which, Set<String> start) {
         Bag toCheck = new Bag(which, 1);
         for (String s : map.getOrDefault(toCheck, new ArrayList<>())) {
-            start.add(s);
-            doesContain(map, s, start);
+            if (start.add(s)) doesContain(map, s, start);
         }
         return start;
     }
