@@ -1,70 +1,91 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Day08 extends Solution {
     @Getter private final int day = 8;
     @Getter private final int year = 2020;
 
+    private final Map<String, Operation> operations = Map.of(
+            "jmp", (context, par) -> context.setPos(context.pos + par - 1),
+            "acc", (context, par) -> context.setAcc(context.acc + par),
+            "nop", (context, par) -> { }
+    );
+
     @Override
     public long[] getCorrectOutput() {
-        return new long[]{};
+        return new long[]{1584, 920};
     }
-
-//    @Override
-//    public String[] getCorrectOutputText() {
-//        return new String[]{};
-//    }
 
     @Override
     protected void run(List<String> input) {
-        a = test(input);
+        a = run(input, operations, null).acc;
 
-        for (int i = 0; i < input.size(); i++) {
-            List<String> l = new ArrayList<>(input);
-            String s = l.get(i);
-            if (l.get(i).contains("nop")) s = l.get(i).replace("nop", "jmp");
-            if (l.get(i).contains("jmp")) s = l.get(i).replace("jmp", "nop");
-            l.set(i, s);
-            b = test(l);
-            if (!normal) return;
-        }
+        Operation jmp = operations.get("jmp");
+        Operation nop = operations.get("nop");
+
+        Map<String, Operation> operations = new HashMap<>(this.operations);
+        operations.put("jmp", swap(input, jmp, nop));
+        operations.put("nop", swap(input, nop, jmp));
+
+        b = run(input, operations, null).acc;
     }
 
-    public static boolean normal = false;
+    public Operation swap(List<String> input, Operation org, Operation oth) {
+        return (context, parameter) -> {
+            Context clone = new Context(context);
+            org.execute(context, parameter);
+            oth.execute(clone, parameter);
 
-    public int test(List<String> input) {
-        normal = false;
-        Set<Integer> done = new HashSet<>();
-
-        int j = 0;
-        for (int i = 0; i < input.size(); i++) {
-
-            String s = input.get(i);
-            if (!done.add(i)) {
-                normal = true;
-                break;
-            };
-            int z = Integer.parseInt(s.split(" ")[1]);
-            switch (s.split(" ")[0]) {
-                case "acc":
-                    j += z;
-                    break;
-                case "jmp":
-                    i += z - 1;
-                    break;
-                case "nop":
-                    break;
+            run(input, this.operations, clone);
+            if (!clone.loop) {
+                context.acc = clone.acc;
+                context.loop = true;
             }
-            i %= input.size();
+        };
+    }
+
+    public Context run(List<String> input, Map<String, Operation> operations, Context context) {
+        if (context == null) context = new Context(0, 0, false, new HashSet<>());
+        while (context.pos < input.size() && !context.loop && !context.check()) {
+            String line = input.get(context.pos);
+            String[] parts = line.split(" ");
+
+            context.pos++;
+            int par = Integer.parseInt(parts[1]);
+            operations.get(parts[0]).execute(context, par);
         }
 
-        return j;
+        return context;
+    }
+
+    public interface Operation {
+        void execute(Context context, int parameter);
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class Context {
+        private int pos;
+        private int acc;
+        private boolean loop;
+        Set<Integer> done;
+
+        public Context(Context context) {
+            this.pos = context.pos;
+            this.acc = context.acc;
+            this.loop = context.loop;
+            this.done = new HashSet<>(context.done);
+        }
+
+        public boolean check() {
+            loop = !done.add(pos);
+            return loop;
+        }
     }
 }
