@@ -4,10 +4,9 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Day09 extends Solution {
     @Getter private final int day = 9;
@@ -26,26 +25,21 @@ public class Day09 extends Solution {
             long num = numbers.get(i);
             List<Long> sub = numbers.subList(Math.max(i - 25, 0), i);
 
-            boolean valid = sub.stream().anyMatch(z -> sub.contains(num - z));
+            boolean valid = sub.stream().anyMatch(j -> sub.contains(num - j));
             if (!valid) {
                 a = num;
-                break;
-            }
-        }
 
-        for (int i = 0; i < numbers.size(); i++) {
-            int z = 0;
-            for (int i1 = i; i1 < numbers.size(); i1++) {
-                z += numbers.get(i1);
-
-                List<Long> longs = numbers.subList(i, i1 + 1);
-                if (z == a) {
-                    System.out.println(i);
-                    System.out.println(i1);
-                    b = longs.stream().mapToLong(v -> v).min().getAsLong() + longs.stream().mapToLong(v -> v).max().getAsLong();
-                    return;
+                for (int upper = i - 1; upper > 0; upper--) {
+                    long sum = 0;
+                    for (int lower = upper; lower > 0; lower--) {
+                        sum += numbers.get(lower);
+                        if (sum == a) {
+                            List<Long> longs = numbers.subList(lower, upper + 1);
+                            b = Collections.min(longs) + Collections.max(longs);
+                            return;
+                        } else if (sum > a) break;
+                    }
                 }
-                else if (z > a) break;
             }
         }
     }
