@@ -5,10 +5,10 @@ import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Day10 extends Solution {
@@ -22,52 +22,41 @@ public class Day10 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Long> nums = InputUtils.asNumberList(input).sorted(Long::compareTo).collect(Collectors.toList());
-        List<Long> thingies = thing(0, nums, new ArrayList<>());
-        long q = thingies.stream().filter(l -> l == 1).count();
-        long e = thingies.stream().filter(l -> l == 3).count() + 1;
-        a = q * e;
-
+        Set<Long> nums = InputUtils.asNumberList(input).collect(Collectors.toSet());
         Map<Long, List<Long>> amount = new HashMap<>();
+
         for (Long num : nums) {
-            for (Long c : nums) {
-                if (num > c && num <= c + 3) MapUtils.add(amount, c, num);
+            for (long option = num + 1; option <= num + 3; option++) {
+                if (nums.contains(option)) MapUtils.add(amount, num, option);
             }
             if (num > 0 && num <= 3) MapUtils.add(amount, 0L, num);
         }
 
+        long count1 = 0, count3 = 1;
+
+        for (Map.Entry<Long, List<Long>> entry : amount.entrySet()) {
+            long diff = entry.getValue().get(0) - entry.getKey();
+            if (diff == 1) count1++;
+            else if (diff == 3) count3++;
+        }
+
+        a = count1 * count3;
         b = count(amount, 0);
     }
 
-    Map<Long, Long> cache = new HashMap<>();
+    private final Map<Long, Long> cache = new HashMap<>();
 
     public long count(Map<Long, List<Long>> all, long current) {
-        if (cache.containsKey(current)) return cache.get(current);
         if (!all.containsKey(current)) return 1L;
-        long a = all.get(current).size();
+        if (cache.containsKey(current)) return cache.get(current);
+        long options = 0;
 
-        for (Long aLong : all.get(current)) {
-            long j = count(all, aLong);
-            cache.put(aLong, j);
-            a += j - 1;
+        for (Long num : all.get(current)) {
+            long j = count(all, num);
+            cache.put(num, j);
+            options += j;
         }
 
-        return a;
-    }
-
-    public List<Long> thing(long current, List<Long> todo, List<Long> done) {
-        if (todo.stream().anyMatch(l -> l < current)) return null;
-        if (todo.isEmpty()) return done;
-        for (Long num : todo) {
-            if (num > current && num <= current + 3) {
-                List<Long> longs = new ArrayList<>(done);
-                longs.add(num - current);
-                List<Long> lsit = new ArrayList<>(todo);
-                lsit.remove(num);
-                longs = thing(num, lsit, longs);
-                if (longs != null) return longs;
-            }
-        }
-        return null;
+        return options;
     }
 }

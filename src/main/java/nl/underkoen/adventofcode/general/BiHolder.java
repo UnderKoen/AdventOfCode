@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.general;
 import lombok.*;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 
@@ -53,5 +54,9 @@ public class BiHolder<T, U> implements Map.Entry<T, U> {
 
     public <K, V> BiHolder<K, V> map(Function<T, K> keyMap, Function<U, V> valueMap) {
         return new BiHolder<>(keyMap.apply(key), valueMap.apply(value));
+    }
+
+    public <V> V reduce(BiFunction<T, U, V> reduce) {
+        return reduce.apply(key, value);
     }
 }
