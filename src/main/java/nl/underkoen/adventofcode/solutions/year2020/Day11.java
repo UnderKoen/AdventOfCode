@@ -22,11 +22,7 @@ public class Day11 extends Solution {
         return new long[]{2261, 2039};
     }
 
-    public static List<Position> directions = List.of(
-            new Position(-1, -1), new Position(0, -1), new Position(1, -1),
-            new Position(-1, 0), new Position(1, 0),
-            new Position(-1, 1), new Position(0, 1), new Position(1, 1)
-    );
+    public static List<Position> directions = List.of(new Position(1, 0), new Position(-1, 1), new Position(0, 1), new Position(1, 1));
 
     @Override
     protected void run(List<String> input) {
@@ -37,20 +33,26 @@ public class Day11 extends Solution {
         Map<Position, List<Position>> neighbours = new HashMap<>();
         Map<Position, List<Position>> neighboursB = new HashMap<>();
 
+        int yMax = input.size();
+        int xMax = input.get(0).length();
+
         for (Position place : places.keySet()) {
             for (Position direction : directions) {
                 Position check = place.copyAdd(direction);
-                if (!check.inside(0, 100, 0, 100)) continue;
+                if (!check.inside(0, xMax, 0, yMax)) continue;
 
                 if (places.containsKey(check)) {
                     MapUtils.add(neighbours, place, check);
+                    MapUtils.add(neighbours, check, place);
                     MapUtils.add(neighboursB, place, check);
+                    MapUtils.add(neighboursB, check, place);
                 } else do {
                     if (!places.containsKey(check.add(direction))) continue;
 
                     MapUtils.add(neighboursB, place, check);
+                    MapUtils.add(neighboursB, check, place);
                     break;
-                } while (check.inside(0, 100, 0, 100));
+                } while (check.inside(0, xMax, 0, yMax));
             }
         }
 
