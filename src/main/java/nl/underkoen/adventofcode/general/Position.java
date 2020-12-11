@@ -123,6 +123,16 @@ public class Position {
         return new long[]{x, y};
     }
 
+    public boolean inside(Position p1, Position p2) {
+        Position min = p1.min(p2);
+        Position max = p1.max(p2);
+        return inside(min.getX(), min.getY(), max.getX(), max.getY());
+    }
+
+    public boolean inside(long xMin, long xMax, long yMin, long yMax) {
+        return getX() >= xMin && getX() < xMax && getY() >= yMin && getY() < yMax;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
