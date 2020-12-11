@@ -4,6 +4,7 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.general.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
+import nl.underkoen.adventofcode.utils.MapUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,74 +20,64 @@ public class Day11 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        Map<Position, Boolean> original = InputUtils.mapChar(input, (c, p) -> {
-            if (c == 'L') return p;
-            return null;
-        })
+        Map<Position, Boolean> places = InputUtils.mapChar(input, (c, p) -> c == 'L' ? p : null)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(p -> p, p -> false));
 
-        Map<Position, Boolean> places = new HashMap<>(original);
+        Map<Position, List<Position>> neighbours = new HashMap<>();
+        Map<Position, List<Position>> neighboursB = new HashMap<>();
 
-        while (true) {
-            List<Position> inverts = new ArrayList<>();
-            for (Position place : places.keySet()) {
-                int count = 0;
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        if (i == 0 && j == 0) continue;
-                        Position check = place.copyAdd(i, j);
+        for (Position place : places.keySet()) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (dx == 0 && dy == 0) continue;
+                    Position check = place.copyAdd(dx, dy);
+                    if (places.containsKey(check)) MapUtils.add(neighbours, place, check);
+
+                    for (int k = 1; k < 100; k++) {
+                        check = place.copyAdd(dx * k, dy * k);
                         if (!places.containsKey(check)) continue;
-                        if (places.get(check)) count++;
+                        MapUtils.add(neighboursB, place, check);
+                        break;
                     }
                 }
-                if (places.get(place)) {
-                    if (count >= 4) inverts.add(place);
-                } else {
-                    if (count == 0) inverts.add(place);
-                }
-            }
-
-            if (inverts.isEmpty()) break;
-
-            for (Position invert : inverts) {
-                places.put(invert, !places.get(invert));
             }
         }
 
-        a = places.values().stream().filter(b -> b).count();
-        places = original;
+        a = calculate(new HashMap<>(places), neighbours, 4);
+        b = calculate(new HashMap<>(places), neighboursB, 5);
 
+        System.out.println(time / 1000000.0);
+    }
+
+    public static long time = 0;
+
+    public long calculate(Map<Position, Boolean> places, Map<Position, List<Position>> neighbours, int tolerance) {
         while (true) {
-            List<Position> inverts = new ArrayList<>();
+            Map<Position, Long> count = new HashMap<>();
             for (Position place : places.keySet()) {
-                int count = 0;
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        if (i == 0 && j == 0) continue;
-                        for (int k = 1; k < 1000; k++) {
-                            Position check = place.copyAdd(i * k, j * k);
-                            if (!places.containsKey(check)) continue;
-                            if (places.get(check)) count++;
-                            break;
+                if (places.get(place)) neighbours.get(place).forEach(n ->  MapUtils.increaseLong(count, n));
+            }
 
-                        }
-                    }
-                }
-                if (places.get(place)) {
-                    if (count >= 5) inverts.add(place);
-                } else {
-                    if (count == 0) inverts.add(place);
+            boolean changed = false;
+
+            for (Position place : places.keySet()) {
+                long c = count.getOrDefault(place, 0L);
+                boolean b = places.get(place);
+                if (b && c >= tolerance) {
+                    places.put(place, false);
+                    changed = true;
+                } else if (!b && c == 0) {
+                    places.put(place, true);
+                    changed = true;
                 }
             }
 
-            if (inverts.isEmpty()) break;
-
-            for (Position invert : inverts) {
-                places.put(invert, !places.get(invert));
-            }
+            if (!changed) break;
         }
 
-        b = places.values().stream().filter(b -> b).count();
+        return places.values().stream()
+                .filter(b -> b)
+                .count();
     }
 }
