@@ -27,7 +27,7 @@ public class MapUtils {
     }
 
     public <K, V> void add(Map<K, List<V>> map, K key, V value) {
-        map.putIfAbsent(key, new ArrayList<>());
+        map.computeIfAbsent(key, k -> new ArrayList<>());
         map.get(key).add(value);
     }
 
