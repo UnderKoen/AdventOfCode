@@ -1,12 +1,12 @@
 package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
+import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.general.IntHolder;
 import nl.underkoen.adventofcode.general.Position;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -107,6 +107,15 @@ public class InputUtils {
                 if (l.isEmpty()) l.add(new ArrayList<>());
                 l.get(i.getValue()).add(s);
             }
-        }, (l1, l2) -> {});
+        }, (l1, l2) -> {
+        });
+    }
+
+    public <T> Stream<BiHolder<Integer, T>> asIndexedStream(List<T> input) {
+        Stream.Builder<BiHolder<Integer, T>> builder = Stream.builder();
+        for (int i = 0; i < input.size(); i++) {
+            builder.accept(new BiHolder<>(i, input.get(i)));
+        }
+        return builder.build();
     }
 }
