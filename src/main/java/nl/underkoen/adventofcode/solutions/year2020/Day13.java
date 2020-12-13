@@ -1,14 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.NumberUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class Day13 extends Solution {
@@ -25,22 +20,30 @@ public class Day13 extends Solution {
         long initial = Long.parseLong(input.get(0));
         String[] parts = input.get(1).split(",");
 
-        List<Long> nums = new ArrayList<>();
-        List<Long> mods = new ArrayList<>();
+        long min = -1;
+        long product = 1;
+        long[] ids = new long[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            String s = parts[i];
+            if (s.equals("x")) continue;
+            long id = Long.parseLong(s);
+            product *= id;
+            ids[i] = id;
+            long diff = id - (initial % id);
+            if (min == -1 || diff < min) {
+                min = diff;
+                a = id;
+            }
+        }
 
-        a = InputUtils.asIndexedStream(Arrays.asList(parts))
-                .filter(h -> !h.getValue().equals("x"))
-                .map(BiHolder.keepKey(h -> Long.parseLong(h.getValue())))
-                .map(BiHolder.keepValue(h -> h.getValue() - h.getKey()))
-                .peek(h -> {
-                    nums.add(h.getValue());
-                    mods.add(h.getKey());
-                })
-                .map(BiHolder.keepValue(h -> h.getValue() - (initial % h.getValue())))
-                .min(Comparator.comparingLong(BiHolder::getKey))
-                .orElseThrow()
-                .reduce((id, diff) -> id * diff);
+        a *= min;
 
-        b = NumberUtils.chineseRemainder(nums, mods);
+        long p, sm = 0;
+        for (int i = 0; i < ids.length; i++) {
+            if (ids[i] == 0) continue;
+            p = product / ids[i];
+            sm += (ids[i] - i) * NumberUtils.mulInv(p, ids[i]) * p;
+        }
+        b = sm % product;
     }
 }
