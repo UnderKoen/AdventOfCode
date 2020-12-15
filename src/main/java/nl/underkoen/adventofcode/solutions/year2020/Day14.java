@@ -13,13 +13,8 @@ public class Day14 extends Solution {
 
     @Override
     public long[] getCorrectOutput() {
-        return new long[]{};
+        return new long[]{12408060320841L, 4466434626828L};
     }
-
-//    @Override
-//    public String[] getCorrectOutputText() {
-//        return new String[]{};
-//    }
 
     @Override
     protected void run(List<String> input) {
@@ -33,7 +28,6 @@ public class Day14 extends Solution {
             } else {
                 s = s.replace("mem[", "");
                 String[] split = s.split("] = ");
-//                long i1 = calc(Long.parseLong(split[0]), mask);
                 long i2 = calc(Long.parseLong(split[1]), mask);
 
                 char[] addr = new char[36];
