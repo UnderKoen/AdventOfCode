@@ -20,20 +20,23 @@ public class Day15 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Long> longs = InputUtils.asNumberList(input).collect(Collectors.toList());
-        Map<Long, Long> test = new HashMap<>();
-        long last = 0;
-        long last2 = 0;
-        for (long i = 0; i < 30000000; i++) {
-            if (longs.size() > i) {
-                last = longs.get((int) i);
-            } else {
-                last = i - test.getOrDefault(last, i - 1) - 1;
-            }
-            test.put(last2, i - 1);
-            last2 = last;
-            if (i == 2019) a = last;
+        List<Long> nums = InputUtils.asNumberList(input).collect(Collectors.toList());
+        Map<Long, Long> done = new HashMap<>();
+
+        long prev = 0;
+        long i = 0;
+        for (Long num : nums) {
+            done.put(num, ++i);
+            prev = num;
         }
-        b = last;
+
+        while (i < 30000000) {
+            long diff = i - done.getOrDefault(prev, i);
+            done.put(prev, i++);
+            prev = diff;
+            if (i == 2020) a = prev;
+        }
+
+        b = prev;
     }
 }
