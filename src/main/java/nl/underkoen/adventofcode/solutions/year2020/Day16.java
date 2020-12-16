@@ -1,13 +1,16 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import lombok.Value;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Day16 extends Solution {
     @Getter private final int day = 16;
@@ -18,103 +21,90 @@ public class Day16 extends Solution {
         return new long[]{26053, 1515506256421L};
     }
 
-//    @Override
-//    public String[] getCorrectOutputText() {
-//        return new String[]{};
-//    }
-
     @Override
     protected void run(List<String> input) {
-        List<List<Long>> consctraints = new ArrayList<>();
+        List<List<String>> subInputs = InputUtils.asSubInputs(input);
+        List<Field> fields = subInputs.get(0).stream()
+                .map(Field::parse)
+                .collect(Collectors.toList());
 
-        int start = 0;
-        String your = "";
-        for (int i = 0; i < input.size(); i++) {
-            String s = input.get(i);
-            if (s.contains("or")) {
-                List<Long> c = new ArrayList<>();
-                s = s.split(": ")[1];
-                String[] choices = s.split(" or ");
-                for (String choice : choices) {
-                    String[] limit = choice.split("-");
-                    long lower = Long.parseLong(limit[0]);
-                    long higher = Long.parseLong(limit[1]);
-                    c.add(lower);
-                    c.add(higher);
-                }
-                consctraints.add(c);
-            }
+        List<String> tickets = subInputs.get(2);
+        tickets.remove(0);
 
-            if (s.contains("your ticket")) {
-                your = input.get(i + 1);
-                start = i + 4;
-                break;
-            }
-        }
+        tickets.removeIf(s -> Arrays.stream(s.split(","))
+                .map(Long::parseLong)
+                .filter(i -> fields.stream().noneMatch(c -> c.valid(i)))
+                .peek(i -> a += i)
+                .count() != 0);
 
-        for (int i = start; i < input.size(); i++) {
-            String s = input.get(i);
-            for (String s1 : s.split(",")) {
-                long t = Long.parseLong(s1);
-                boolean valid = false;
-                for (List<Long> c : consctraints) {
-                    if (t >= c.get(0) && t <= c.get(1) || t >= c.get(2) && t <= c.get(3)) {
-                        valid = true;
-                        break;
-                    }
-                }
-                if (!valid) {
-                    input.remove(i--);
-                    a += t;
+        Map<Field, List<Long>> valid = new HashMap<>();
+
+        for (Field field : fields) {
+            Map<Long, Long> amount = new HashMap<>();
+            for (String ticket : tickets) {
+                long i = 0;
+                for (String s : ticket.split(",")) {
+                    long l = Long.parseLong(s);
+                    if (field.valid(l)) MapUtils.increaseLong(amount, i);
+                    i++;
                 }
             }
+            amount.forEach((index, count) -> {
+                if (count == tickets.size()) MapUtils.add(valid, field, index);
+            });
         }
 
-        Map<Integer, List<Integer>> valid = new HashMap<>();
-        for (int i = 0; i < consctraints.size(); i++) {
-            for (int j = 0; j < consctraints.size(); j++) {
-                MapUtils.add(valid, i, j);
-            }
-        }
+        for (int t = 0; t < valid.size(); t++) {
+            for (Field field : fields) {
+                List<Long> possible = valid.get(field);
+                if (possible.size() != 1) continue;
 
-        for (int i = start; i < input.size(); i++) {
-            String s = input.get(i);
-            int z = 0;
-            for (String s1 : s.split(",")) {
-                long t = Long.parseLong(s1);
-                int j = 0;
-                for (List<Long> c : consctraints) {
-                    if (!(t >= c.get(0) && t <= c.get(1) || t >= c.get(2) && t <= c.get(3))) {
-                        int f = j;
-                        valid.get(z).removeIf(p -> p == f);
-                    }
-                    j++;
-                }
-                z++;
-            }
-        }
-
-        boolean changed = true;
-        while (changed) {
-            changed = false;
-            for (int i = 0; i < consctraints.size(); i++) {
-                List<Integer> z = valid.get(i);
-                if (z.size() == 1) {
-                    for (int j = 0; j < consctraints.size(); j++) {
-                        if (j == i) continue;
-                        if (valid.get(j).removeIf(p -> p.equals(z.get(0)))) changed = true;
-                    }
+                long only = possible.get(0);
+                for (Field f : fields) {
+                    if (field == f) continue;
+                    MapUtils.remove(valid, f, only);
                 }
             }
         }
 
-        valid = MapUtils.invert(valid);
+        List<Long> your = InputUtils.asNumberList(subInputs.get(1)).collect(Collectors.toList());
 
-        b = 1;
-        String[] parts = your.split(",");
-        for (int i = 0; i < 6; i++) {
-            int j = valid.get(i).get(0);
-            b *= Long.parseLong(parts[j]);
+        b = fields.stream()
+                .filter(f -> f.name.startsWith("departure"))
+                .map(valid::get)
+                .mapToLong(l -> l.get(0))
+                .map(i -> your.get((int) i))
+                .reduce(1, (l1, l2) -> l1 * l2);
+    }
+
+    @Value
+    public static class Field {
+        String name;
+        Constraint constraint1;
+        Constraint constraint2;
+
+        public static Field parse(String str) {
+            String[] parts = str.split(": | or ");
+            return new Field(parts[0], Constraint.parse(parts[1]), Constraint.parse(parts[2]));
+        }
+
+        public boolean valid(long v) {
+            return constraint1.valid(v) || constraint2.valid(v);
+        }
+    }
+
+    @Value
+    public static class Constraint {
+        long lower;
+        long higher;
+
+        public static Constraint parse(String str) {
+            String[] parts = str.trim().split("-");
+            return new Constraint(Long.parseLong(parts[0]), Long.parseLong(parts[1]));
+        }
+
+        public boolean valid(long v) {
+            return lower <= v && v <= higher;
         }
     }
 }

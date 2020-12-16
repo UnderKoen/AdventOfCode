@@ -8,6 +8,7 @@ import nl.underkoen.adventofcode.general.Position;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -20,6 +21,14 @@ import java.util.stream.Stream;
 public class InputUtils {
     public final String DEFAULT_SPLIT = "[, ] ?";
 
+    private Long tryParse(String s) {
+        try {
+            return Long.parseLong(s);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Stream<Long> asNumberList(List<String> input) {
         return asNumberList(input, DEFAULT_SPLIT);
     }
@@ -27,7 +36,8 @@ public class InputUtils {
     public Stream<Long> asNumberList(List<String> input, String regex) {
         return input.stream()
                 .flatMap(s -> Arrays.stream(s.split(regex)))
-                .map(Long::parseLong);
+                .map(InputUtils::tryParse)
+                .filter(Objects::nonNull);
     }
 
     public Stream<Stream<Long>> asLineNumberList(List<String> input) {
@@ -37,7 +47,8 @@ public class InputUtils {
     public Stream<Stream<Long>> asLineNumberList(List<String> input, String regex) {
         return input.stream()
                 .map(s -> Arrays.stream(s.split(regex)))
-                .map(s -> s.map(Long::parseLong));
+                .map(s -> s.map(InputUtils::tryParse)
+                        .filter(Objects::nonNull));
     }
 
     public Stream<Stream<String>> asSplitLine(List<String> input, String regex) {
@@ -58,7 +69,8 @@ public class InputUtils {
     public Stream<Position> asPositionList(List<String> input, String regex) {
         return input.stream()
                 .map(s -> Arrays.stream(s.split(regex)))
-                .map(s -> s.map(Long::parseLong))
+                .map(s -> s.map(InputUtils::tryParse)
+                        .filter(Objects::nonNull))
                 .map(s -> s.collect(Collectors.toList()))
                 .map(s -> new Position(s.get(0), s.get(1)));
     }
@@ -75,7 +87,7 @@ public class InputUtils {
                 });
     }
 
-    public char[][] as2dArray (List<String> input) {
+    public char[][] as2dArray(List<String> input) {
         return input.stream()
                 .map(String::toCharArray)
                 .toArray(char[][]::new);
@@ -97,7 +109,7 @@ public class InputUtils {
                 .map(s -> s.map(Long::parseLong));
     }
 
-    public List<List<String>> asSubInputs(List<String> input){
+    public List<List<String>> asSubInputs(List<String> input) {
         IntHolder i = new IntHolder(0);
         return input.stream().collect((Supplier<ArrayList<List<String>>>) ArrayList::new, (l, s) -> {
             if (s.isBlank()) {

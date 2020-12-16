@@ -31,6 +31,11 @@ public class MapUtils {
         map.get(key).add(value);
     }
 
+    public <K, V> boolean remove(Map<K, List<V>> map, K key, V value) {
+        if (!map.containsKey(key)) return false;
+        return map.get(key).remove(value);
+    }
+
     public <K, V> Map<V, List<K>> invert(Map<K, List<V>> map) {
         Map<V, List<K>> r = new HashMap<>();
         for (Map.Entry<K, List<V>> entry : map.entrySet()) {
