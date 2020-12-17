@@ -20,5 +20,6 @@ dependencies {
     implementation("com.google.guava", "guava", "30.0-jre")
     implementation("org.jgrapht", "jgrapht-core", "1.5.0")
     implementation("org.apache.httpcomponents", "httpclient", "4.5.13")
+    implementation("org.apache.commons", "commons-lang3", "3.0")
     testImplementation("junit", "junit", "4.12")
 }

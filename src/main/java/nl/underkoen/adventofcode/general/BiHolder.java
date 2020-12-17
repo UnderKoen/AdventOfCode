@@ -1,6 +1,9 @@
 package nl.underkoen.adventofcode.general;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -14,7 +17,6 @@ import java.util.function.Function;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-@ToString
 public class BiHolder<T, U> implements Map.Entry<T, U> {
     public static <K, V> Function<K, BiHolder<K, V>> hold(Function<K, V> function) {
         return t -> new BiHolder<>(t, function.apply(t));
@@ -58,5 +60,10 @@ public class BiHolder<T, U> implements Map.Entry<T, U> {
 
     public <V> V reduce(BiFunction<T, U, V> reduce) {
         return reduce.apply(key, value);
+    }
+
+    @Override
+    public String toString() {
+        return "{" + key + ", " + value + "}";
     }
 }

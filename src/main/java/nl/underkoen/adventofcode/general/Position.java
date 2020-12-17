@@ -17,14 +17,16 @@ import java.util.stream.LongStream;
 @Setter
 @With
 public class Position {
-    public static Position min(Collection<Position> positions) {
+    public static Position min(Collection<? extends Position> positions) {
         return positions.stream()
+                .map(p -> (Position) p)
                 .reduce(Position::min)
                 .orElseThrow();
     }
 
-    public static Position max(Collection<Position> positions) {
+    public static Position max(Collection<? extends Position> positions) {
         return positions.stream()
+                .map(p -> (Position) p)
                 .reduce(Position::max)
                 .orElseThrow();
     }
@@ -49,6 +51,10 @@ public class Position {
     private long x = 0;
     private long y = 0;
 
+    public Position(Position position) {
+        this(position.getX(), position.getY());
+    }
+
     public Position addX(long x) {
         setX(getX() + x);
         return this;
@@ -70,7 +76,7 @@ public class Position {
     }
 
     public Position compute(LongFunction<Long> computeX, LongFunction<Long> computeY) {
-        return set(computeX.apply(x), computeY.apply(y));
+        return set(computeX.apply(getX()), computeY.apply(getY()));
     }
 
     public Position add(long x, long y) {
@@ -84,27 +90,23 @@ public class Position {
     }
 
     public Position copy() {
-        return new Position(x, y);
+        return new Position(this);
     }
 
     public Position copyAdd(long x, long y) {
-        Position pos = copy();
-        pos.add(x, y);
-        return pos;
+        return copy().add(x, y);
     }
 
     public Position copyAdd(Position position) {
-        Position pos = copy();
-        pos.add(position);
-        return pos;
+        return copy().add(position);
     }
 
     public Position min(Position position) {
-        return new Position(Math.min(x, position.x), Math.min(y, position.y));
+        return new Position(Math.min(getX(), position.getX()), Math.min(getY(), position.getY()));
     }
 
     public Position max(Position position) {
-        return new Position(Math.max(x, position.x), Math.max(y, position.y));
+        return new Position(Math.max(getX(), position.getX()), Math.max(getY(), position.getY()));
     }
 
     public long distance(Position position) {
@@ -120,17 +122,17 @@ public class Position {
     }
 
     public long[] asArray() {
-        return new long[]{x, y};
+        return new long[]{getX(), getY()};
+    }
+
+    public boolean inside(long xMin, long xMax, long yMin, long yMax) {
+        return getX() >= xMin && getX() < xMax && getY() >= yMin && getY() < yMax;
     }
 
     public boolean inside(Position p1, Position p2) {
         Position min = p1.min(p2);
         Position max = p1.max(p2);
         return inside(min.getX(), min.getY(), max.getX(), max.getY());
-    }
-
-    public boolean inside(long xMin, long xMax, long yMin, long yMax) {
-        return getX() >= xMin && getX() < xMax && getY() >= yMin && getY() < yMax;
     }
 
     @Override
@@ -151,6 +153,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return String.format("[%s, %s]", x, y);
+        return String.format("[%s, %s]", getX(), getY());
     }
 }

@@ -28,11 +28,12 @@ public class Day16 extends Solution {
                 .map(Field::parse)
                 .collect(Collectors.toList());
 
-        List<String> tickets = subInputs.get(2);
-        tickets.remove(0);
+        List<Ticket> tickets = subInputs.get(2).stream()
+                .skip(1)
+                .map(Ticket::parse)
+                .collect(Collectors.toList());
 
-        tickets.removeIf(s -> Arrays.stream(s.split(","))
-                .map(Long::parseLong)
+        tickets.removeIf(t -> t.values.stream()
                 .filter(i -> fields.stream().noneMatch(c -> c.valid(i)))
                 .peek(i -> a += i)
                 .count() != 0);
@@ -41,11 +42,10 @@ public class Day16 extends Solution {
 
         for (Field field : fields) {
             Map<Long, Long> amount = new HashMap<>();
-            for (String ticket : tickets) {
+            for (Ticket ticket : tickets) {
                 long i = 0;
-                for (String s : ticket.split(",")) {
-                    long l = Long.parseLong(s);
-                    if (field.valid(l)) MapUtils.increaseLong(amount, i);
+                for (Long value : ticket.getValues()) {
+                    if (field.valid(value)) MapUtils.increaseLong(amount, i);
                     i++;
                 }
             }
@@ -75,6 +75,16 @@ public class Day16 extends Solution {
                 .mapToLong(l -> l.get(0))
                 .map(i -> your.get((int) i))
                 .reduce(1, (l1, l2) -> l1 * l2);
+    }
+
+    @Value
+    public static class Ticket {
+        List<Long> values;
+
+        public static Ticket parse(String str) {
+            String[] parts = str.split(",");
+            return new Ticket(Arrays.stream(parts).map(Long::parseLong).collect(Collectors.toList()));
+        }
     }
 
     @Value
