@@ -1,6 +1,6 @@
-package nl.underkoen.adventofcode.general;
+package nl.underkoen.adventofcode.general.position;
 
-import lombok.EqualsAndHashCode;
+import com.google.common.base.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,6 @@ import java.util.function.LongFunction;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
 public class Position3D extends Position {
     private long z = 0;
 
@@ -33,19 +32,14 @@ public class Position3D extends Position {
         this.z = position.getZ();
     }
 
-    public Position3D addZ(long z) {
+    public void addZ(long z) {
         setZ(getZ() + z);
-        return this;
     }
 
     public Position3D set(long x, long y, long z) {
         super.set(x, y);
         setZ(z);
         return this;
-    }
-
-    public Position3D set(Position3D position) {
-        return set(position.getX(), position.getY(), position.getZ());
     }
 
     public Position3D compute(LongFunction<Long> computeX, LongFunction<Long> computeY, LongFunction<Long> computeZ) {
@@ -60,35 +54,8 @@ public class Position3D extends Position {
         return this;
     }
 
-    public Position3D add(Position3D position) {
-        super.add(position);
-        return addZ(position.getZ());
-    }
-
-    @Override
-    public Position3D copy() {
-        return new Position3D(this);
-    }
-
     public Position3D copyAdd(long x, long y, long z) {
         return copy().add(x, y, z);
-    }
-
-    private Position3D min(Position3D position) {
-        return new Position3D(super.min(position), Math.min(getZ(), position.getZ()));
-    }
-
-    private Position3D max(Position3D position) {
-        return new Position3D(super.max(position), Math.max(getZ(), position.getZ()));
-    }
-
-    private long distance(Position3D position) {
-        return super.distance(position) + Math.abs(getZ() - position.getZ());
-    }
-
-    @Override
-    public long distanceOrigin() {
-        return super.distanceOrigin() + Math.abs(getZ());
     }
 
     public long[] asArray() {
@@ -111,23 +78,25 @@ public class Position3D extends Position {
     }
 
     @Override
-    public Position3D min(Position position) {
-        if (position instanceof Position3D) return min((Position3D) position);
-        else return min(new Position3D(position));
+    public Position set(Position position) {
+        if (position instanceof Position3D) setZ(((Position3D) position).getZ());
+        return super.set(position);
     }
 
     @Override
-    public Position3D max(Position position) {
-        if (position instanceof Position3D) return max((Position3D) position);
-        else return max(new Position3D(position));
+    public Position3D copy() {
+        return new Position3D(this);
     }
 
     @Override
     public Position3D add(Position position) {
-        if (position instanceof Position3D) add((Position3D) position);
-        else super.add(position);
+        if (position instanceof Position3D) return add(position);
+        else return (Position3D) super.add(position);
+    }
 
-        return this;
+    @Override
+    public Position3D add(long x, long y) {
+        return (Position3D) super.add(x, y);
     }
 
     @Override
@@ -142,7 +111,35 @@ public class Position3D extends Position {
 
     @Override
     public long distance(Position position) {
-        if (position instanceof Position3D) return distance((Position3D) position);
-        else return super.distance(position);
+        long distance = super.distance(position);
+        if (position instanceof Position3D) distance += Math.abs(getZ() - ((Position3D) position).getZ());
+        else distance += Math.abs(getZ());
+        return distance;
+    }
+
+    @Override
+    public long distanceOrigin() {
+        return super.distanceOrigin() + Math.abs(getZ());
+    }
+
+    @Override
+    public Position3D min(Position position) {
+        return new Position3D(super.min(position), Math.min(getZ(), position instanceof Position3D ? ((Position3D) position).getZ() : 0));
+    }
+
+    @Override
+    public Position3D max(Position position) {
+        return new Position3D(super.max(position), Math.max(getZ(), position instanceof Position3D ? ((Position3D) position).getZ() : 0));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o) && getZ() == (o instanceof Position3D ? ((Position3D) o).getZ() : 0);
+    }
+
+    @Override
+    public int hashCode() {
+        if (getZ() == 0) return hashCode();
+        return Objects.hashCode(super.hashCode(), getZ());
     }
 }

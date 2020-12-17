@@ -1,4 +1,4 @@
-package nl.underkoen.adventofcode.general;
+package nl.underkoen.adventofcode.general.position;
 
 import lombok.*;
 
@@ -55,14 +55,12 @@ public class Position {
         this(position.getX(), position.getY());
     }
 
-    public Position addX(long x) {
+    public void addX(long x) {
         setX(getX() + x);
-        return this;
     }
 
-    public Position addY(long y) {
+    public void addY(long y) {
         setY(getY() + y);
-        return this;
     }
 
     public Position set(long x, long y) {

@@ -1,9 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.general.BiHolder;
-import nl.underkoen.adventofcode.general.Position;
+import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.solutions.Solution;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;

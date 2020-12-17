@@ -2,8 +2,8 @@ package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.BiHolder;
-import nl.underkoen.adventofcode.general.Position;
-import nl.underkoen.adventofcode.general.Position4D;
+import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.general.position.Position4D;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
@@ -27,7 +27,7 @@ public class Day17 extends Solution {
                 .map(Position4D::new)
                 .collect(Collectors.toList());
 
-        System.out.println(Position.min(positions));
+        System.out.println(Position.max(positions));
 
         Map<Position, List<Position>> map = new HashMap<>();
 //        map.put(new Position(0, 0), positions);

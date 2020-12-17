@@ -3,7 +3,7 @@ package nl.underkoen.adventofcode.utils;
 import lombok.experimental.UtilityClass;
 import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.general.IntHolder;
-import nl.underkoen.adventofcode.general.Position;
+import nl.underkoen.adventofcode.general.position.Position;
 
 import java.util.ArrayList;
 import java.util.Arrays;
