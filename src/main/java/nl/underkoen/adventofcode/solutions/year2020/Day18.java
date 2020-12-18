@@ -1,6 +1,5 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
 
@@ -23,20 +22,18 @@ public class Day18 extends Solution {
     }
 
     private long execute(String line) {
-        int count = 0;
+        int deep = 0;
         StringBuilder inside = new StringBuilder();
         for (char c : line.toCharArray()) {
             if (c == ')') {
-                if (--count == 0) {
+                if (--deep == 0) {
                     line = line.replace("(" + inside.toString() + ")", execute(inside.toString()) + "");
                     inside.setLength(0);
                 }
             }
-            if (count >= 1) inside.append(c);
-            if (c == '(') count++;
+            if (deep >= 1) inside.append(c);
+            if (c == '(') deep++;
         }
-
-        System.out.println(line);
 
         String op = "";
         long num = 0;
@@ -61,8 +58,6 @@ public class Day18 extends Solution {
             }
         }
 
-        System.out.println(line);
-
         num = 0;
         String[] s = line.split(" ");
         for (int i = 0; i < s.length; i++) {
@@ -79,42 +74,5 @@ public class Day18 extends Solution {
         }
 
         return num;
-    }
-
-    @AllArgsConstructor
-    static abstract class Expression {
-        abstract long calc();
-    }
-
-    @AllArgsConstructor
-    static class Add extends Expression {
-        Expression e1;
-        Expression e2;
-
-        @Override
-        long calc() {
-            return e1.calc() + e2.calc();
-        }
-    }
-
-    @AllArgsConstructor
-    static class Mult extends Expression {
-        Expression e1;
-        Expression e2;
-
-        @Override
-        long calc() {
-            return e1.calc() * e2.calc();
-        }
-    }
-
-    @AllArgsConstructor
-    static class Num extends Expression {
-        long num;
-
-        @Override
-        long calc() {
-            return num;
-        }
     }
 }

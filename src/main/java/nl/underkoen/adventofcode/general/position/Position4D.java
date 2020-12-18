@@ -10,7 +10,7 @@ public class Position4D extends CastedPosition<Position4D> implements Dimensions
     }
 
     public Position4D(PositionND position) {
-        super(position, 3);
+        super(position, 4);
     }
 
     @Override

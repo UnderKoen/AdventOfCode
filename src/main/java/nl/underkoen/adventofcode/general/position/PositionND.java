@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.LongUnaryOperator;
 import java.util.stream.Collectors;
 
@@ -161,6 +163,10 @@ public class PositionND implements Comparable<PositionND> {
         return copy().div(positionND);
     }
 
+    public PositionND copyWithDimension(int dimensions) {
+        return new PositionND(this, dimensions);
+    }
+
     public int getDimensions() {
         return coords.length;
     }
@@ -222,6 +228,24 @@ public class PositionND implements Comparable<PositionND> {
 
     public long[] asArray() {
         return Arrays.copyOf(coords, getDimensions());
+    }
+
+    public Set<PositionND> getNeighbours() {
+        Set<PositionND> positions = new HashSet<>();
+        neighboursRecursion(positions, this, 0);
+        positions.remove(this);
+        return positions;
+    }
+
+    private void neighboursRecursion(Set<PositionND> positions, PositionND current, int dimension) {
+        if (dimension >= current.getDimensions()) {
+            positions.add(current);
+            return;
+        }
+
+        for (int i = -1; i <= 1; i++) {
+            neighboursRecursion(positions, current.copy().addN(dimension, i), dimension + 1);
+        }
     }
 
     @Override

@@ -1,15 +1,15 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.BiHolder;
-import nl.underkoen.adventofcode.general.position.Position;
-import nl.underkoen.adventofcode.general.position.Position4D;
+import nl.underkoen.adventofcode.general.position.PositionND;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
-import nl.underkoen.adventofcode.utils.MapUtils;
 import nl.underkoen.adventofcode.utils.PositionUtils;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Day17 extends Solution {
@@ -23,62 +23,29 @@ public class Day17 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Position4D> positions = InputUtils.mapChar(input, (c, p) -> c == '#' ? new Position4D(p) : null)
+        Set<PositionND> positions = InputUtils.mapChar(input, (c, p) -> c == '#' ? p : null)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
-        System.out.println(PositionUtils.max(positions));
+        a = calculate(positions, 3);
+        b = calculate(positions, 4);
+    }
 
-        Map<Position, List<Position>> map = new HashMap<>();
-//        map.put(new Position(0, 0), positions);
+    private long calculate(Set<PositionND> start, int dimensions) {
+        Set<PositionND> positions = start.stream()
+                .map(p -> p.copyWithDimension(dimensions))
+                .collect(Collectors.toSet());
 
         for (int i = 0; i < 6; i++) {
-            Map<Position, List<Position>> clone = new HashMap<>();
-            Map<BiHolder<Position, Position>, Long> amount = new HashMap<>();
-            for (Map.Entry<Position, List<Position>> longListEntry : map.entrySet()) {
-                long z = longListEntry.getKey().getX();
-                long w = longListEntry.getKey().getY();
-
-                for (Position position : longListEntry.getValue()) {
-                    long x = position.getX();
-                    long y = position.getY();
-                    for (int dx = -1; dx <= 1; dx++) {
-                        for (int dy = -1; dy <= 1; dy++) {
-                            for (int dz = -1; dz <= 1; dz++) {
-                                for (int dw = -1; dw <= 1; dw++) {
-                                    if (dx == 0 && dy == 0 && dz == 0 && dw == 0) continue;
-                                    BiHolder<Position, Position> p = new BiHolder<>(new Position(z + dz, w + dw), new Position(x + dx, y + dy));
-                                    MapUtils.increaseLong(amount, p);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            for (Map.Entry<BiHolder<Position, Position>, Long> entry : amount.entrySet()) {
-                long count = entry.getValue();
-                Position d2 = entry.getKey().getKey();
-                Position pos = entry.getKey().getValue();
-
-                boolean active = false;
-                if (map.containsKey(d2) && map.get(d2).contains(pos)) active = true;
-
-                if (active) {
-                    if (count == 2 || count == 3) {
-                        MapUtils.add(clone, d2, pos);
-                    }
-                } else {
-                    if (count == 3) {
-                        MapUtils.add(clone, d2, pos);
-                    }
-                }
-            }
-            map = clone;
+            Map<PositionND, Long> amount = PositionUtils.countNeighbours(positions);
+            Set<PositionND> f = positions;
+            positions = amount.entrySet().stream()
+                    .filter(e -> e.getValue() == 3 ||
+                            e.getValue() == 2 && f.contains(e.getKey()))
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toSet());
         }
 
-        a = map.values().stream()
-                .mapToLong(Collection::size)
-                .sum();
+        return positions.size();
     }
 }

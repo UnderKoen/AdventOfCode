@@ -3,9 +3,7 @@ package nl.underkoen.adventofcode.utils;
 import nl.underkoen.adventofcode.general.position.CastedPosition;
 import nl.underkoen.adventofcode.general.position.PositionND;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PositionUtils {
@@ -70,5 +68,13 @@ public class PositionUtils {
 
     public static <T extends CastedPosition<T>> List<T> rectangle(T origin, long width, long height) {
         return between(origin, origin.copyAdd(width - 1, height - 1));
+    }
+
+    public static Map<PositionND, Long> countNeighbours(Iterable<PositionND> positions) {
+        Map<PositionND, Long> count = new HashMap<>();
+        for (PositionND position : positions) {
+            MapUtils.increaseAll(count, position.getNeighbours(), 0L);
+        }
+        return count;
     }
 }

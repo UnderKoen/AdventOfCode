@@ -1,6 +1,8 @@
 package nl.underkoen.adventofcode.general.position;
 
+import java.util.Set;
 import java.util.function.LongUnaryOperator;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public abstract class CastedPosition<T extends CastedPosition<T>> extends PositionND {
@@ -160,6 +162,11 @@ public abstract class CastedPosition<T extends CastedPosition<T>> extends Positi
         return (T) super.setN(n, val);
     }
 
+    public Set<T> getNeighboursCasted() {
+        return super.getNeighbours().stream()
+                .map(p -> (T) p)
+                .collect(Collectors.toSet());
+    }
 
     @Override
     public abstract T copy();
