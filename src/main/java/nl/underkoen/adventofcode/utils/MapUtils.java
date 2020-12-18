@@ -9,21 +9,34 @@ import java.util.Map;
 
 @UtilityClass
 public class MapUtils {
-    public <T> void increaseInt(Map<T, Integer> map, T key, int defaultValue) {
+    /**
+     * @return true when the value already existed
+     */
+    public <T> boolean increaseInt(Map<T, Integer> map, T key, int defaultValue) {
         int n = map.getOrDefault(key, defaultValue);
-        map.put(key, n + 1);
-    }
-    public <T> void increaseInt(Map<T, Integer> map, T key) {
-        increaseInt(map, key, 0);
+        return map.put(key, n + 1) != null;
     }
 
-    public <T> void increaseLong(Map<T, Long> map, T key, long defaultValue) {
+    /**
+     * @return true when the value already existed
+     */
+    public <T> boolean increaseInt(Map<T, Integer> map, T key) {
+        return increaseInt(map, key, 0);
+    }
+
+    /**
+     * @return true when the value already existed
+     */
+    public <T> boolean increaseLong(Map<T, Long> map, T key, long defaultValue) {
         long n = map.getOrDefault(key, defaultValue);
-        map.put(key, n + 1);
+        return map.put(key, n + 1) != null;
     }
 
-    public <K> void increaseLong(Map<K, Long> map, K key) {
-        increaseLong(map, key, 0);
+    /**
+     * @return true when the value already existed
+     */
+    public <K> boolean increaseLong(Map<K, Long> map, K key) {
+        return increaseLong(map, key, 0);
     }
 
     public <K, V> void add(Map<K, List<V>> map, K key, V value) {

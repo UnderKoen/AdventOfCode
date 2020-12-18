@@ -1,38 +1,78 @@
 package nl.underkoen.adventofcode.general.position;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.LongUnaryOperator;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Getter
 @Setter
-public class PositionND {
+public class PositionND implements Comparable<PositionND> {
     private long[] coords;
 
     public PositionND(int dimensions) {
         coords = new long[dimensions];
     }
 
+    public PositionND(long... coords) {
+        this.coords = coords;
+    }
+
+    public PositionND(PositionND positionND) {
+        this(positionND.asArray());
+    }
+
+    public PositionND(PositionND positionND, int dimensions) {
+        this(Arrays.copyOf(positionND.getCoords(), dimensions));
+    }
+
     public long getN(int n) {
         return coords[n];
     }
 
-    public void setN(int n, long val) {
+    public PositionND setN(int n, long val) {
         coords[n] = val;
+        return this;
     }
 
-    public void addN(int n, long val) {
-        coords[n] += val;
-    }
-
-    public PositionND add(long[] coords) {
+    public PositionND set(long... coords) {
         for (int i = 0; i < coords.length && i < this.coords.length; i++) {
-            this.coords[i] += coords[i];
+            setN(i, coords[i]);
+        }
+        return this;
+    }
+
+    public PositionND set(PositionND positionND) {
+        return set(positionND.coords);
+    }
+
+    public PositionND copySet(PositionND positionND) {
+        return copy().set(positionND);
+    }
+
+    public PositionND computeN(int n, LongUnaryOperator val) {
+        coords[n] = val.applyAsLong(coords[n]);
+        return this;
+    }
+
+    public PositionND compute(LongUnaryOperator... coords) {
+        for (int i = 0; i < coords.length && i < this.coords.length; i++) {
+            computeN(i, coords[i]);
+        }
+        return this;
+    }
+
+    public PositionND addN(int n, long val) {
+        coords[n] += val;
+        return this;
+    }
+
+    public PositionND add(long... coords) {
+        for (int i = 0; i < coords.length && i < this.coords.length; i++) {
+            addN(i, coords[i]);
         }
         return this;
     }
@@ -41,17 +81,22 @@ public class PositionND {
         return add(positionND.coords);
     }
 
+    public PositionND copyAdd(long... coords) {
+        return copy().add(coords);
+    }
+
     public PositionND copyAdd(PositionND positionND) {
         return copy().add(positionND);
     }
 
-    public void subN(int n, long val) {
+    public PositionND subN(int n, long val) {
         coords[n] -= val;
+        return this;
     }
 
-    public PositionND sub(long[] coords) {
+    public PositionND sub(long... coords) {
         for (int i = 0; i < coords.length && i < this.coords.length; i++) {
-            this.coords[i] -= coords[i];
+            subN(i, coords[i]);
         }
         return this;
     }
@@ -60,42 +105,56 @@ public class PositionND {
         return sub(positionND.coords);
     }
 
+    public PositionND copySub(long... coords) {
+        return copy().add(coords);
+    }
+
     public PositionND copySub(PositionND positionND) {
         return copy().add(positionND);
     }
 
-    public void mulN(int n, long val) {
+    public PositionND mulN(int n, long val) {
         coords[n] *= val;
+        return this;
     }
 
-    public PositionND mul(long[] coords) {
+    public PositionND mul(long... coords) {
         for (int i = 0; i < coords.length && i < this.coords.length; i++) {
-            this.coords[i] *= coords[i];
+            mulN(i, coords[i]);
         }
         return this;
     }
 
+    public PositionND copyMul(long... coords) {
+        return copy().mul(coords);
+    }
+
     public PositionND copyMul(PositionND positionND) {
-        return mul(positionND.coords);
+        return copy().mul(positionND);
     }
 
     public PositionND mul(PositionND positionND) {
         return copy().mul(positionND);
     }
 
-    public void divN(int n, long val) {
+    public PositionND divN(int n, long val) {
         coords[n] /= val;
+        return this;
     }
 
-    public PositionND div(long[] coords) {
+    public PositionND div(long... coords) {
         for (int i = 0; i < coords.length && i < this.coords.length; i++) {
-            this.coords[i] /= coords[i];
+            divN(i, coords[i]);
         }
         return this;
     }
 
     public PositionND div(PositionND positionND) {
         return div(positionND.coords);
+    }
+
+    public PositionND copyDiv(long... coords) {
+        return copy().div(coords);
     }
 
     public PositionND copyDiv(PositionND positionND) {
@@ -158,7 +217,7 @@ public class PositionND {
     }
 
     public PositionND copy() {
-        return new PositionND(asArray());
+        return new PositionND(this);
     }
 
     public long[] asArray() {
@@ -184,5 +243,10 @@ public class PositionND {
     @Override
     public String toString() {
         return Arrays.toString(coords);
+    }
+
+    @Override
+    public int compareTo(PositionND o) {
+        return Arrays.compare(coords, o.coords);
     }
 }

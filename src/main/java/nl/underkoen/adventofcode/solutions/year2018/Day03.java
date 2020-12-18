@@ -1,11 +1,16 @@
 package nl.underkoen.adventofcode.solutions.year2018;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
+import nl.underkoen.adventofcode.utils.MapUtils;
+import nl.underkoen.adventofcode.utils.PositionUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Day03 extends Solution {
@@ -19,34 +24,36 @@ public class Day03 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        Map<Position, Integer> seen = new HashMap<>();
-        Set<Long> ids = new HashSet<>();
-        Map<Position, Long> seenIds = new HashMap<>();
+        Map<Position, Long> seen = new HashMap<>();
 
-        InputUtils.asAllNumbers(input)
+        List<Claim> claims = InputUtils.asAllNumbers(input)
                 .map(s -> s.collect(Collectors.toList()))
-                .forEach(nums -> {
-                    long id = nums.get(0);
-                    long left = nums.get(1);
-                    long top = nums.get(2);
-                    long width = nums.get(3);
-                    long height = nums.get(4);
+                .map(Claim::new)
+                .peek(c -> c.rect().forEach(p -> MapUtils.increaseLong(seen, p)))
+                .collect(Collectors.toList());
 
-                    ids.add(id);
-                    Position.rectangle(new Position(left, top), width, height).forEach(position -> {
-                        if (seen.containsKey(position)) {
-                            int amount = seen.get(position);
-                            seen.replace(position, amount + 1);
-                            ids.remove(id);
-                            ids.remove(seenIds.get(position));
-                            if (amount == 0) a++;
-                        } else {
-                            seen.put(position, 0);
-                            seenIds.put(position, id);
-                        }
-                    });
-                });
+        a = seen.values().stream()
+                .filter(l -> l > 1)
+                .count();
 
-        b = ids.stream().findAny().orElseThrow();
+        b = claims.stream()
+                .filter(c -> c.rect().stream().allMatch(p -> seen.get(p) == 1))
+                .findAny()
+                .orElseThrow()
+                .getId();
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class Claim {
+        private final long id, left, top, width, height;
+
+        public Claim(List<Long> list) {
+            this(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
+        }
+
+        public List<Position> rect() {
+            return PositionUtils.rectangle(new Position(left, top), width, height);
+        }
     }
 }

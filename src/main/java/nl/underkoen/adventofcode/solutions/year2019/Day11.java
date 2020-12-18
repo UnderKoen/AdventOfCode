@@ -4,6 +4,7 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.general.BiHolder;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.PositionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,8 +52,8 @@ public class Day11 extends Solution {
 
         Map<Position, Long> canvas = run(program, 1);
 
-        Position min = Position.min(canvas.keySet());
-        Position max = Position.max(canvas.keySet());
+        Position min = PositionUtils.maxCasted(canvas.keySet());
+        Position max = PositionUtils.maxCasted(canvas.keySet());
 
         LongStream.range(min.getY(), max.getY() + 1)
                 .map(y -> -y).sorted().map(y -> -y)

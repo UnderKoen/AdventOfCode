@@ -33,13 +33,13 @@ public class Day11 extends Solution {
         Map<Position, List<Position>> neighbours = new HashMap<>();
         Map<Position, List<Position>> neighboursB = new HashMap<>();
 
-        int yMax = input.size();
-        int xMax = input.get(0).length();
+        Position min = new Position();
+        Position max = new Position(input.get(0).length(), input.size());
 
         for (Position place : places.keySet()) {
             for (Position direction : directions) {
                 Position check = place.copyAdd(direction);
-                if (!check.inside(0, xMax, 0, yMax)) continue;
+                if (!check.inside(min, max)) continue;
 
                 if (places.containsKey(check)) {
                     MapUtils.add(neighbours, place, check);
@@ -52,7 +52,7 @@ public class Day11 extends Solution {
                     MapUtils.add(neighboursB, place, check);
                     MapUtils.add(neighboursB, check, place);
                     break;
-                } while (check.inside(0, xMax, 0, yMax));
+                } while (check.inside(min, max));
             }
         }
 

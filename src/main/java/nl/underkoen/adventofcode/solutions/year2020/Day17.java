@@ -7,6 +7,7 @@ import nl.underkoen.adventofcode.general.position.Position4D;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
+import nl.underkoen.adventofcode.utils.PositionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,12 +23,11 @@ public class Day17 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        List<Position4D> positions = InputUtils.mapChar(input, (c, p) -> c == '#' ? p : null)
+        List<Position4D> positions = InputUtils.mapChar(input, (c, p) -> c == '#' ? new Position4D(p) : null)
                 .filter(Objects::nonNull)
-                .map(Position4D::new)
                 .collect(Collectors.toList());
 
-        System.out.println(Position.max(positions));
+        System.out.println(PositionUtils.max(positions));
 
         Map<Position, List<Position>> map = new HashMap<>();
 //        map.put(new Position(0, 0), positions);

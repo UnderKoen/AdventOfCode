@@ -5,6 +5,7 @@ import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
+import nl.underkoen.adventofcode.utils.PositionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +26,13 @@ public class Day06 extends Solution {
         List<Position> positions = InputUtils.asPositionList(input)
                 .collect(Collectors.toList());
 
-        Position min = Position.min(positions);
-        Position max = Position.max(positions);
+        Position min = PositionUtils.minCasted(positions);
+        Position max = PositionUtils.maxCasted(positions);
 
         Map<Position, Position> closest = new HashMap<>();
 
 
-        Position.between(min, max).forEach(pos -> {
+        PositionUtils.between(min, max).forEach(pos -> {
             List<Position> options = getOptions(pos, positions);
 
             if (options.size() != 1) return;
@@ -42,7 +43,7 @@ public class Day06 extends Solution {
         Map<Position, Integer> matches = new HashMap<>();
         closest.forEach((p, point) -> MapUtils.increaseInt(matches, point));
 
-        Position.between(min, max).stream()
+        PositionUtils.between(min, max).stream()
                 .filter(p -> p.getX() == min.getX() || p.getX() == max.getX() || p.getY() == min.getY() || p.getY() == max.getY())
                 .forEach(pos -> {
                     List<Position> options = getOptions(pos, positions);
@@ -57,7 +58,7 @@ public class Day06 extends Solution {
                 .max()
                 .orElseThrow();
 
-        b = Position.between(min, max).stream()
+        b = PositionUtils.between(min, max).stream()
                 .map(pos -> positions.stream()
                         .mapToLong(p -> p.distance(pos))
                         .sum())
