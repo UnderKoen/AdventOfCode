@@ -1,5 +1,7 @@
 plugins {
     java
+    id("cup.gradle.cup-gradle-plugin") version "1.2"
+    id("org.xbib.gradle.plugin.jflex") version "1.2.1"
 }
 
 group = "org.example"
@@ -22,4 +24,8 @@ dependencies {
     implementation("org.apache.httpcomponents", "httpclient", "4.5.13")
     implementation("org.apache.commons", "commons-lang3", "3.0")
     testImplementation("junit", "junit", "4.12")
+}
+
+tasks.cupCompile {
+    dependsOn(tasks.jflex)
 }

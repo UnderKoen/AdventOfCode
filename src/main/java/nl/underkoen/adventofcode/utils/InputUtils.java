@@ -130,4 +130,8 @@ public class InputUtils {
         }
         return builder.build();
     }
+
+    public static String asString(List<String> input) {
+        return String.join("\n", input);
+    }
 }

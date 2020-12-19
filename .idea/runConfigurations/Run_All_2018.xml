@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Last" type="Application" factoryName="Application">
+  <configuration default="false" name="Run All 2018" type="Application" factoryName="Application" folderName="2018">
     <option name="MAIN_CLASS_NAME" value="nl.underkoen.adventofcode.solutions.SolutionRunner" />
     <module name="AdventOfCode.main" />
-    <option name="PROGRAM_PARAMETERS" value="-l" />
+    <option name="PROGRAM_PARAMETERS" value="--no-verbose --no-output --no-submit -y=18" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
