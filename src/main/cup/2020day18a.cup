@@ -1,0 +1,26 @@
+package nl.underkoen.adventofcode.solutions.year2020.day18;
+
+import java_cup.runtime.Scanner;
+import java_cup.runtime.SymbolFactory;
+
+class ParserA;
+
+terminal MINUS, DIVIDE, MODULO, ASSIGN, LEFT_CURLY, RIGHT_CURLY;
+terminal EQUAL, NOT_EQUAL, BIGGER, SMALLER, BIGGER_OR_EQUALS, SMALLER_OR_EQUALS;
+terminal PLUS, TIMES, LEFT_PAREN, RIGHT_PAREN;
+terminal NEW_LINE;
+terminal Long NUMBER;
+
+non terminal Long file;
+non terminal Long expr;
+
+precedence left PLUS, TIMES;
+
+file        ::= expr:e1 NEW_LINE expr:e2        {: RESULT = e1+e2;  :}
+            | file:f1 NEW_LINE expr:e1          {: RESULT = f1+e1;  :};
+
+expr      	::= expr:e1 PLUS expr:e2            {: RESULT = e1+e2;  :}
+            | expr:e1 TIMES expr:e2             {: RESULT = e1*e2;  :}
+            | LEFT_PAREN expr:e RIGHT_PAREN     {: RESULT = e;      :}
+            | NUMBER:n                          {: RESULT = n;      :}
+            ;

@@ -111,7 +111,7 @@ public class InputUtils {
 
     public List<List<String>> asSubInputs(List<String> input) {
         IntHolder i = new IntHolder(0);
-        return input.stream().collect((Supplier<ArrayList<List<String>>>) ArrayList::new, (l, s) -> {
+        ArrayList<List<String>> list = input.stream().collect((Supplier<ArrayList<List<String>>>) ArrayList::new, (l, s) -> {
             if (s.isBlank()) {
                 l.add(new ArrayList<>());
                 i.addValue(1);
@@ -121,6 +121,8 @@ public class InputUtils {
             }
         }, (l1, l2) -> {
         });
+        list.removeIf(s -> s.isEmpty());
+        return list;
     }
 
     public <T> Stream<BiHolder<Integer, T>> asIndexedStream(List<T> input) {

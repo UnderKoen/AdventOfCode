@@ -1,7 +1,11 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
+import java_cup.runtime.ComplexSymbolFactory;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.solutions.year2020.day18.*;
+import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.List;
 
@@ -14,65 +18,17 @@ public class Day18 extends Solution {
         return new long[]{24650385570008L, 158183007916215L};
     }
 
+    @SneakyThrows
     @Override
     protected void run(List<String> input) {
-        for (String s : input) {
-            a += execute(s);
-        }
-    }
+        String str = InputUtils.asString(input);
+        ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
+        LexerA lexerA = new LexerA(str, symbolFactory);
+        LexerB lexerB = new LexerB(str, symbolFactory);
+        ParserA parserA = new ParserA(lexerA, symbolFactory);
+        ParserB parserB = new ParserB(lexerB, symbolFactory);
 
-    private long execute(String line) {
-        int deep = 0;
-        StringBuilder inside = new StringBuilder();
-        for (char c : line.toCharArray()) {
-            if (c == ')') {
-                if (--deep == 0) {
-                    line = line.replace("(" + inside.toString() + ")", execute(inside.toString()) + "");
-                    inside.setLength(0);
-                }
-            }
-            if (deep >= 1) inside.append(c);
-            if (c == '(') deep++;
-        }
-
-        String op = "";
-        long num = 0;
-        boolean changed = true;
-        while (changed) {
-            changed = false;
-            String[] s = line.split(" ");
-            for (int i = 0; i < s.length; i++) {
-                if (i == 0) num = Long.parseLong(s[i]);
-                else if (i % 2 == 1) op = s[i];
-                else {
-                    long num2 = Long.parseLong(s[i]);
-                    if ("+".equals(op)) {
-                        line = line.replace(num + " + " + num2, num + num2 + "");
-                        changed = true;
-                        break;
-                    } else {
-//                        System.out.println(s[i]);
-                    }
-                    num = num2;
-                }
-            }
-        }
-
-        num = 0;
-        String[] s = line.split(" ");
-        for (int i = 0; i < s.length; i++) {
-            if (i == 0) num = Long.parseLong(s[i]);
-            else if (i % 2 == 1) op = s[i];
-            else {
-                long num2 = Long.parseLong(s[i]);
-                if ("*".equals(op)) {
-                    num *= num2;
-                } else {
-//                    System.out.println(s[i]);
-                }
-            }
-        }
-
-        return num;
+        a = (Long) parserA.parse().value;
+        b = (Long) parserB.parse().value;
     }
 }

@@ -27,5 +27,6 @@ dependencies {
 }
 
 tasks.cupCompile {
+    dependsOn(tasks.clean)
     dependsOn(tasks.jflex)
 }

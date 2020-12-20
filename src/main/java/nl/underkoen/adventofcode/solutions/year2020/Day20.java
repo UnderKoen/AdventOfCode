@@ -23,13 +23,8 @@ public class Day20 extends Solution {
 
     @Override
     public long[] getCorrectOutput() {
-        return new long[]{};
+        return new long[]{21599955909991L, 2495};
     }
-
-//    @Override
-//    public String[] getCorrectOutputText() {
-//        return new String[]{};
-//    }
 
     @Override
     protected void run(List<String> input) {
@@ -412,7 +407,7 @@ public class Day20 extends Solution {
             List<Map2> alts = new ArrayList<>();
             alts.addAll(getRots());
             alts.addAll(flipV().getRots());
-            alts.addAll(flipH().getRots());
+//            alts.addAll(flipH().getRots());
             return alts;
         }
     }
