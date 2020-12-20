@@ -108,11 +108,11 @@ public class PositionND implements Comparable<PositionND> {
     }
 
     public PositionND copySub(long... coords) {
-        return copy().add(coords);
+        return copy().sub(coords);
     }
 
     public PositionND copySub(PositionND positionND) {
-        return copy().add(positionND);
+        return copy().sub(positionND);
     }
 
     public PositionND mulN(int n, long val) {

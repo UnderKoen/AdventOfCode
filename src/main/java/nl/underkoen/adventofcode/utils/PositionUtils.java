@@ -1,9 +1,11 @@
 package nl.underkoen.adventofcode.utils;
 
 import nl.underkoen.adventofcode.general.position.CastedPosition;
+import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.general.position.PositionND;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PositionUtils {
@@ -76,5 +78,22 @@ public class PositionUtils {
             MapUtils.increaseAll(count, position.getNeighbours(), 0L);
         }
         return count;
+    }
+
+    public static void print(Collection<Position> all) {
+        print(all, p -> all.contains(p) ? "#" : ".");
+    }
+
+    public static void print(Collection<Position> all, Function<Position, String> convert) {
+        Position min = minCasted(all);
+        Position max = maxCasted(all);
+
+        for (long y = min.getY(); y <= max.getY(); y++) {
+            for (long x = min.getX(); x <= max.getX(); x++) {
+                Position pos = new Position(x, y);
+                System.out.print(convert.apply(pos));
+            }
+            System.out.println();
+        }
     }
 }

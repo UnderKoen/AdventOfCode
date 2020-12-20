@@ -61,6 +61,7 @@ public class Day19 extends Solution {
         ru.clear();
 
         rule0 = check(0, ru, r);
+        System.out.println(rule0.toRegex());
         compile = Pattern.compile(rule0.toRegex());
         for (String s : lists.get(1)) {
             if (compile.matcher(s).matches()) b++;

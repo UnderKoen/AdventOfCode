@@ -2,10 +2,8 @@ package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
 
 @UtilityClass
 public class MapUtils {
@@ -37,7 +35,15 @@ public class MapUtils {
     }
 
     public <K, V> void add(Map<K, List<V>> map, K key, V value) {
-        map.computeIfAbsent(key, k -> new ArrayList<>());
+        add(map, key, value, ArrayList::new);
+    }
+
+    public <K, V> void addSet(Map<K, Set<V>> map, K key, V value) {
+        add(map, key, value, HashSet::new);
+    }
+
+    public <K, V, C extends Collection<V>> void add(Map<K, C> map, K key, V value, Supplier<C> supplier) {
+        map.computeIfAbsent(key, k -> supplier.get());
         map.get(key).add(value);
     }
 
