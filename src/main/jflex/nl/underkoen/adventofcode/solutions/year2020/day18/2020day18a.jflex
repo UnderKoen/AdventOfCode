@@ -39,7 +39,7 @@ import nl.underkoen.adventofcode.solutions.year2020.day18.ParserASym;
 
 Number = [0-9]+
 Space = [ \t\f]
-NewLine = \r | \n | \r\n
+NewLine = \R
 
 %eofval{
     return sf.newSymbol("EOF",ParserASym.EOF);
@@ -76,4 +76,4 @@ NewLine = \r | \n | \r\n
 }
 
 // error fallback
-[^]|\n          { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }
+[^]|\n                  { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }

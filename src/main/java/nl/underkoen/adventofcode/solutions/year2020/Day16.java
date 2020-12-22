@@ -54,18 +54,7 @@ public class Day16 extends Solution {
             });
         }
 
-        for (int t = 0; t < valid.size(); t++) {
-            for (Field field : fields) {
-                List<Long> possible = valid.get(field);
-                if (possible.size() != 1) continue;
-
-                long only = possible.get(0);
-                for (Field f : fields) {
-                    if (field == f) continue;
-                    MapUtils.remove(valid, f, only);
-                }
-            }
-        }
+        MapUtils.reduce(valid);
 
         List<Long> your = InputUtils.asNumberList(subInputs.get(1)).collect(Collectors.toList());
 

@@ -68,7 +68,7 @@ public abstract class Solution implements SolutionInfo {
     }
 
     public boolean isSubmit() {
-        if (submit == null) return getCorrectOutputText().length != 2;
+        if (submit == null) return getCorrectOutputText().length != 2 && !(getA().equals("0") && getB().equals("0"));
         return submit;
     }
 }

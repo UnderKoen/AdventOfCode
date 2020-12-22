@@ -115,8 +115,7 @@ public class SolutionRunner implements Runnable {
             solution.test();
 
             if (submit == null ? solution.isSubmit() : submit) {
-                boolean a = solution.b == 0;
-
+                boolean a = solution.getB().equals("0");
 
                 String value = a ? solution.getA() : solution.getB();
                 int part = a ? 1 : 2;
