@@ -1,97 +1,77 @@
 package nl.underkoen.adventofcode.utils;
 
-import nl.underkoen.adventofcode.general.position.CastedPosition;
+import nl.underkoen.adventofcode.general.position.AbstractPosition;
 import nl.underkoen.adventofcode.general.position.Position;
-import nl.underkoen.adventofcode.general.position.PositionND;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 public class PositionUtils {
-    public static PositionND min(Collection<? extends PositionND> positions) {
+    public static <T extends AbstractPosition<T>> T min(Collection<T> positions) {
         return positions.stream()
-                .map(p -> (PositionND) p)
-                .reduce(PositionND::min)
+                .reduce(AbstractPosition::min)
                 .orElseThrow();
     }
 
-    public static <T extends CastedPosition<T>> T minCasted(Collection<T> positions) {
+    public static <T extends AbstractPosition<T>> T max(Collection<T> positions) {
         return positions.stream()
-                .reduce(CastedPosition::min)
+                .reduce(AbstractPosition::max)
                 .orElseThrow();
     }
 
-    public static PositionND max(Collection<? extends PositionND> positions) {
-        return positions.stream()
-                .map(p -> (PositionND) p)
-                .reduce(PositionND::max)
-                .orElseThrow();
-    }
+    public static <T extends AbstractPosition<T>> List<T> between(T p1, T p2) {
+        T min = p1.min(p2);
+        T max = p1.max(p2);
 
-    public static <T extends CastedPosition<T>> T maxCasted(Collection<T> positions) {
-        return positions.stream()
-                .reduce(CastedPosition::max)
-                .orElseThrow();
-    }
-
-    public static List<PositionND> between(PositionND p1, PositionND p2) {
-        PositionND min = p1.min(p2);
-        PositionND max = p1.max(p2);
-
-        List<PositionND> r = new ArrayList<>();
+        List<T> r = new ArrayList<>();
         addDimension(min, max, min.copy(), 0, r);
         return r;
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends CastedPosition<T>> List<T> between(T p1, T p2) {
-        return between((PositionND) p1, p2).stream()
-                .map(p -> (T) p)
-                .collect(Collectors.toList());
-    }
-
-    private static void addDimension(PositionND min, PositionND max, PositionND current, int dimension, List<PositionND> positions) {
+    private static <T extends AbstractPosition<T>> void addDimension(T min, T max, T current, int dimension, List<T> positions) {
         if (dimension >= min.getDimensions()) {
             positions.add(current);
             return;
         }
 
         for (long n = min.getN(dimension); n <= max.getN(dimension); n++) {
-            PositionND pos = current.copy();
+            T pos = current.copy();
             pos.setN(dimension, n);
             addDimension(min, max, pos, dimension + 1, positions);
         }
     }
 
-    public static List<PositionND> rectangle(PositionND origin, long width, long height) {
+    public static <T extends AbstractPosition<T>> List<T> rectangle(T origin, long width, long height) {
         return between(origin, origin.copyAdd(width - 1, height - 1));
     }
 
-    public static <T extends CastedPosition<T>> List<T> rectangle(T origin, long width, long height) {
-        return between(origin, origin.copyAdd(width - 1, height - 1));
+    public static <T extends AbstractPosition<T>> Map<T, Long> countNeighbours(Iterable<T> positions) {
+        return countNeighbours(positions, p -> true);
     }
 
-    public static Map<PositionND, Long> countNeighbours(Iterable<PositionND> positions) {
-        Map<PositionND, Long> count = new HashMap<>();
-        for (PositionND position : positions) {
-            MapUtils.increaseAll(count, position.getNeighbours(), 0L);
+    public static <T extends AbstractPosition<T>> Map<T, Long> countNeighbours(Iterable<T> positions, Predicate<T> filter) {
+        Map<T, Long> amount = new HashMap<>();
+        for (T position : positions) {
+            position.getNeighbours().stream()
+                    .filter(filter)
+                    .forEach(p -> MapUtils.increaseLong(amount, p));
         }
-        return count;
+        return amount;
     }
 
     public static void print(Collection<Position> all) {
-        print(all, p -> all.contains(p) ? "#" : ".");
+        print(all, (p, b) -> b ? "#" : ".");
     }
 
-    public static void print(Collection<Position> all, Function<Position, String> convert) {
-        Position min = minCasted(all);
-        Position max = maxCasted(all);
+    public static void print(Collection<Position> all, BiFunction<Position, Boolean, String> convert) {
+        Position min = min(all);
+        Position max = max(all);
 
         for (long y = min.getY(); y <= max.getY(); y++) {
             for (long x = min.getX(); x <= max.getX(); x++) {
                 Position pos = new Position(x, y);
-                System.out.print(convert.apply(pos));
+                System.out.print(convert.apply(pos, all.contains(pos)));
             }
             System.out.println();
         }

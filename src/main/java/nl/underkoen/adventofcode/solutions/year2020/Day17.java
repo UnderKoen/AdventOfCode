@@ -1,13 +1,13 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.position.PositionND;
+import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.ConwayUtils;
 import nl.underkoen.adventofcode.utils.InputUtils;
-import nl.underkoen.adventofcode.utils.PositionUtils;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,29 +23,15 @@ public class Day17 extends Solution {
 
     @Override
     protected void run(List<String> input) {
-        Set<PositionND> positions = InputUtils.mapChar(input, (c, p) -> c == '#' ? p : null)
+        Set<Position> positions = InputUtils.mapChar(input, (c, p) -> c == '#' ? p : null)
                 .filter(Objects::nonNull)
+                .peek(p -> p.setDimensions(3))
                 .collect(Collectors.toSet());
 
-        a = calculate(positions, 3);
-        b = calculate(positions, 4);
-    }
+        a = ConwayUtils.calculate(positions, 6, (n, s, p) -> n == 3 || n == 2 && s).size();
 
-    private long calculate(Set<PositionND> start, int dimensions) {
-        Set<PositionND> positions = start.stream()
-                .map(p -> p.copyWithDimension(dimensions))
-                .collect(Collectors.toSet());
-
-        for (int i = 0; i < 6; i++) {
-            Map<PositionND, Long> amount = PositionUtils.countNeighbours(positions);
-            Set<PositionND> f = positions;
-            positions = amount.entrySet().stream()
-                    .filter(e -> e.getValue() == 3 ||
-                            e.getValue() == 2 && f.contains(e.getKey()))
-                    .map(Map.Entry::getKey)
-                    .collect(Collectors.toSet());
-        }
-
-        return positions.size();
+        positions.forEach(p -> p.setDimensions(4));
+        positions = new HashSet<>(positions);
+        b = ConwayUtils.calculate(positions, 6, (n, s, p) -> n == 3 || n == 2 && s).size();
     }
 }

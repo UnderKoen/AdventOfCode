@@ -52,8 +52,8 @@ public class Day11 extends Solution {
 
         Map<Position, Long> canvas = run(program, 1);
 
-        Position min = PositionUtils.maxCasted(canvas.keySet());
-        Position max = PositionUtils.maxCasted(canvas.keySet());
+        Position min = PositionUtils.min(canvas.keySet());
+        Position max = PositionUtils.max(canvas.keySet());
 
         LongStream.range(min.getY(), max.getY() + 1)
                 .map(y -> -y).sorted().map(y -> -y)

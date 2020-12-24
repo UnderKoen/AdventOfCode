@@ -3,7 +3,6 @@ package nl.underkoen.adventofcode.solutions;
 import com.google.common.reflect.ClassPath;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import nl.underkoen.adventofcode.Main;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -121,7 +120,7 @@ class SolutionUtils {
 
     @SneakyThrows
     static Map<Integer, List<Solution>> getAllSolutions(String pkg) {
-        Set<ClassPath.ClassInfo> classes = ClassPath.from(Main.class.getClassLoader()).getTopLevelClassesRecursive(pkg);
+        Set<ClassPath.ClassInfo> classes = ClassPath.from(SolutionUtils.class.getClassLoader()).getTopLevelClassesRecursive(pkg);
         Map<Integer, List<Solution>> solutions = new HashMap<>();
 
         for (ClassPath.ClassInfo info : classes) {

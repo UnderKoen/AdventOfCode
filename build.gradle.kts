@@ -30,3 +30,8 @@ dependencies {
     implementation("org.apache.commons", "commons-lang3", "3.0")
     testImplementation("junit", "junit", "4.12")
 }
+
+tasks.cupCompile {
+    dependsOn(tasks.clean)
+    finalizedBy(tasks.build)
+}

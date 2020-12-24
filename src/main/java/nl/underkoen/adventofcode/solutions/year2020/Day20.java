@@ -184,8 +184,8 @@ public class Day20 extends Solution {
         for (Map2 alt : m.getAlts()) {
             all = alt.all;
 
-            Position min = PositionUtils.minCasted(all);
-            Position max = PositionUtils.maxCasted(all);
+            Position min = PositionUtils.min(all);
+            Position max = PositionUtils.max(all);
 
             logness:
             for (Position p : PositionUtils.between(min, max)) {
@@ -206,14 +206,14 @@ public class Day20 extends Solution {
         }
 
         Set<Position> positions = all;
-        PositionUtils.print(all, p -> insideLog.contains(p) ? "O" : positions.contains(p) ? "#" : ".");
+        PositionUtils.print(all, (p, b) -> insideLog.contains(p) ? "O" : b ? "#" : ".");
     }
 
     public static boolean isCorrect(Map<Position, Image> placements) {
         if (placements.size() <= 1) return true;
         for (Map.Entry<Position, Image> entry : placements.entrySet()) {
             Image org = entry.getValue();
-            for (Position n : entry.getKey().getNeighboursCasted()) {
+            for (Position n : entry.getKey().getNeighbours()) {
                 Position diff = entry.getKey().copySub(n);
                 if (diff.getX() != 0 && diff.getY() != 0) continue;
                 if (!placements.containsKey(n)) continue;

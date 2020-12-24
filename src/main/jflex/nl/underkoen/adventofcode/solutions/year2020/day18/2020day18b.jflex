@@ -5,7 +5,7 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
 import java_cup.runtime.Symbol;
 import java_cup.runtime.SymbolFactory;
 import java.io.StringReader;
-import nl.underkoen.adventofcode.solutions.year2020.day18.ParserBSym;
+import static nl.underkoen.adventofcode.solutions.year2020.day18.ParserBSym.*;
 
 %%
 
@@ -42,37 +42,37 @@ Space = [ \t\f]
 NewLine = \r | \n | \r\n
 
 %eofval{
-    return sf.newSymbol("EOF",ParserBSym.EOF);
+    return sf.newSymbol("EOF",EOF);
 %eofval}
 
 %%
 
 <YYINITIAL> {
     {Space}             { }
-    {NewLine}           { return sf.newSymbol("NEW_LINE", ParserBSym.NEW_LINE); }
+    {NewLine}           { return sf.newSymbol("NEW_LINE", NEW_LINE); }
 
     /* expressions */
-    "+"                 { return sf.newSymbol("PLUS", ParserBSym.PLUS); }
-    "-"                 { return sf.newSymbol("MINUS", ParserBSym.MINUS); }
-    "*"                 { return sf.newSymbol("TIMES", ParserBSym.TIMES); }
-    "/"                 { return sf.newSymbol("DIVIDE", ParserBSym.DIVIDE); }
-    "%"                 { return sf.newSymbol("MODULO", ParserBSym.MODULO); }
-    "="                 { return sf.newSymbol("ASSIGN", ParserBSym.ASSIGN); }
-    "("                 { return sf.newSymbol("LEFT_PAREN", ParserBSym.LEFT_PAREN); }
-    ")"                 { return sf.newSymbol("RIGHT_PAREN", ParserBSym.RIGHT_PAREN); }
-    {Number}            { return sf.newSymbol("NUMBER", ParserBSym.NUMBER, new Long(yytext())); }
+    "+"                 { return sf.newSymbol("PLUS", PLUS); }
+    "-"                 { return sf.newSymbol("MINUS", MINUS); }
+    "*"                 { return sf.newSymbol("TIMES", TIMES); }
+    "/"                 { return sf.newSymbol("DIVIDE", DIVIDE); }
+    "%"                 { return sf.newSymbol("MODULO", MODULO); }
+    "="                 { return sf.newSymbol("ASSIGN", ASSIGN); }
+    "("                 { return sf.newSymbol("LEFT_PAREN", LEFT_PAREN); }
+    ")"                 { return sf.newSymbol("RIGHT_PAREN", RIGHT_PAREN); }
+    {Number}            { return sf.newSymbol("NUMBER", NUMBER, new Long(yytext())); }
 
     /* statement */
-    "{"                 { return sf.newSymbol("{", ParserBSym.LEFT_CURLY); }
-    "}"                 { return sf.newSymbol("}", ParserBSym.RIGHT_CURLY); }
+    "{"                 { return sf.newSymbol("{", LEFT_CURLY); }
+    "}"                 { return sf.newSymbol("}", RIGHT_CURLY); }
 
     /* compare */
-    "=="                { return sf.newSymbol("EQUAL", ParserBSym.EQUAL); }
-    "!="                { return sf.newSymbol("NOT_EQUAL", ParserBSym.NOT_EQUAL); }
-    "<"                 { return sf.newSymbol("BIGGER", ParserBSym.BIGGER); }
-    ">"                 { return sf.newSymbol("SMALLER", ParserBSym.SMALLER); }
-    "<="                { return sf.newSymbol("BIGGER_OR_EQUALS", ParserBSym.BIGGER_OR_EQUALS); }
-    ">="                { return sf.newSymbol("SMALLER_OR_EQUALS", ParserBSym.SMALLER_OR_EQUALS); }
+    "=="                { return sf.newSymbol("EQUAL", EQUAL); }
+    "!="                { return sf.newSymbol("NOT_EQUAL", NOT_EQUAL); }
+    "<"                 { return sf.newSymbol("BIGGER", BIGGER); }
+    ">"                 { return sf.newSymbol("SMALLER", SMALLER); }
+    "<="                { return sf.newSymbol("BIGGER_OR_EQUALS", BIGGER_OR_EQUALS); }
+    ">="                { return sf.newSymbol("SMALLER_OR_EQUALS", SMALLER_OR_EQUALS); }
 }
 
 // error fallback

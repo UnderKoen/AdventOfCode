@@ -26,8 +26,8 @@ public class Day06 extends Solution {
         List<Position> positions = InputUtils.asPositionList(input)
                 .collect(Collectors.toList());
 
-        Position min = PositionUtils.minCasted(positions);
-        Position max = PositionUtils.maxCasted(positions);
+        Position min = PositionUtils.min(positions);
+        Position max = PositionUtils.max(positions);
 
         Map<Position, Position> closest = new HashMap<>();
 
