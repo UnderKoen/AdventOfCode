@@ -30,21 +30,15 @@ public class Day24 extends Solution {
                 if (s.startsWith("sw")) {
                     position.addY(-1);
                     s = s.substring(2);
-                } else if (s.startsWith("nw")) {
-                    position.addY(1);
-                    position.addX(-1);
-                    s = s.substring(2);
                 } else if (s.startsWith("ne")) {
                     position.addY(1);
                     s = s.substring(2);
-                } else if (s.startsWith("se")) {
-                    position.addY(-1);
-                    position.addX(1);
-                    s = s.substring(2);
                 } else {
                     switch (s.charAt(0)) {
+                        case 'n' -> position.addY(1);
                         case 'e' -> position.addX(1);
-                        case 'w' -> position.addX(-1);
+                        case 's' -> position.subY(1);
+                        case 'w' -> position.subX(1);
                     }
                     s = s.substring(1);
                 }

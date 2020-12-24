@@ -29,13 +29,35 @@ public class Day23 extends Solution {
             values.put(l, nums.add(l));
         }
 
+        run(100, 20, nums, values);
+
+        textA = "";
+        nums = nums.startingAt(values.get(1L));
+        nums.remove(nums.getHead());
+        for (Node<Long> node : nums) {
+            textA += node.getValue();
+        }
+
+        nums = new CircularLinkedList<>();
+        values = new HashMap<>();
+
+        for (char c : input.get(0).toCharArray()) {
+            long l = Long.parseLong(Character.toString(c));
+            values.put(l, nums.add(l));
+        }
+
         for (long l = 10; l <= 1000000; l++) {
             values.put(l, nums.add(l));
         }
 
-        Node<Long> current = nums.getHead();
+        run(10000000, 1000000, nums, values);
 
-        for (long i = 0; i <= 10000000; i++) {
+        b = values.get(1L).getNextNode().getValue() * values.get(1L).getNextNode().getNextNode().getValue();
+    }
+
+    public static void run(long iterations, long max, CircularLinkedList<Long> nums, Map<Long, Node<Long>> values) {
+        Node<Long> current = nums.getHead();
+        for (long i = 0; i < iterations; i++) {
             if (i % 1000 == 0) System.out.print("\r" + i);
             long value = current.getValue();
 
@@ -46,7 +68,6 @@ public class Day23 extends Solution {
 
             long des = value - 1;
             long min = 1;
-            long max = 1000000;
             Node<Long> desNode = values.get(des);
             while (desNode == null || pickedUp.contains(desNode)) {
                 des--;
@@ -66,14 +87,5 @@ public class Day23 extends Solution {
             current = current.getNextNode();
         }
         System.out.println();
-
-//        textA = "";
-//        nums = nums.startingAt(values.get(1L));
-//        nums.remove(nums.getHead());
-//        for (Node<Long> node : nums) {
-//            textA += node.getValue();
-//        }
-
-        b = values.get(1L).getNextNode().getValue() * values.get(1L).getNextNode().getNextNode().getValue();
     }
 }
