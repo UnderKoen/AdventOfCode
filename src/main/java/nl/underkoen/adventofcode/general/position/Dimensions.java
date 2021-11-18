@@ -1,7 +1,9 @@
 package nl.underkoen.adventofcode.general.position;
 
-public class Dimensions {
-    public interface TwoDimensions {
+public interface Dimensions {
+    long[] getCoords();
+
+    interface TwoDimensions extends Dimensions {
         long[] getCoords();
 
         default long getX() {
@@ -57,7 +59,7 @@ public class Dimensions {
         }
     }
 
-    public interface ThreeDimensions extends TwoDimensions {
+    interface ThreeDimensions extends TwoDimensions {
         default long getZ() {
             return getCoords()[2];
         }
@@ -83,7 +85,7 @@ public class Dimensions {
         }
     }
 
-    public interface FourDimensions extends ThreeDimensions {
+    interface FourDimensions extends ThreeDimensions {
         default long getW() {
             return getCoords()[3];
         }

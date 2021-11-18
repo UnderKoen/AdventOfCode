@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public abstract class AbstractPosition<T extends AbstractPosition<T>> implements Comparable<AbstractPosition<T>> {
+public abstract class AbstractPosition<T extends AbstractPosition<T>> implements Comparable<AbstractPosition<T>>, Dimensions {
     private long[] coords;
 
     public AbstractPosition(int dimensions) {
