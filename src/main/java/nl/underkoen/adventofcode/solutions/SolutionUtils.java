@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.solutions;
 import com.google.common.reflect.ClassPath;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import nl.underkoen.adventofcode.utils.MapUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -128,8 +129,8 @@ class SolutionUtils {
             if (Solution.class.isAssignableFrom(cls) && cls != Solution.class) {
                 Class<? extends Solution> day = (Class<? extends Solution>) cls;
                 Solution solution = day.getConstructor().newInstance();
-                if (!solutions.containsKey(solution.getYear())) solutions.put(solution.getYear(), new ArrayList<>());
-                solutions.get(solution.getYear()).add(solution);
+
+                MapUtils.add(solutions, solution.getYear(), solution);
             }
         }
 

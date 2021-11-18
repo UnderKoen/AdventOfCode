@@ -133,6 +133,14 @@ public class InputUtils {
         return builder.build();
     }
 
+    public <T> Stream<BiHolder<Integer, T>> asIndexedStream(T[] input) {
+        Stream.Builder<BiHolder<Integer, T>> builder = Stream.builder();
+        for (int i = 0; i < input.length; i++) {
+            builder.accept(new BiHolder<>(i, input[i]));
+        }
+        return builder.build();
+    }
+
     public static String asString(List<String> input) {
         return String.join("\n", input);
     }

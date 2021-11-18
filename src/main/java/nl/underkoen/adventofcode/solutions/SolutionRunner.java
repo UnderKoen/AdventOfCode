@@ -9,7 +9,11 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Command(name = "AdventOfCode",
         aliases = "aoc",
@@ -60,7 +64,10 @@ public class SolutionRunner implements Runnable {
         SolutionUtils.download = download;
         SolutionUtils.resources = inputs;
 
-        Set<Map.Entry<Integer, List<Solution>>> yearSolutions = SolutionUtils.getAllSolutions(pkg).entrySet();
+        Map<Integer, List<Solution>> yearSolutions = SolutionUtils.getAllSolutions(pkg);
+        List<Integer> years = yearSolutions.keySet().stream()
+                .sorted()
+                .collect(Collectors.toList());
 
         if (year != null && year < 2000) year += 2000;
 
@@ -68,29 +75,31 @@ public class SolutionRunner implements Runnable {
         if (today || thisYear) year = date.getYear();
         if (today) day = date.getDayOfMonth();
 
-        if (last && year == null) year = yearSolutions.stream()
-                .mapToInt(Map.Entry::getKey)
+        if (last && year == null) year = years.stream()
+                .mapToInt(v -> v)
                 .max()
                 .orElseThrow();
 
         if (year != null) {
-            yearSolutions.removeIf(e -> !e.getKey().equals(year));
+            years = List.of(year);
         }
 
-        for (Map.Entry<Integer, List<Solution>> entry : yearSolutions) {
-            System.out.printf("%n=== YEAR %d ===%n%n", entry.getKey());
+        for (int curYear : years) {
+            System.out.printf("%n=== YEAR %d ===%n%n", curYear);
 
-            if (last && day == null) day = entry.getValue().stream()
+            List<Solution> solutions = yearSolutions.getOrDefault(curYear, List.of());
+
+            if (last && day == null) day = solutions.stream()
                     .mapToInt(SolutionInfo::getDay)
                     .max()
                     .orElseThrow();
 
             if (day != null) {
-                entry.getValue().removeIf(s -> s.getDay() != day);
+                solutions.removeIf(s -> s.getDay() != day);
             }
 
-            entry.getValue().sort(Comparator.comparingInt(SolutionInfo::getDay));
-            for (Solution solution : entry.getValue()) {
+            solutions.sort(Comparator.comparingInt(SolutionInfo::getDay));
+            for (Solution solution : solutions) {
                 run(solution, output, times, verbose, submit);
             }
         }
