@@ -26,7 +26,7 @@ public class Day23 extends Solution {
 
         for (char c : input.get(0).toCharArray()) {
             long l = Long.parseLong(Character.toString(c));
-            values.put(l, nums.add(l));
+            values.put(l, nums.addAtTail(l));
         }
 
         run(100, 20, nums, values);
@@ -43,11 +43,11 @@ public class Day23 extends Solution {
 
         for (char c : input.get(0).toCharArray()) {
             long l = Long.parseLong(Character.toString(c));
-            values.put(l, nums.add(l));
+            values.put(l, nums.addAtTail(l));
         }
 
         for (long l = 10; l <= 1000000; l++) {
-            values.put(l, nums.add(l));
+            values.put(l, nums.addAtTail(l));
         }
 
         run(10000000, 1000000, nums, values);
