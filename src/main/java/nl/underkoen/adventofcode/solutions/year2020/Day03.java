@@ -2,7 +2,6 @@ package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.List;
 

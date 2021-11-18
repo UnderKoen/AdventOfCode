@@ -1,6 +1,8 @@
 package nl.underkoen.adventofcode.general;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Created by Under_Koen on 13/12/2019.

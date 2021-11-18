@@ -4,7 +4,10 @@ import java_cup.runtime.ComplexSymbolFactory;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.solutions.year2020.day18.*;
+import nl.underkoen.adventofcode.solutions.year2020.day18.LexerA;
+import nl.underkoen.adventofcode.solutions.year2020.day18.LexerB;
+import nl.underkoen.adventofcode.solutions.year2020.day18.ParserA;
+import nl.underkoen.adventofcode.solutions.year2020.day18.ParserB;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.List;

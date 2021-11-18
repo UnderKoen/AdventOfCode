@@ -6,8 +6,6 @@ import nl.underkoen.adventofcode.solutions.year2019.opcode.OpcodeRunner;
 
 import java.util.List;
 
-import static nl.underkoen.adventofcode.solutions.year2019.opcode.OpcodeRunner.processAscii;
-
 /**
  * Created by Under_Koen on 24/12/2019.
  */
