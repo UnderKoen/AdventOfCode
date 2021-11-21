@@ -16,14 +16,6 @@ public class Node<T> {
         this.value = value;
     }
 
-    public void setNextNode(Node<T> nextNode) {
-        this.nextNode = nextNode;
-    }
-
-    public void setPrevNode(Node<T> prevNode) {
-        this.prevNode = prevNode;
-    }
-
     @Override
     public String toString() {
         return "Node{" +

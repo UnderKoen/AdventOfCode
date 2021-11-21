@@ -33,7 +33,7 @@ public class Day23 extends Solution {
 
         textA = "";
         nums = nums.startingAt(values.get(1L));
-        nums.remove(nums.getHead());
+        nums.removeNode(nums.getHead());
         for (Node<Long> node : nums) {
             textA += node.getValue();
         }
@@ -76,7 +76,7 @@ public class Day23 extends Solution {
             }
 
             for (Node<Long> node : pickedUp) {
-                nums.remove(node);
+                nums.removeNode(node);
             }
 
             while (!pickedUp.isEmpty()) {

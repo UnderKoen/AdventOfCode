@@ -71,4 +71,9 @@ public abstract class Solution implements SolutionInfo {
         if (submit == null) return getCorrectOutputText().length != 2 && !(getA().equals("0") && getB().equals("0"));
         return submit;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Year %s, day %s", getYear(), getDay());
+    }
 }

@@ -110,7 +110,7 @@ public class CircularLinkedListTest {
 
         //Check
         Assert.assertEquals("[1, 2, 3, 6, 4, 5]", list.toString());
-        Assert.assertEquals(5, list.size());
+        Assert.assertEquals(6, list.size());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class CircularLinkedListTest {
         //Check
         Assert.assertEquals("[1, 2, 3, 4, 5, 6]", list.toString());
         Assert.assertSame(node, list.getTail());
-        Assert.assertEquals(5, list.size());
+        Assert.assertEquals(6, list.size());
     }
 
     @Test
@@ -202,7 +202,7 @@ public class CircularLinkedListTest {
         list.addAtTail(5);
 
         //Act
-        list.remove(node);
+        list.removeNode(node);
 
         //Check
         Assert.assertEquals("[1, 2, 4, 5]", list.toString());
@@ -219,7 +219,7 @@ public class CircularLinkedListTest {
         list.addAtTail(5);
 
         //Act
-        list.remove(node);
+        list.removeNode(node);
 
         //Check
         Assert.assertEquals("[2, 3, 4, 5]", list.toString());
@@ -237,7 +237,7 @@ public class CircularLinkedListTest {
         Node<Integer> node = list.addAtTail(5);
 
         //Act
-        list.remove(node);
+        list.removeNode(node);
 
         //Check
         Assert.assertEquals("[1, 2, 3, 4]", list.toString());
@@ -251,13 +251,13 @@ public class CircularLinkedListTest {
         Node<Integer> node = list.addAtTail(1);
 
         //Act
-        list.remove(node);
+        list.removeNode(node);
 
         //Check
         Assert.assertEquals("[]", list.toString());
         Assert.assertNull(list.getHead());
         Assert.assertNull(list.getTail());
-        Assert.assertEquals(4, list.size());
+        Assert.assertEquals(0, list.size());
     }
 
     @Test
@@ -267,13 +267,13 @@ public class CircularLinkedListTest {
         Node<Integer> node = list.addAtTail(2);
 
         //Act
-        list.remove(node);
+        list.removeNode(node);
 
         //Check
         Assert.assertEquals("[1]", list.toString());
         Assert.assertSame(last, list.getHead());
         Assert.assertSame(last, list.getTail());
-        Assert.assertEquals(4, list.size());
+        Assert.assertEquals(1, list.size());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -285,7 +285,7 @@ public class CircularLinkedListTest {
         Node<Integer> node = new Node<>(1);
 
         //Act
-        list.remove(node);
+        list.removeNode(node);
 
         //Check
     }
@@ -300,7 +300,7 @@ public class CircularLinkedListTest {
         node.prevNode = node;
 
         //Act
-        list.remove(node);
+        list.removeNode(node);
 
         //Check
     }
@@ -319,12 +319,12 @@ public class CircularLinkedListTest {
         Node<Integer> node7 = list.addAtHead(7);
         list.addAfter(node4, 8);
         list.addBefore(node2, 9);
-        list.remove(node7);
+        list.removeNode(node7);
         Node<Integer> node10 = list.addAtHead(10);
         Node<Integer> node11 = list.addAtTail(11);
         Node<Integer> node12 = list.addAfter(node11, 12);
         Node<Integer> node13 = list.addBefore(node10, 13);
-        list.remove(node10);
+        list.removeNode(node10);
 
         //Check
         Assert.assertEquals("[13, 6, 4, 8, 1, 9, 2, 3, 5, 11, 12]", list.toString());
