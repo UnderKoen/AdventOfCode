@@ -1,12 +1,10 @@
 package nl.underkoen.adventofcode.solutions.year2021;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.map.AbstractMapCollection;
-import nl.underkoen.adventofcode.general.map.HashMapList;
-import nl.underkoen.adventofcode.general.map.MapList;
+import nl.underkoen.adventofcode.general.map.collection.HashMapList;
+import nl.underkoen.adventofcode.general.map.collection.MapList;
 import nl.underkoen.adventofcode.solutions.Solution;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Day01 extends Solution {

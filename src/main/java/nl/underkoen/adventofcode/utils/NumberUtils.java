@@ -1,8 +1,10 @@
 package nl.underkoen.adventofcode.utils;
 
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 @UtilityClass
 public class NumberUtils {
@@ -49,26 +51,72 @@ public class NumberUtils {
         return x1 < 0 ? x1 + b0 : x1;
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Number> T addNumbers(T a, Number b) {
-        if (a == null) throw new NullPointerException();
+    public static final NumberComputation addition = new NumberComputation(
+            Integer::sum,
+            Double::sum,
+            Float::sum,
+            Long::sum,
+            (s1, s2) -> (short) (s1 + s2),
+            (b1, b2) -> (byte) (b1 + b2));
 
-        if (a instanceof Double) {
-            return (T) (Double) (a.doubleValue() + b.doubleValue());
-        } else if (a instanceof Float) {
-            return (T) (Float) (a.floatValue() + b.floatValue());
-        } else if (a instanceof Long) {
-            return (T) (Long) (a.longValue() + b.longValue());
-        } else if (a instanceof Short) {
-            return (T) (Short) (short) (a.shortValue() + b.shortValue());
-        } else if (a instanceof Byte) {
-            return (T) (Byte) (byte) (a.byteValue() + b.byteValue());
-        } else {
-            return (T) (Integer) (a.intValue() + b.intValue());
+    public static final NumberComputation subtraction = new NumberComputation(
+            (i1, i2) -> (i1 - i2),
+            (d1, d2) -> (d1 - d2),
+            (f1, f2) -> (f1 - f2),
+            (l1, l2) -> (l1 - l2),
+            (s1, s2) -> (short) (s1 - s2),
+            (b1, b2) -> (byte) (b1 - b2));
+
+    public static final NumberComputation multiplication = new NumberComputation(
+            (i1, i2) -> (i1 * i2),
+            (d1, d2) -> (d1 * d2),
+            (f1, f2) -> (f1 * f2),
+            (l1, l2) -> (l1 * l2),
+            (s1, s2) -> (short) (s1 * s2),
+            (b1, b2) -> (byte) (b1 * b2));
+
+    public static final NumberComputation division = new NumberComputation(
+            (i1, i2) -> (i1 / i2),
+            (d1, d2) -> (d1 / d2),
+            (f1, f2) -> (f1 / f2),
+            (l1, l2) -> (l1 / l2),
+            (s1, s2) -> (short) (s1 / s2),
+            (b1, b2) -> (byte) (b1 / b2));
+
+    public static final NumberComputation modulo = new NumberComputation(
+            (i1, i2) -> (i1 % i2),
+            (d1, d2) -> (d1 % d2),
+            (f1, f2) -> (f1 % f2),
+            (l1, l2) -> (l1 % l2),
+            (s1, s2) -> (short) (s1 % s2),
+            (b1, b2) -> (byte) (b1 % b2));
+
+    @RequiredArgsConstructor
+    public static final class NumberComputation {
+        private final BiFunction<Integer, Integer, Integer> intComputation;
+        private final BiFunction<Double, Double, Double> doubleComputation;
+        private final BiFunction<Float, Float, Float> floatComputation;
+        private final BiFunction<Long, Long, Long> longComputation;
+        private final BiFunction<Short, Short, Short> shortComputation;
+        private final BiFunction<Byte, Byte, Byte> byteComputation;
+
+        @SuppressWarnings("unchecked")
+        public <T extends Number> T compute(T a, Number b) {
+            if (a == null || b == null) throw new NullPointerException();
+
+            if (a instanceof Double) {
+                return (T) doubleComputation.apply(a.doubleValue(), b.doubleValue());
+            } else if (a instanceof Float) {
+                return (T) floatComputation.apply(a.floatValue(), b.floatValue());
+            } else if (a instanceof Long) {
+                return (T) longComputation.apply(a.longValue(), b.longValue());
+            } else if (a instanceof Short) {
+                return (T) shortComputation.apply(a.shortValue(), b.shortValue());
+            } else if (a instanceof Byte) {
+                return (T) byteComputation.apply(a.byteValue(), b.byteValue());
+            } else {
+                return (T) intComputation.apply(a.intValue(), b.intValue());
+            }
         }
-    }
-
-    public static <T extends Number> T increase(T a) {
-        return addNumbers(a, 1);
     }
 }

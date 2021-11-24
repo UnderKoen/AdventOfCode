@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
+import nl.underkoen.adventofcode.general.map.counter.HashMapCounter;
 
 import java.util.*;
 import java.util.function.Function;
@@ -10,7 +11,7 @@ import java.util.function.Supplier;
 public class MapUtils {
     /**
      * @return true when the value already existed
-     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
+     * @deprecated Because {@link HashMapCounter} implements this method
      */
     @Deprecated
     public <K> boolean increaseInt(Map<K, Integer> map, K key) {
@@ -19,7 +20,7 @@ public class MapUtils {
 
     /**
      * @return true when the value already existed
-     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
+     * @deprecated Because {@link HashMapCounter} implements this method
      */
     @Deprecated
     public <K> boolean increaseLong(Map<K, Long> map, K key) {
@@ -28,17 +29,17 @@ public class MapUtils {
 
     /**
      * @return true when the value already existed
-     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
+     * @deprecated Because {@link HashMapCounter} implements this method
      */
     @Deprecated
     public <K, N extends Number> boolean increase(Map<K, N> map, K key, N defaultValue) {
         N n = map.getOrDefault(key, defaultValue);
 
-        return map.put(key, NumberUtils.increase(n)) != null;
+        return map.put(key, NumberUtils.addition.compute(n, 1)) != null;
     }
 
     /**
-     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
+     * @deprecated Because {@link HashMapCounter} implements this method
      */
     @Deprecated
     public <K, N extends Number> void increaseAll(Map<K, N> map, Iterable<K> values, N defaultValue) {
