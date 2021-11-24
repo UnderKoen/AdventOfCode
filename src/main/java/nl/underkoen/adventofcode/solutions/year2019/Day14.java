@@ -1,7 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.BiHolder;
+import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.ArrayList;

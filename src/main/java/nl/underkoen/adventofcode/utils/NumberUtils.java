@@ -51,12 +51,18 @@ public class NumberUtils {
 
     @SuppressWarnings("unchecked")
     public static <T extends Number> T addNumbers(T a, Number b) {
+        if (a == null) throw new NullPointerException();
+
         if (a instanceof Double) {
             return (T) (Double) (a.doubleValue() + b.doubleValue());
         } else if (a instanceof Float) {
             return (T) (Float) (a.floatValue() + b.floatValue());
         } else if (a instanceof Long) {
             return (T) (Long) (a.longValue() + b.longValue());
+        } else if (a instanceof Short) {
+            return (T) (Short) (short) (a.shortValue() + b.shortValue());
+        } else if (a instanceof Byte) {
+            return (T) (Byte) (byte) (a.byteValue() + b.byteValue());
         } else {
             return (T) (Integer) (a.intValue() + b.intValue());
         }

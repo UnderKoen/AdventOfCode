@@ -58,7 +58,6 @@ public class CircularLinkedList<T> extends LinkedList<T> {
      * @return the view
      */
     public CircularLinkedList<T> startingAt(Node<T> node) {
-        if (node == null) return new CircularLinkedList<T>();
         return new CircularLinkedListView<T>(node, this);
     }
 
@@ -66,6 +65,7 @@ public class CircularLinkedList<T> extends LinkedList<T> {
         private final CircularLinkedList<T> original;
 
         public CircularLinkedListView(Node<T> head, CircularLinkedList<T> original) {
+            if (head == null) throw new IllegalArgumentException("View cannot start a null!");
             setHead(head);
             this.original = original;
         }
@@ -78,6 +78,11 @@ public class CircularLinkedList<T> extends LinkedList<T> {
         @Override
         public int size() {
             return original.size();
+        }
+
+        @Override
+        public CircularLinkedList<T> startingAt(Node<T> node) {
+            return new CircularLinkedListView<T>(node, original);
         }
     }
 }

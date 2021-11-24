@@ -1,4 +1,4 @@
-package nl.underkoen.adventofcode.general;
+package nl.underkoen.adventofcode.general.tuple;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

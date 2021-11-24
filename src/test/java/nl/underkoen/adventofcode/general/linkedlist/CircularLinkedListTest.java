@@ -352,7 +352,7 @@ public class CircularLinkedListTest {
         Assert.assertEquals("[3, 4, 5, 1, 2]", list.toString());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testStartingAt_Null() {
         //Arrange
 
@@ -360,7 +360,6 @@ public class CircularLinkedListTest {
         list = list.startingAt(null);
 
         //Check
-        Assert.assertEquals("[]", list.toString());
     }
 
     @Test

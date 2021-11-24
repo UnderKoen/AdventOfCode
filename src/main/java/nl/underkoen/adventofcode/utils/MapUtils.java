@@ -10,27 +10,37 @@ import java.util.function.Supplier;
 public class MapUtils {
     /**
      * @return true when the value already existed
+     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
      */
+    @Deprecated
     public <K> boolean increaseInt(Map<K, Integer> map, K key) {
         return increase(map, key, 0);
     }
 
     /**
      * @return true when the value already existed
+     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
      */
+    @Deprecated
     public <K> boolean increaseLong(Map<K, Long> map, K key) {
         return increase(map, key, 0L);
     }
 
     /**
      * @return true when the value already existed
+     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
      */
+    @Deprecated
     public <K, N extends Number> boolean increase(Map<K, N> map, K key, N defaultValue) {
         N n = map.getOrDefault(key, defaultValue);
 
         return map.put(key, NumberUtils.increase(n)) != null;
     }
 
+    /**
+     * @deprecated Because {@link nl.underkoen.adventofcode.general.map.MapCounter} implements this method
+     */
+    @Deprecated
     public <K, N extends Number> void increaseAll(Map<K, N> map, Iterable<K> values, N defaultValue) {
         values.forEach(k -> increase(map, k, defaultValue));
     }

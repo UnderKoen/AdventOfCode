@@ -1,7 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2018;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.BiHolder;
+import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;

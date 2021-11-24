@@ -1,9 +1,9 @@
 package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
-import nl.underkoen.adventofcode.general.BiHolder;
-import nl.underkoen.adventofcode.general.IntHolder;
 import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.general.tuple.BiHolder;
+import nl.underkoen.adventofcode.general.tuple.IntHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;

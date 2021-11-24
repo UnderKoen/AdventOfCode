@@ -1,8 +1,8 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.IntHolder;
 import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.general.tuple.IntHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package nl.underkoen.adventofcode.solutions.year2019.opcode;
 
-import nl.underkoen.adventofcode.general.IntHolder;
+import nl.underkoen.adventofcode.general.tuple.IntHolder;
 import nl.underkoen.adventofcode.utils.StringUtils;
 
 import java.util.*;
