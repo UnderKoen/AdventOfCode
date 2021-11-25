@@ -2,6 +2,8 @@ package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.map.collection.HashMapSet;
+import nl.underkoen.adventofcode.general.map.collection.MapSet;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
@@ -33,7 +35,7 @@ public class Day21 extends Solution {
                 })
                 .collect(Collectors.toList());
 
-        Map<String, Set<String>> possible = new HashMap<>();
+        MapSet<String, String> possible = new HashMapSet<>();
         for (String aller : allergies) {
             possible.put(aller, new HashSet<>(ingredients));
         }
@@ -41,19 +43,19 @@ public class Day21 extends Solution {
         for (Dish dish : dishes) {
             for (String allergy : dish.getAllergies()) {
                 for (String ingredient : ingredients) {
-                    if (!dish.getIngredients().contains(ingredient)) possible.get(allergy).remove(ingredient);
+                    if (!dish.getIngredients().contains(ingredient)) possible.delete(allergy, ingredient);
                 }
             }
         }
 
-        Map<String, Set<String>> invert = MapUtils.invertSet(possible);
+        MapSet<String, String> invert = possible.invert();
 
         for (String ingredient : ingredients) {
             if (invert.containsKey(ingredient)) continue;
             a += amount.get(ingredient);
         }
 
-        Map<String, String> pairs = MapUtils.reduce(invert, HashSet::new);
+        Map<String, String> pairs = invert.reduceSelf();
         textB = pairs.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)

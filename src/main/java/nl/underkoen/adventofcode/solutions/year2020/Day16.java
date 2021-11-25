@@ -2,14 +2,15 @@ package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
 import lombok.Value;
+import nl.underkoen.adventofcode.general.map.collection.HashMapList;
+import nl.underkoen.adventofcode.general.map.collection.MapList;
+import nl.underkoen.adventofcode.general.map.counter.HashMapCounter;
+import nl.underkoen.adventofcode.general.map.counter.MapCounter;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
-import nl.underkoen.adventofcode.utils.MapUtils;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Day16 extends Solution {
@@ -38,23 +39,23 @@ public class Day16 extends Solution {
                 .peek(i -> a += i)
                 .count() != 0);
 
-        Map<Field, List<Long>> valid = new HashMap<>();
+        MapList<Field, Long> valid = new HashMapList<>();
 
         for (Field field : fields) {
-            Map<Long, Long> amount = new HashMap<>();
+            MapCounter<Long, Long> amount = new HashMapCounter<>(0L);
             for (Ticket ticket : tickets) {
                 long i = 0;
                 for (Long value : ticket.getValues()) {
-                    if (field.valid(value)) MapUtils.increaseLong(amount, i);
+                    if (field.valid(value)) amount.increase(i);
                     i++;
                 }
             }
             amount.forEach((index, count) -> {
-                if (count == tickets.size()) MapUtils.add(valid, field, index);
+                if (count == tickets.size()) valid.add(field, index);
             });
         }
 
-        MapUtils.reduce(valid);
+        valid.reduceSelf();
 
         List<Long> your = InputUtils.asNumberList(subInputs.get(1)).collect(Collectors.toList());
 

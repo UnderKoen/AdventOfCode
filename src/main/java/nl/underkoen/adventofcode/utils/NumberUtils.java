@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -101,6 +102,7 @@ public class NumberUtils {
         private final BiFunction<Byte, Byte, Byte> byteComputation;
 
         @SuppressWarnings("unchecked")
+        @Contract(pure = true, value = "_, null -> fail; null, _ -> fail")
         public <T extends Number> T compute(T a, Number b) {
             if (a == null || b == null) throw new NullPointerException();
 

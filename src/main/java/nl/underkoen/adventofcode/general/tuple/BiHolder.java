@@ -22,11 +22,11 @@ public class BiHolder<T, U> implements Map.Entry<T, U> {
         return t -> new BiHolder<>(t, function.apply(t));
     }
 
-    public static <K, V, O> Function<BiHolder<O, V>, BiHolder<K, V>> keepValue(Function<BiHolder<O, V>, K> function) {
+    public static <K, V, O> Function<Map.Entry<O, V>, BiHolder<K, V>> keepValue(Function<Map.Entry<O, V>, K> function) {
         return t -> new BiHolder<>(function.apply(t), t.getValue());
     }
 
-    public static <K, V, O> Function<BiHolder<K, O>, BiHolder<K, V>> keepKey(Function<BiHolder<K, O>, V> function) {
+    public static <K, V, O> Function<Map.Entry<K, O>, BiHolder<K, V>> keepKey(Function<Map.Entry<K, O>, V> function) {
         return t -> new BiHolder<>(t.getKey(), function.apply(t));
     }
 
