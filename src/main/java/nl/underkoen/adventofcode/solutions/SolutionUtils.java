@@ -45,7 +45,7 @@ class SolutionUtils {
 
         if (!input.exists()) {
             if (!input.createNewFile()) throw new IllegalArgumentException("Cant create input for this day.");
-            if (download)downloadInputFromAOC(year, day, input);
+            if (download) downloadInputFromAOC(year, day, input);
             else {
                 System.err.println("Created input file, fill this with your input.");
                 System.exit(-1);
@@ -71,8 +71,16 @@ class SolutionUtils {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpEntity entity = httpclient.execute(httpGet).getEntity();
 
+            String input = EntityUtils.toString(entity);
+
+            if (input.contains("Please don't repeatedly request this endpoint before it unlocks!")) {
+                file.deleteOnExit();
+                System.err.println(input);
+                System.exit(1);
+            }
+
             FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(EntityUtils.toString(entity));
+            fileWriter.write(input);
             fileWriter.flush();
             fileWriter.close();
         }
