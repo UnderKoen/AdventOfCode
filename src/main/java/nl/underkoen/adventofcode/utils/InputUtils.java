@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
 import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.general.tuple.IntHolder;
 
@@ -29,45 +30,44 @@ public class InputUtils {
         }
     }
 
-    public Stream<Long> asNumberList(List<String> input) {
+    public EStream<Long> asNumberList(List<String> input) {
         return asNumberList(input, DEFAULT_SPLIT);
     }
 
-    public Stream<Long> asNumberList(List<String> input, String regex) {
-        return input.stream()
+    public EStream<Long> asNumberList(List<String> input, String regex) {
+        return EStream.of(input)
                 .flatMap(s -> Arrays.stream(s.split(regex)))
                 .map(InputUtils::tryParse)
                 .filter(Objects::nonNull);
     }
 
-    public Stream<Stream<Long>> asLineNumberList(List<String> input) {
+    public EStream<EStream<Long>> asLineNumberList(List<String> input) {
         return asLineNumberList(input, DEFAULT_SPLIT);
     }
 
-    public Stream<Stream<Long>> asLineNumberList(List<String> input, String regex) {
-        return input.stream()
-                .map(s -> Arrays.stream(s.split(regex)))
+    public EStream<EStream<Long>> asLineNumberList(List<String> input, String regex) {
+        return EStream.of(input)
+                .map(s -> EStream.of(s.split(regex)))
                 .map(s -> s.map(InputUtils::tryParse)
                         .filter(Objects::nonNull));
     }
 
-    public Stream<Stream<String>> asSplitLine(List<String> input, String regex) {
-        return input.stream()
-                .map(s -> Arrays.stream(s.split(regex)));
+    public EStream<EStream<String>> asSplitLine(List<String> input, String regex) {
+        return EStream.of(input)
+                .map(s -> EStream.of(s.split(regex)));
     }
 
-    public Stream<String> asSplit(List<String> input, String regex) {
-        return input.stream()
-                .flatMap(s -> Arrays.stream(s.split(regex)));
+    public EStream<String> asSplit(List<String> input, String regex) {
+        return asSplitLine(input, regex).flatMap(s -> s);
     }
 
-    public Stream<Position> asPositionList(List<String> input) {
+    public EStream<Position> asPositionList(List<String> input) {
         return asPositionList(input, DEFAULT_SPLIT);
 
     }
 
-    public Stream<Position> asPositionList(List<String> input, String regex) {
-        return input.stream()
+    public EStream<Position> asPositionList(List<String> input, String regex) {
+        return EStream.of(input)
                 .map(s -> Arrays.stream(s.split(regex)))
                 .map(s -> s.map(InputUtils::tryParse)
                         .filter(Objects::nonNull))
@@ -75,9 +75,9 @@ public class InputUtils {
                 .map(s -> new Position(s.get(0), s.get(1)));
     }
 
-    public <T> Stream<T> mapChar(List<String> input, BiFunction<Character, Position, T> map) {
+    public <T> EStream<T> mapChar(List<String> input, BiFunction<Character, Position, T> map) {
         Position position = new Position(-1, -1);
-        return input.stream()
+        return EStream.of(input)
                 .map(String::chars)
                 .map(s -> s.mapToObj(c -> (char) c))
                 .flatMap(s -> {
@@ -93,18 +93,20 @@ public class InputUtils {
                 .toArray(char[][]::new);
     }
 
-    public Stream<Stream<String>> asRegexGroupList(List<String> input, String regex) {
+    public EStream<EStream<String>> asRegexGroupList(List<String> input, String regex) {
         Pattern pattern = Pattern.compile(regex);
 
-        return input.stream()
+        return EStream.of(input)
                 .map(pattern::matcher)
                 .map(Matcher::results)
-                .map(s -> s.flatMap(r -> IntStream
-                        .range(0, r.groupCount())
-                        .mapToObj(i -> r.group(i + 1))));
+                .map(s -> s.flatMap(
+                        r -> IntStream
+                                .range(0, r.groupCount())
+                                .mapToObj(i -> r.group(i + 1)))
+                ).map(EStream::of);
     }
 
-    public Stream<Stream<Long>> asAllNumbers(List<String> input) {
+    public EStream<EStream<Long>> asAllNumbers(List<String> input) {
         return asRegexGroupList(input, "(-?\\d+)")
                 .map(s -> s.map(Long::parseLong));
     }
@@ -121,24 +123,24 @@ public class InputUtils {
             }
         }, (l1, l2) -> {
         });
-        list.removeIf(s -> s.isEmpty());
+        list.removeIf(List::isEmpty);
         return list;
     }
 
-    public <T> Stream<BiHolder<Integer, T>> asIndexedStream(List<T> input) {
+    public <T> EStream<BiHolder<Integer, T>> asIndexedStream(List<T> input) {
         Stream.Builder<BiHolder<Integer, T>> builder = Stream.builder();
         for (int i = 0; i < input.size(); i++) {
             builder.accept(new BiHolder<>(i, input.get(i)));
         }
-        return builder.build();
+        return EStream.of(builder.build());
     }
 
-    public <T> Stream<BiHolder<Integer, T>> asIndexedStream(T[] input) {
+    public <T> EStream<BiHolder<Integer, T>> asIndexedStream(T[] input) {
         Stream.Builder<BiHolder<Integer, T>> builder = Stream.builder();
         for (int i = 0; i < input.length; i++) {
             builder.accept(new BiHolder<>(i, input[i]));
         }
-        return builder.build();
+        return EStream.of(builder.build());
     }
 
     public static String asString(List<String> input) {
