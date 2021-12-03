@@ -1,10 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.NumberUtils;
-
-import java.util.List;
 
 public class Day13 extends Solution {
     @Getter private final int day = 13;
@@ -16,7 +15,7 @@ public class Day13 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         long initial = Long.parseLong(input.get(0));
         String[] parts = input.get(1).split(",");
 

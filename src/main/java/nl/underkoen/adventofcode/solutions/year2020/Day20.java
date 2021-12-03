@@ -5,6 +5,7 @@ import com.google.common.collect.HashBiMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
@@ -21,13 +22,31 @@ public class Day20 extends Solution {
     @Getter private final int day = 20;
     @Getter private final int year = 2020;
 
+    public static boolean isCorrect(Map<Position, Image> placements) {
+        if (placements.size() <= 1) return true;
+        for (Map.Entry<Position, Image> entry : placements.entrySet()) {
+            Image org = entry.getValue();
+            for (Position n : entry.getKey().getNeighbours()) {
+                Position diff = entry.getKey().copySub(n);
+                if (diff.getX() != 0 && diff.getY() != 0) continue;
+                if (!placements.containsKey(n)) continue;
+
+                Image image = placements.get(n);
+                Border b1 = org.getBorder(diff);
+                Border b2 = image.getBorder(diff.copyMul(-1, -1));
+                if (!b1.equals(b2)) return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public long[] getCorrectOutput() {
         return new long[]{21599955909991L, 2495};
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         List<List<String>> lists = InputUtils.asSubInputs(input);
 
         Map<Long, Image> images = new HashMap<>();
@@ -209,24 +228,6 @@ public class Day20 extends Solution {
         PositionUtils.print(all, (p, b) -> insideLog.contains(p) ? "O" : b ? "#" : ".");
     }
 
-    public static boolean isCorrect(Map<Position, Image> placements) {
-        if (placements.size() <= 1) return true;
-        for (Map.Entry<Position, Image> entry : placements.entrySet()) {
-            Image org = entry.getValue();
-            for (Position n : entry.getKey().getNeighbours()) {
-                Position diff = entry.getKey().copySub(n);
-                if (diff.getX() != 0 && diff.getY() != 0) continue;
-                if (!placements.containsKey(n)) continue;
-
-                Image image = placements.get(n);
-                Border b1 = org.getBorder(diff);
-                Border b2 = image.getBorder(diff.copyMul(-1, -1));
-                if (!b1.equals(b2)) return false;
-            }
-        }
-        return true;
-    }
-
     @EqualsAndHashCode
     @ToString
     public static class Border {
@@ -234,10 +235,6 @@ public class Day20 extends Solution {
 
         public Border(String dir) {
             this.dir = dir;
-        }
-
-        public Border reverse() {
-            return new Border(StringUtils.reverse(dir));
         }
 
         public static Border horizontal(int y, Set<Position> all) {
@@ -257,6 +254,10 @@ public class Day20 extends Solution {
             }
             return new Border(str.toString());
         }
+
+        public Border reverse() {
+            return new Border(StringUtils.reverse(dir));
+        }
     }
 
     @Getter
@@ -264,6 +265,9 @@ public class Day20 extends Solution {
         long id;
         Set<Position> all;
         List<Border> borders = new ArrayList<>();
+        Image flipH;
+        Image flipV;
+        Image rotateR;
 
         public Image(long id, Set<Position> all) {
             this.id = id;
@@ -278,8 +282,6 @@ public class Day20 extends Solution {
             borders.add(Border.vertical(9, all).reverse());
         }
 
-        Image flipH;
-
         public Image flipH() {
             if (flipH != null) return flipH;
             Set<Position> flipped = all.stream().map(p -> new Position(9 - p.getX(), p.getY()))
@@ -288,8 +290,6 @@ public class Day20 extends Solution {
             return flipH = new Image(id, flipped);
         }
 
-        Image flipV;
-
         public Image flipV() {
             if (flipV != null) return flipV;
             Set<Position> flipped = all.stream().map(p -> new Position(p.getX(), 9 - p.getY()))
@@ -297,8 +297,6 @@ public class Day20 extends Solution {
 
             return flipV = new Image(id, flipped);
         }
-
-        Image rotateR;
 
         public Image rotateR() {
             if (rotateR != null) return rotateR;
@@ -364,12 +362,13 @@ public class Day20 extends Solution {
     @Getter
     public static class Map2 {
         Set<Position> all;
+        Map2 flipH;
+        Map2 flipV;
+        Map2 rotateR;
 
         public Map2(Set<Position> all) {
             this.all = all;
         }
-
-        Map2 flipH;
 
         public Map2 flipH() {
             if (flipH != null) return flipH;
@@ -379,8 +378,6 @@ public class Day20 extends Solution {
             return flipH = new Map2(flipped);
         }
 
-        Map2 flipV;
-
         public Map2 flipV() {
             if (flipV != null) return flipV;
             Set<Position> flipped = all.stream().map(p -> new Position(p.getX(), -p.getY()))
@@ -388,8 +385,6 @@ public class Day20 extends Solution {
 
             return flipV = new Map2(flipped);
         }
-
-        Map2 rotateR;
 
         public Map2 rotateR() {
             if (rotateR != null) return rotateR;

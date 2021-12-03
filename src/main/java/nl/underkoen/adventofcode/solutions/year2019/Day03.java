@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 
@@ -11,15 +12,14 @@ import java.util.function.Consumer;
  * Created by Under_Koen on 02/12/2019.
  */
 public class Day03 extends Solution {
-    @Getter private final int day = 3;
-    @Getter private final int year = 2019;
-
     private static final Map<Character, Consumer<Position>> directions = Map.of(
             'R', l -> l.addX(1),
             'L', l -> l.addX(-1),
             'U', l -> l.addY(1),
             'D', l -> l.addY(-1)
     );
+    @Getter private final int day = 3;
+    @Getter private final int year = 2019;
 
     @Override
     public long[] getCorrectOutput() {
@@ -27,7 +27,7 @@ public class Day03 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<Position, Integer> points = new HashMap<>();
         Map<Position, Integer> dup = new HashMap<>();
 

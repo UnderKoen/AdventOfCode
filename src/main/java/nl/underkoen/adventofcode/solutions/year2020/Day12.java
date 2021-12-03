@@ -1,10 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
-
-import java.util.List;
 
 public class Day12 extends Solution {
     @Getter private final int day = 12;
@@ -16,7 +15,7 @@ public class Day12 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Position ship = new Position();
         Position shipB = new Position();
 

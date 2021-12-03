@@ -3,14 +3,13 @@ package nl.underkoen.adventofcode.solutions.year2020;
 import java_cup.runtime.ComplexSymbolFactory;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.solutions.year2020.day18.LexerA;
 import nl.underkoen.adventofcode.solutions.year2020.day18.LexerB;
 import nl.underkoen.adventofcode.solutions.year2020.day18.ParserA;
 import nl.underkoen.adventofcode.solutions.year2020.day18.ParserB;
 import nl.underkoen.adventofcode.utils.InputUtils;
-
-import java.util.List;
 
 public class Day18 extends Solution {
     @Getter private final int day = 18;
@@ -23,7 +22,7 @@ public class Day18 extends Solution {
 
     @SneakyThrows
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         String str = InputUtils.asString(input);
         ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
         LexerA lexerA = new LexerA(str, symbolFactory);

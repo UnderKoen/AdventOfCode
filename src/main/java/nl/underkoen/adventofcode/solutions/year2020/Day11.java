@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.general.tuple.Holder;
 import nl.underkoen.adventofcode.solutions.Solution;
@@ -14,6 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Day11 extends Solution {
+    public static List<Position> directions = List.of(new Position(1, 0), new Position(-1, 1), new Position(0, 1), new Position(1, 1));
     @Getter private final int day = 11;
     @Getter private final int year = 2020;
 
@@ -22,10 +24,8 @@ public class Day11 extends Solution {
         return new long[]{2261, 2039};
     }
 
-    public static List<Position> directions = List.of(new Position(1, 0), new Position(-1, 1), new Position(0, 1), new Position(1, 1));
-
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<Position, Boolean> places = InputUtils.mapChar(input, (c, p) -> c == 'L' ? p : null)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(p -> p, p -> false));

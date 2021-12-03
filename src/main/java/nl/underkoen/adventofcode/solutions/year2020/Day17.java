@@ -1,13 +1,13 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.ConwayUtils;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ public class Day17 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Set<Position> positions = InputUtils.mapChar(input, (c, p) -> c == '#' ? p : null)
                 .filter(Objects::nonNull)
                 .peek(p -> p.setDimensions(3))

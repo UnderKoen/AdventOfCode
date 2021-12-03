@@ -5,5 +5,6 @@ package nl.underkoen.adventofcode.solutions;
  */
 public interface SolutionInfo {
     int getDay();
+
     int getYear();
 }

@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.map.collection.HashMapSet;
 import nl.underkoen.adventofcode.general.map.collection.MapSet;
 import nl.underkoen.adventofcode.solutions.Solution;
@@ -20,7 +21,7 @@ public class Day21 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Set<String> ingredients = new HashSet<>();
         Set<String> allergies = new HashSet<>();
         Map<String, Long> amount = new HashMap<>();

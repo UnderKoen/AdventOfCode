@@ -9,11 +9,6 @@ import java.util.function.LongUnaryOperator;
  */
 public class OutputOpcode implements Opcode {
     private static boolean defaultPrint = false;
-
-    public static void setDefaultPrint(boolean defaultPrint) {
-        OutputOpcode.defaultPrint = defaultPrint;
-    }
-
     private final boolean print;
     private final LongConsumer output;
 
@@ -24,6 +19,10 @@ public class OutputOpcode implements Opcode {
     public OutputOpcode(boolean print, LongConsumer output) {
         this.print = print;
         this.output = output;
+    }
+
+    public static void setDefaultPrint(boolean defaultPrint) {
+        OutputOpcode.defaultPrint = defaultPrint;
     }
 
     @Override

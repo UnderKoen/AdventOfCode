@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.solutions.year2019;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import org.jgrapht.Graph;
@@ -17,10 +18,9 @@ import java.util.*;
  * Created by Under_Koen on 17/12/2019.
  */
 public class Day18 extends Solution {
+    public static Map<Option, Integer> cache = new HashMap<>();
     @Getter private final int day = 18;
     @Getter private final int year = 2019;
-
-    public static Map<Option, Integer> cache = new HashMap<>();
 
     public static int test(Graph<Position, DefaultWeightedEdge> graph, Set<Character> collected, BiMap<Character, Position> keys, Map<Position, Character> doors, List<Position> start) {
         if (collected.size() == keys.size()) return 0;
@@ -97,7 +97,7 @@ public class Day18 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<Position, MapType> tiles = new HashMap<>();
         BiMap<Character, Position> keys = HashBiMap.create();
         Map<Position, Character> doors = new HashMap<>();

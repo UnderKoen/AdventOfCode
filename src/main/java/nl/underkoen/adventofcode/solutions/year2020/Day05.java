@@ -1,9 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,7 +17,7 @@ public class Day05 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Set<Long> ids = input.stream()
                 .map(s -> s.replace('F', '0'))
                 .map(s -> s.replace('B', '1'))

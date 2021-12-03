@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2018;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
@@ -19,7 +20,7 @@ public class Day07 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<String, List<String>> needsMap = new HashMap<>();
         Map<String, List<String>> needsCopy = new HashMap<>();
         Set<String> all = new HashSet<>();

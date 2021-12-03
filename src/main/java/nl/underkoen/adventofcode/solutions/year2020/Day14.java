@@ -1,10 +1,10 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Day14 extends Solution {
@@ -17,7 +17,7 @@ public class Day14 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<Long, Long> mem = new HashMap<>();
         Map<Long, Long> mem2 = new HashMap<>();
 

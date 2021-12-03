@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 
@@ -65,7 +66,7 @@ public class Day22 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         BigInteger cards = BigInteger.valueOf(119315717514047L);
         BigInteger times = BigInteger.valueOf(101741582076661L);
 

@@ -1,9 +1,8 @@
 package nl.underkoen.adventofcode.solutions.year2015;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
-
-import java.util.List;
 
 public class Day01 extends Solution {
     @Getter private final int day = 1;
@@ -15,7 +14,7 @@ public class Day01 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         int i = 1;
         for (char c : input.get(0).toCharArray()) {
             if (c == '(') a++;

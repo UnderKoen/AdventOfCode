@@ -1,59 +1,18 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.linkedlist.CircularLinkedList;
 import nl.underkoen.adventofcode.general.linkedlist.Node;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 public class Day23 extends Solution {
     @Getter private final int day = 23;
     @Getter private final int year = 2020;
-
-    @Override
-    public long[] getCorrectOutput() {
-        return new long[]{49725386, 538935646702L};
-    }
-
-    @Override
-    protected void run(List<String> input) {
-        CircularLinkedList<Long> nums = new CircularLinkedList<>();
-        Map<Long, Node<Long>> values = new HashMap<>();
-
-        for (char c : input.get(0).toCharArray()) {
-            long l = Long.parseLong(Character.toString(c));
-            values.put(l, nums.addAtTail(l));
-        }
-
-        run(100, 20, nums, values);
-
-        textA = "";
-        nums = nums.startingAt(values.get(1L));
-        nums.removeNode(nums.getHead());
-        for (Node<Long> node : nums) {
-            textA += node.getValue();
-        }
-
-        nums = new CircularLinkedList<>();
-        values = new HashMap<>();
-
-        for (char c : input.get(0).toCharArray()) {
-            long l = Long.parseLong(Character.toString(c));
-            values.put(l, nums.addAtTail(l));
-        }
-
-        for (long l = 10; l <= 1000000; l++) {
-            values.put(l, nums.addAtTail(l));
-        }
-
-        run(10000000, 1000000, nums, values);
-
-        b = values.get(1L).getNextNode().getValue() * values.get(1L).getNextNode().getNextNode().getValue();
-    }
 
     public static void run(long iterations, long max, CircularLinkedList<Long> nums, Map<Long, Node<Long>> values) {
         Node<Long> current = nums.getHead();
@@ -87,5 +46,46 @@ public class Day23 extends Solution {
             current = current.getNextNode();
         }
         System.out.println();
+    }
+
+    @Override
+    public long[] getCorrectOutput() {
+        return new long[]{49725386, 538935646702L};
+    }
+
+    @Override
+    protected void run(Input input) {
+        CircularLinkedList<Long> nums = new CircularLinkedList<>();
+        Map<Long, Node<Long>> values = new HashMap<>();
+
+        for (char c : input.get(0).toCharArray()) {
+            long l = Long.parseLong(Character.toString(c));
+            values.put(l, nums.addAtTail(l));
+        }
+
+        run(100, 20, nums, values);
+
+        textA = "";
+        nums = nums.startingAt(values.get(1L));
+        nums.removeNode(nums.getHead());
+        for (Node<Long> node : nums) {
+            textA += node.getValue();
+        }
+
+        nums = new CircularLinkedList<>();
+        values = new HashMap<>();
+
+        for (char c : input.get(0).toCharArray()) {
+            long l = Long.parseLong(Character.toString(c));
+            values.put(l, nums.addAtTail(l));
+        }
+
+        for (long l = 10; l <= 1000000; l++) {
+            values.put(l, nums.addAtTail(l));
+        }
+
+        run(10000000, 1000000, nums, values);
+
+        b = values.get(1L).getNextNode().getValue() * values.get(1L).getNextNode().getNextNode().getValue();
     }
 }

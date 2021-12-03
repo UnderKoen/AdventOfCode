@@ -1,9 +1,8 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
-
-import java.util.List;
 
 import static nl.underkoen.adventofcode.solutions.year2019.opcode.OpcodeRunner.parse;
 import static nl.underkoen.adventofcode.solutions.year2019.opcode.OpcodeRunner.processAscii;
@@ -21,7 +20,7 @@ public class Day21 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         long[] program = parse(input);
 
         String script = "OR A J\n" +

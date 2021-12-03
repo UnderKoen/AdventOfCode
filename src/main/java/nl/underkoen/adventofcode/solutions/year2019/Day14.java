@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 
@@ -13,10 +14,9 @@ import java.util.Map;
  * Created by Under_Koen on 13/12/2019.
  */
 public class Day14 extends Solution {
+    public static Map<String, Long> remaining = new HashMap<>();
     @Getter private final int day = 14;
     @Getter private final int year = 2019;
-
-    public static Map<String, Long> remaining = new HashMap<>();
 
     public static BiHolder<Long, Long> convert(Map<BiHolder<String, Long>, List<BiHolder<String, Long>>> map, String start, long amount) {
         BiHolder<String, Long> out = map.keySet().stream()
@@ -48,7 +48,7 @@ public class Day14 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<BiHolder<String, Long>, List<BiHolder<String, Long>>> convert = new HashMap<>();
         for (String s : input) {
             String[] pieces = s.split(" => ");

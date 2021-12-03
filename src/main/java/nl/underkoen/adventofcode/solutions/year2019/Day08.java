@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class Day08 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         String line = input.get(0);
         List<List<Character>> layers = new ArrayList<>();
 

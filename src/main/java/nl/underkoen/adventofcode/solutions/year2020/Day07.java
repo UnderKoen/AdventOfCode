@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.solutions.year2020;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Value;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
@@ -18,7 +19,7 @@ public class Day07 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<String, List<Bag>> map = new HashMap<>();
         for (String s : input) {
             String[] bags = s.split(" bags?,? ?\\.?(?:contain )?");

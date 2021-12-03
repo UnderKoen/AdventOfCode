@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
@@ -16,10 +17,9 @@ import java.util.*;
  * Created by Under_Koen on 19/12/2019.
  */
 public class Day20 extends Solution {
+    public static Map<BiHolder<Position, Integer>, Integer> cache = new HashMap<>();
     @Getter private final int day = 20;
     @Getter private final int year = 2019;
-
-    public static Map<BiHolder<Position, Integer>, Integer> cache = new HashMap<>();
 
     public static int check(Graph<Position, DefaultWeightedEdge> top, int indent, Position start, Position end, Map<Position, Position> portals, Set<Position> done, Set<Set<Position>> depth, int o) {
         var e = new BiHolder<>(start, indent);
@@ -99,7 +99,7 @@ public class Day20 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Set<Position> tiles = new HashSet<>();
         Map<Position, Character> chars = new HashMap<>();
         Map<Position, String> keys = new HashMap<>();

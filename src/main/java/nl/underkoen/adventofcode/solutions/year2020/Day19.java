@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
@@ -14,13 +15,38 @@ public class Day19 extends Solution {
     @Getter private final int day = 19;
     @Getter private final int year = 2020;
 
+    public static Rule check(long rule, Map<Long, Rule> rules, Map<Long, String> r) {
+        if (rules.containsKey(rule)) return rules.get(rule);
+
+        String ru = r.get(rule);
+        Rule rule1;
+        if (ru.contains("\"")) {
+            char c = ru.replace("\"", "").charAt(0);
+            rule1 = new Rule(c);
+        } else {
+            String[] split = ru.split(" \\| ");
+            rule1 = new Rule();
+            for (String s : split) {
+                List<Rule> rul = new ArrayList<>();
+                for (String s1 : s.split(" ")) {
+                    rul.add(check(Long.parseLong(s1), rules, r));
+                }
+                if (rule1.toObeyL == null) rule1.toObeyL = rul;
+                else rule1.toObeyR = rul;
+            }
+        }
+
+        rules.put(rule, rule1);
+        return rule1;
+    }
+
     @Override
     public long[] getCorrectOutput() {
         return new long[]{156, 363};
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         List<List<String>> lists = InputUtils.asSubInputs(input);
         List<String> rules = lists.get(0);
 
@@ -68,32 +94,8 @@ public class Day19 extends Solution {
         }
     }
 
-    public static Rule check(long rule, Map<Long, Rule> rules, Map<Long, String> r) {
-        if (rules.containsKey(rule)) return rules.get(rule);
-
-        String ru = r.get(rule);
-        Rule rule1;
-        if (ru.contains("\"")) {
-            char c = ru.replace("\"", "").charAt(0);
-            rule1 = new Rule(c);
-        } else {
-            String[] split = ru.split(" \\| ");
-            rule1 = new Rule();
-            for (String s : split) {
-                List<Rule> rul = new ArrayList<>();
-                for (String s1 : s.split(" ")) {
-                    rul.add(check(Long.parseLong(s1), rules, r));
-                }
-                if (rule1.toObeyL == null) rule1.toObeyL = rul;
-                else rule1.toObeyR = rul;
-            }
-        }
-
-        rules.put(rule, rule1);
-        return rule1;
-    }
-
     public static class Rule {
+        String regex = null;
         private List<Rule> toObeyL;
         private List<Rule> toObeyR;
         private Character c;
@@ -104,8 +106,6 @@ public class Day19 extends Solution {
         public Rule(char c) {
             this.c = c;
         }
-
-        String regex = null;
 
         public String toRegex() {
             if (regex != null) return regex;

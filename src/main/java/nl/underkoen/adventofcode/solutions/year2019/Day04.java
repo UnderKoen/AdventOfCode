@@ -1,10 +1,10 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -33,7 +33,7 @@ public class Day04 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         String[] range = input.get(0).split("-");
         int min = Integer.parseInt(range[0]) + 1;
         int max = Integer.parseInt(range[1]);

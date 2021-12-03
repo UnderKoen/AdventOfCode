@@ -18,6 +18,9 @@ import java.util.function.Function;
 @Getter
 @EqualsAndHashCode
 public class BiHolder<T, U> implements Map.Entry<T, U> {
+    private T key;
+    private U value;
+
     public static <K, V> Function<K, BiHolder<K, V>> hold(Function<K, V> function) {
         return t -> new BiHolder<>(t, function.apply(t));
     }
@@ -29,9 +32,6 @@ public class BiHolder<T, U> implements Map.Entry<T, U> {
     public static <K, V, O> Function<Map.Entry<K, O>, BiHolder<K, V>> keepKey(Function<Map.Entry<K, O>, V> function) {
         return t -> new BiHolder<>(t.getKey(), function.apply(t));
     }
-
-    private T key;
-    private U value;
 
     public T setKey(T value) {
         T old = this.key;

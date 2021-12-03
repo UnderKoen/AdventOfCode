@@ -8,9 +8,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Getter
 @Setter
 public class Node<T> {
-    private T value;
     Node<T> nextNode;
     Node<T> prevNode;
+    private T value;
 
     public Node(T value) {
         this.value = value;

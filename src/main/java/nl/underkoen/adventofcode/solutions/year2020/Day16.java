@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
 import lombok.Value;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.map.collection.HashMapList;
 import nl.underkoen.adventofcode.general.map.collection.MapList;
 import nl.underkoen.adventofcode.general.map.counter.HashMapCounter;
@@ -23,7 +24,7 @@ public class Day16 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         List<List<String>> subInputs = InputUtils.asSubInputs(input);
         List<Field> fields = subInputs.get(0).stream()
                 .map(Field::parse)

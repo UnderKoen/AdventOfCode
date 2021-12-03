@@ -1,10 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2015;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
-
-import java.util.List;
 
 public class Day02 extends Solution {
     @Getter private final int day = 2;
@@ -21,7 +20,7 @@ public class Day02 extends Solution {
 //    }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         a = InputUtils.asRegexGroupList(input, "(\\d+)x(\\d+)x(\\d+)")
                 .map(s -> s.mapToInt(Integer::parseInt)
                         .toArray())

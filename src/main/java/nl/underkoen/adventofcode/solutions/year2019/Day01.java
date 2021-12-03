@@ -1,11 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
-
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
-
-import java.util.List;
 
 /**
  * Created by Under_Koen on 01/12/2019.
@@ -25,7 +23,7 @@ public class Day01 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         a = InputUtils.asNumberList(input)
                 .mapToLong(i -> i / 3 - 2)
                 .sum();

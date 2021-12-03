@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class Day06 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<String, String> orbits = input.stream()
                 .map(s -> s.split("\\)"))
                 .collect(Collectors.toMap(s -> s[1], s -> s[0]));

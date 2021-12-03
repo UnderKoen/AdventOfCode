@@ -1,10 +1,11 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -12,13 +13,12 @@ import java.util.function.BiFunction;
  * Created by Under_Koen on 01/12/2019.
  */
 public class Day02 extends Solution {
-    @Getter private final int day = 2;
-    @Getter private final int year = 2019;
-
     public static Map<Integer, BiFunction<Integer, Integer, Integer>> methods = Map.of(
             1, Integer::sum,
             2, (i1, i2) -> i1 * i2
     );
+    @Getter private final int day = 2;
+    @Getter private final int year = 2019;
 
     public static int process(int[] program, int noun, int verb) {
         program = Arrays.copyOf(program, program.length);
@@ -45,10 +45,10 @@ public class Day02 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
-        String line = input.get(0);
-        input = Arrays.asList(line.split(","));
-        int[] numbers = input.stream().mapToInt(Integer::parseInt).toArray();
+    protected void run(Input input) {
+        int[] numbers = InputUtils.asNumberList(input)
+                .mapToInt(Long::intValue)
+                .toArray();
 
         a = process(numbers, 12, 2);
         for (int j = 0; j < 100; j++) {

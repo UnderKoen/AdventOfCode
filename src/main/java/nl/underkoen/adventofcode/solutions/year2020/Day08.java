@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.solutions.year2020;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.*;
@@ -14,7 +15,8 @@ public class Day08 extends Solution {
     private final Map<String, Operation> operations = Map.of(
             "jmp", (context, par) -> context.setPos(context.pos + par - 1),
             "acc", (context, par) -> context.setAcc(context.acc + par),
-            "nop", (context, par) -> { }
+            "nop", (context, par) -> {
+            }
     );
 
     @Override
@@ -23,7 +25,7 @@ public class Day08 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         a = run(input, operations, null).acc;
 
         Operation jmp = operations.get("jmp");
@@ -71,10 +73,10 @@ public class Day08 extends Solution {
     @Data
     @AllArgsConstructor
     public static class Context {
+        Set<Integer> done;
         private int pos;
         private int acc;
         private boolean loop;
-        Set<Integer> done;
 
         public Context(Context context) {
             this.pos = context.pos;

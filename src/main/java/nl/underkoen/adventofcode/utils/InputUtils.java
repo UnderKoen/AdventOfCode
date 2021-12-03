@@ -52,6 +52,10 @@ public class InputUtils {
                         .filter(Objects::nonNull));
     }
 
+    public EStream<EStream<String>> asSplitLine(List<String> input) {
+        return asSplitLine(input, DEFAULT_SPLIT);
+    }
+
     public EStream<EStream<String>> asSplitLine(List<String> input, String regex) {
         return EStream.of(input)
                 .map(s -> EStream.of(s.split(regex)));
@@ -143,7 +147,7 @@ public class InputUtils {
         return EStream.of(builder.build());
     }
 
-    public static String asString(List<String> input) {
+    public String asString(List<String> input) {
         return String.join("\n", input);
     }
 }

@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class Day03 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         a = check(input, 3, 1);
         b = check(input, 1, 1) * a * check(input, 5, 1) * check(input, 7, 1) * check(input, 1, 2);
     }
@@ -27,7 +28,7 @@ public class Day03 extends Solution {
         for (int y = 0, x = 0; y < trees.size(); y += dy, x += dx) {
             if (trees.get(y).charAt(x % len) == '#') count++;
         }
-    
+
         return count;
     }
 }

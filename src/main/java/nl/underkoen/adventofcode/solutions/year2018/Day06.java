@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2018;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
@@ -22,7 +23,7 @@ public class Day06 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         List<Position> positions = InputUtils.asPositionList(input)
                 .collect(Collectors.toList());
 

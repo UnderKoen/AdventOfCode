@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2021;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
@@ -17,12 +18,12 @@ public class Day02 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         long horizontal = 0;
         long depth = 0;
         long aim = 0;
 
-        List<List<String>> lists = InputUtils.asRegexGroupList(input, "([^ ]+) (\\d+)")
+        List<List<String>> lists = InputUtils.asSplitLine(input)
                 .map(Stream::toList)
                 .toList();
 
@@ -30,7 +31,6 @@ public class Day02 extends Solution {
             int x = Integer.parseInt(list.get(1));
 
             switch (list.get(0)) {
-                case "upward" -> horizontal -= x;
                 case "forward" -> {
                     horizontal += x;
                     depth += aim * x;

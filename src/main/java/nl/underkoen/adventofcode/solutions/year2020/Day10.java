@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 import nl.underkoen.adventofcode.utils.MapUtils;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class Day10 extends Solution {
     @Getter private final int day = 10;
     @Getter private final int year = 2020;
+    private final Map<Long, Long> cache = new HashMap<>();
 
     @Override
     public long[] getCorrectOutput() {
@@ -21,7 +23,7 @@ public class Day10 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Set<Long> nums = InputUtils.asNumberList(input).collect(Collectors.toSet());
         Map<Long, List<Long>> amount = new HashMap<>();
 
@@ -43,8 +45,6 @@ public class Day10 extends Solution {
         a = count1 * count3;
         b = count(amount, 0);
     }
-
-    private final Map<Long, Long> cache = new HashMap<>();
 
     public long count(Map<Long, List<Long>> all, long current) {
         if (!all.containsKey(current)) return 1L;

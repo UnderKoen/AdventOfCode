@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
@@ -10,28 +11,6 @@ import java.util.stream.Collectors;
 public class Day22 extends Solution {
     @Getter private final int day = 22;
     @Getter private final int year = 2020;
-
-    @Override
-    public long[] getCorrectOutput() {
-        return new long[]{32629, 32519};
-    }
-
-    @Override
-    protected void run(List<String> input) {
-        List<List<String>> lists = InputUtils.asSubInputs(input);
-        List<Long> player1 = lists.get(0).stream()
-                .skip(1)
-                .map(Long::parseLong)
-                .collect(Collectors.toList());
-
-        List<Long> player2 = lists.get(1).stream()
-                .skip(1)
-                .map(Long::parseLong)
-                .collect(Collectors.toList());
-
-        a = playGame(player1, player2, false);
-        b = playGame(player1, player2, true);
-    }
 
     public static long playGame(List<Long> player1, List<Long> player2, boolean recursion) {
         player1 = new ArrayList<>(player1);
@@ -73,5 +52,27 @@ public class Day22 extends Solution {
         }
 
         return won;
+    }
+
+    @Override
+    public long[] getCorrectOutput() {
+        return new long[]{32629, 32519};
+    }
+
+    @Override
+    protected void run(Input input) {
+        List<List<String>> lists = InputUtils.asSubInputs(input);
+        List<Long> player1 = lists.get(0).stream()
+                .skip(1)
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
+
+        List<Long> player2 = lists.get(1).stream()
+                .skip(1)
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
+
+        a = playGame(player1, player2, false);
+        b = playGame(player1, player2, true);
     }
 }

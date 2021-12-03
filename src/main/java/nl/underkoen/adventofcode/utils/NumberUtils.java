@@ -9,6 +9,42 @@ import java.util.function.BiFunction;
 
 @UtilityClass
 public class NumberUtils {
+    public static final NumberComputation addition = new NumberComputation(
+            Integer::sum,
+            Double::sum,
+            Float::sum,
+            Long::sum,
+            (s1, s2) -> (short) (s1 + s2),
+            (b1, b2) -> (byte) (b1 + b2));
+    public static final NumberComputation subtraction = new NumberComputation(
+            (i1, i2) -> (i1 - i2),
+            (d1, d2) -> (d1 - d2),
+            (f1, f2) -> (f1 - f2),
+            (l1, l2) -> (l1 - l2),
+            (s1, s2) -> (short) (s1 - s2),
+            (b1, b2) -> (byte) (b1 - b2));
+    public static final NumberComputation multiplication = new NumberComputation(
+            (i1, i2) -> (i1 * i2),
+            (d1, d2) -> (d1 * d2),
+            (f1, f2) -> (f1 * f2),
+            (l1, l2) -> (l1 * l2),
+            (s1, s2) -> (short) (s1 * s2),
+            (b1, b2) -> (byte) (b1 * b2));
+    public static final NumberComputation division = new NumberComputation(
+            (i1, i2) -> (i1 / i2),
+            (d1, d2) -> (d1 / d2),
+            (f1, f2) -> (f1 / f2),
+            (l1, l2) -> (l1 / l2),
+            (s1, s2) -> (short) (s1 / s2),
+            (b1, b2) -> (byte) (b1 / b2));
+    public static final NumberComputation modulo = new NumberComputation(
+            (i1, i2) -> (i1 % i2),
+            (d1, d2) -> (d1 % d2),
+            (f1, f2) -> (f1 % f2),
+            (l1, l2) -> (l1 % l2),
+            (s1, s2) -> (short) (s1 % s2),
+            (b1, b2) -> (byte) (b1 % b2));
+
     public long toNumber(int[] digits) {
         return toNumber(digits, digits.length);
     }
@@ -51,46 +87,6 @@ public class NumberUtils {
 
         return x1 < 0 ? x1 + b0 : x1;
     }
-
-    public static final NumberComputation addition = new NumberComputation(
-            Integer::sum,
-            Double::sum,
-            Float::sum,
-            Long::sum,
-            (s1, s2) -> (short) (s1 + s2),
-            (b1, b2) -> (byte) (b1 + b2));
-
-    public static final NumberComputation subtraction = new NumberComputation(
-            (i1, i2) -> (i1 - i2),
-            (d1, d2) -> (d1 - d2),
-            (f1, f2) -> (f1 - f2),
-            (l1, l2) -> (l1 - l2),
-            (s1, s2) -> (short) (s1 - s2),
-            (b1, b2) -> (byte) (b1 - b2));
-
-    public static final NumberComputation multiplication = new NumberComputation(
-            (i1, i2) -> (i1 * i2),
-            (d1, d2) -> (d1 * d2),
-            (f1, f2) -> (f1 * f2),
-            (l1, l2) -> (l1 * l2),
-            (s1, s2) -> (short) (s1 * s2),
-            (b1, b2) -> (byte) (b1 * b2));
-
-    public static final NumberComputation division = new NumberComputation(
-            (i1, i2) -> (i1 / i2),
-            (d1, d2) -> (d1 / d2),
-            (f1, f2) -> (f1 / f2),
-            (l1, l2) -> (l1 / l2),
-            (s1, s2) -> (short) (s1 / s2),
-            (b1, b2) -> (byte) (b1 / b2));
-
-    public static final NumberComputation modulo = new NumberComputation(
-            (i1, i2) -> (i1 % i2),
-            (d1, d2) -> (d1 % d2),
-            (f1, f2) -> (f1 % f2),
-            (l1, l2) -> (l1 % l2),
-            (s1, s2) -> (short) (s1 % s2),
-            (b1, b2) -> (byte) (b1 % b2));
 
     @RequiredArgsConstructor
     public static final class NumberComputation {

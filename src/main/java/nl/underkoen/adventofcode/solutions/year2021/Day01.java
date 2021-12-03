@@ -1,11 +1,8 @@
 package nl.underkoen.adventofcode.solutions.year2021;
 
 import lombok.Getter;
-import nl.underkoen.adventofcode.general.stream.EStream;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.utils.InputUtils;
-
-import java.util.List;
 
 public class Day01 extends Solution {
     @Getter private final int day = 1;
@@ -17,15 +14,13 @@ public class Day01 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
-        List<Long> nums = InputUtils.asNumberList(input).toList();
-
-        a = EStream.of(nums)
+    protected void run(Input input) {
+        a = input.asNumbersStream()
                 .mapWithPrev((l1, l2) -> l1 < l2)
                 .filter(b -> b)
                 .count();
 
-        b = EStream.of(nums)
+        b = input.asNumbersStream()
                 .mapWithPrev((l1, l2, l3) -> l1 + l2 + l3)
                 .mapWithPrev((l1, l2) -> l1 < l2)
                 .filter(b -> b)

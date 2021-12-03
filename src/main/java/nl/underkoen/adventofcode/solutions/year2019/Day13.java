@@ -1,12 +1,12 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.general.tuple.IntHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static nl.underkoen.adventofcode.solutions.year2019.opcode.OpcodeRunner.parse;
@@ -32,7 +32,7 @@ public class Day13 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         long[] program = parse(input);
         program[0] = 2;
 

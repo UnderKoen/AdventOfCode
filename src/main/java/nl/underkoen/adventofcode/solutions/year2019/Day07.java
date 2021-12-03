@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.*;
@@ -69,7 +70,7 @@ public class Day07 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         long[] program = parse(input);
         List<Set<Integer>> phases = IntStream.range(0, (int) Math.pow(5, 5))
                 .mapToObj(i -> {

@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.solutions.year2018;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
@@ -23,7 +24,7 @@ public class Day03 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         Map<Position, Long> seen = new HashMap<>();
 
         List<Claim> claims = InputUtils.asAllNumbers(input)

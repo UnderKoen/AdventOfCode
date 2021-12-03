@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2018;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Day05 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         String polymer = input.get(0);
 
         polymer = react(polymer);
@@ -37,7 +38,7 @@ public class Day05 extends Solution {
         while (changed) {
             changed = false;
             for (char c = 'a'; c <= 'z'; c++) {
-                String r = polymer.replaceAll(c  + "" + Character.toUpperCase(c), "");
+                String r = polymer.replaceAll(c + "" + Character.toUpperCase(c), "");
                 r = r.replaceAll(Character.toUpperCase(c) + "" + c, "");
                 if (!polymer.equals(r)) changed = true;
                 polymer = r;

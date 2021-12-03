@@ -1,7 +1,8 @@
 package nl.underkoen.adventofcode.solutions;
 
+import nl.underkoen.adventofcode.general.input.Input;
+
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Under_Koen on 03/12/2019.
@@ -10,6 +11,7 @@ public abstract class Solution implements SolutionInfo {
     protected long a, b;
     protected String textA, textB;
     protected Boolean submit;
+    private Input input;
 
     public static void main(String[] args) throws Exception {
         String clsN = System.getProperty("sun.java.command");
@@ -25,7 +27,7 @@ public abstract class Solution implements SolutionInfo {
         System.exit(0);
     }
 
-    protected abstract void run(List<String> input);
+    protected abstract void run(Input input);
 
     public long[] getCorrectOutput() {
         return new long[0];
@@ -39,10 +41,8 @@ public abstract class Solution implements SolutionInfo {
         System.out.printf("%nResult day%sa:%n%s%n%nResult day%sb:%n%s%n%n", getDay(), getA(), getDay(), getB());
     }
 
-    private List<String> input;
-
     public void loadInput() {
-        input = SolutionUtils.getInput(getYear(), getDay());
+        input = Input.of(SolutionUtils.getInput(getYear(), getDay()));
     }
 
     public void execute() {

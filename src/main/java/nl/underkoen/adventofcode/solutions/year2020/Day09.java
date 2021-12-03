@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.InputUtils;
 
@@ -18,7 +19,7 @@ public class Day09 extends Solution {
     }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         List<Long> numbers = InputUtils.asNumberList(input).collect(Collectors.toList());
 
         for (int i = 25; i < numbers.size(); i++) {
