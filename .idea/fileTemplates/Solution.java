@@ -5,9 +5,8 @@
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
-
-import java.util.List;
 
 #parse("File Header.java")
 public class ${NAME} extends Solution {
@@ -25,7 +24,7 @@ public class ${NAME} extends Solution {
 //    }
 
     @Override
-    protected void run(List<String> input) {
+    protected void run(Input input) {
         //TODO write implementation
         
     }

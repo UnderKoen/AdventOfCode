@@ -53,7 +53,7 @@ public class Day08 extends Solution {
     }
 
     public Context run(List<String> input, Map<String, Operation> operations, Context context) {
-        if (context == null) context = new Context(0, 0, false, new HashSet<>());
+        if (context == null) context = new Context(new HashSet<>(), 0, 0, false);
         while (context.pos < input.size() && !context.loop && !context.check()) {
             String line = input.get(context.pos);
             String[] parts = line.split(" ");
