@@ -25,10 +25,10 @@ public class Day16 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<List<String>> subInputs = InputUtils.asSubInputs(input);
+        List<List<String>> subInputs = InputUtils.asSubInputs(input).toList();
         List<Field> fields = subInputs.get(0).stream()
                 .map(Field::parse)
-                .collect(Collectors.toList());
+                .toList();
 
         List<Ticket> tickets = subInputs.get(2).stream()
                 .skip(1)
@@ -58,7 +58,7 @@ public class Day16 extends Solution {
 
         valid.reduceSelf();
 
-        List<Long> your = InputUtils.asNumberList(subInputs.get(1)).collect(Collectors.toList());
+        List<Long> your = InputUtils.asNumbers(subInputs.get(1)).toList();
 
         b = fields.stream()
                 .filter(f -> f.name.startsWith("departure"))

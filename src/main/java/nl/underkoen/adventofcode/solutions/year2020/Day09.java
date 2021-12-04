@@ -20,7 +20,7 @@ public class Day09 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<Long> numbers = InputUtils.asNumberList(input).collect(Collectors.toList());
+        List<Long> numbers = InputUtils.asNumbers(input).collect(Collectors.toList());
 
         for (int i = 25; i < numbers.size(); i++) {
             long num = numbers.get(i);

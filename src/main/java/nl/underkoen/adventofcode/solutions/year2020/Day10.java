@@ -24,7 +24,7 @@ public class Day10 extends Solution {
 
     @Override
     protected void run(Input input) {
-        Set<Long> nums = InputUtils.asNumberList(input).collect(Collectors.toSet());
+        Set<Long> nums = InputUtils.asNumbers(input).collect(Collectors.toSet());
         Map<Long, List<Long>> amount = new HashMap<>();
 
         for (Long num : nums) {

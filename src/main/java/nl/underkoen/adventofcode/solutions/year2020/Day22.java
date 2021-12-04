@@ -61,7 +61,7 @@ public class Day22 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<List<String>> lists = InputUtils.asSubInputs(input);
+        List<List<String>> lists = InputUtils.asSubInputs(input).toList();
         List<Long> player1 = lists.get(0).stream()
                 .skip(1)
                 .map(Long::parseLong)

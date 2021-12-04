@@ -47,7 +47,7 @@ public class Day20 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<List<String>> lists = InputUtils.asSubInputs(input);
+        List<List<String>> lists = InputUtils.asSubInputs(input).toList();
 
         Map<Long, Image> images = new HashMap<>();
         for (List<String> list : lists) {

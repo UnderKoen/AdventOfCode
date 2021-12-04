@@ -21,7 +21,7 @@ public class Day01 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<Long> numbers = InputUtils.asNumberList(input).collect(Collectors.toList());
+        List<Long> numbers = InputUtils.asNumbers(input).collect(Collectors.toList());
         numbers.forEach(n -> a += n);
 
         int freq = 0, i = 0;

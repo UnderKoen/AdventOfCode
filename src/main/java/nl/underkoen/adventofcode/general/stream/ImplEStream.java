@@ -8,7 +8,7 @@ import java.util.function.*;
 import java.util.stream.*;
 
 @RequiredArgsConstructor
-public class ImplEStream<T> implements EStream<T> {
+class ImplEStream<T> implements EStream<T> {
     private final Stream<T> stream;
 
     @Override

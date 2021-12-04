@@ -24,11 +24,11 @@ public class Day01 extends Solution {
 
     @Override
     protected void run(Input input) {
-        a = InputUtils.asNumberList(input)
+        a = InputUtils.asNumbers(input)
                 .mapToLong(i -> i / 3 - 2)
                 .sum();
 
-        b = InputUtils.asNumberList(input)
+        b = InputUtils.asNumbers(input)
                 .mapToLong(Day01::calculate)
                 .sum();
     }

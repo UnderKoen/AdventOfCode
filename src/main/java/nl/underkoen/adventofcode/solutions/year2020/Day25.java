@@ -19,7 +19,7 @@ public class Day25 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<Long> nums = InputUtils.asNumberList(input)
+        List<Long> nums = InputUtils.asNumbers(input)
                 .collect(Collectors.toList());
 
         long num1 = nums.get(0);

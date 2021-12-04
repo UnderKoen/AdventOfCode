@@ -4,14 +4,12 @@ import lombok.experimental.UtilityClass;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
-import nl.underkoen.adventofcode.general.tuple.IntHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -30,22 +28,22 @@ public class InputUtils {
         }
     }
 
-    public EStream<Long> asNumberList(List<String> input) {
-        return asNumberList(input, DEFAULT_SPLIT);
+    public EStream<Long> asNumbers(List<String> input) {
+        return asNumbers(input, DEFAULT_SPLIT);
     }
 
-    public EStream<Long> asNumberList(List<String> input, String regex) {
+    public EStream<Long> asNumbers(List<String> input, String regex) {
         return EStream.of(input)
                 .flatMap(s -> Arrays.stream(s.split(regex)))
                 .map(InputUtils::tryParse)
                 .filter(Objects::nonNull);
     }
 
-    public EStream<EStream<Long>> asLineNumberList(List<String> input) {
-        return asLineNumberList(input, DEFAULT_SPLIT);
+    public EStream<EStream<Long>> asLineNumbers(List<String> input) {
+        return asLineNumbers(input, DEFAULT_SPLIT);
     }
 
-    public EStream<EStream<Long>> asLineNumberList(List<String> input, String regex) {
+    public EStream<EStream<Long>> asLineNumbers(List<String> input, String regex) {
         return EStream.of(input)
                 .map(s -> EStream.of(s.split(regex)))
                 .map(s -> s.map(InputUtils::tryParse)
@@ -115,20 +113,29 @@ public class InputUtils {
                 .map(s -> s.map(Long::parseLong));
     }
 
-    public List<List<String>> asSubInputs(List<String> input) {
-        IntHolder i = new IntHolder(0);
-        ArrayList<List<String>> list = input.stream().collect((Supplier<ArrayList<List<String>>>) ArrayList::new, (l, s) -> {
+    public EStream<List<String>> asSubInputs(List<String> input) {
+        Stream.Builder<List<String>> builder = Stream.builder();
+
+        List<String> current = new ArrayList<>();
+        builder.accept(current);
+        for (String s : input) {
             if (s.isBlank()) {
-                l.add(new ArrayList<>());
-                i.addValue(1);
+                current = new ArrayList<>();
+                builder.accept(current);
             } else {
-                if (l.isEmpty()) l.add(new ArrayList<>());
-                l.get(i.getValue()).add(s);
+                current.add(s);
             }
-        }, (l1, l2) -> {
-        });
-        list.removeIf(List::isEmpty);
-        return list;
+        }
+
+        return EStream.of(builder.build())
+                .filter(l -> !l.isEmpty());
+    }
+
+    public EStream<EStream<Character>> asCharacters(List<String> input) {
+        return EStream.of(input)
+                .map(String::chars)
+                .map(s -> s.mapToObj(i -> (char) i))
+                .map(EStream::of);
     }
 
     public <T> EStream<BiHolder<Integer, T>> asIndexedStream(List<T> input) {

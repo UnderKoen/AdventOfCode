@@ -46,7 +46,7 @@ public class Day02 extends Solution {
 
     @Override
     protected void run(Input input) {
-        int[] numbers = InputUtils.asNumberList(input)
+        int[] numbers = InputUtils.asNumbers(input)
                 .mapToInt(Long::intValue)
                 .toArray();
 

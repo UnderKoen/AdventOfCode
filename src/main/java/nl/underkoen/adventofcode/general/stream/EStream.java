@@ -1,5 +1,7 @@
 package nl.underkoen.adventofcode.general.stream;
 
+import com.google.common.primitives.Booleans;
+import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.utils.StreamUtils;
 import org.apache.commons.lang3.function.TriFunction;
 
@@ -7,7 +9,9 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface EStream<T> extends Stream<T> {
@@ -23,12 +27,50 @@ public interface EStream<T> extends Stream<T> {
         return of(Arrays.stream(array));
     }
 
+    static <T> EStream<EStream<T>> of(T[][] array) {
+        return of(Arrays.stream(array))
+                .map(Arrays::stream)
+                .map(EStream::of);
+    }
+
+    static EStream<BoolStream> of(Boolean[][] array) {
+        return of(Arrays.stream(array))
+                .map(Arrays::stream)
+                .map(BoolStream::of);
+    }
+
+    static EStream<BoolStream> of(boolean[][] array) {
+        return of(Arrays.stream(array))
+                .map(Booleans::asList)
+                .map(BoolStream::of);
+    }
+
     default <R> EStream<R> mapWithPrev(BiFunction<T, T, R> mapper) {
         return StreamUtils.mapWithPrev(this, mapper);
     }
 
     default <R> EStream<R> mapWithPrev(TriFunction<T, T, T, R> mapper) {
         return StreamUtils.mapWithPrev(this, mapper);
+    }
+
+    default EStream<BiHolder<Integer, T>> indexed() {
+        return StreamUtils.indexed(this);
+    }
+
+    default BoolStream mapToBool(PredicateFunction<T> mapper) {
+        return BoolStream.of(this.map(mapper));
+    }
+
+    default BoolStream flatMapToBool(Function<T, Stream<Boolean>> mapper) {
+        return BoolStream.of(this.flatMap(mapper));
+    }
+
+    default BoolStream mapMultiToBool(BiConsumer<T, Consumer<Boolean>> mapper) {
+        return BoolStream.of(this.mapMulti(mapper));
+    }
+
+    default List<T> toMutable() {
+        return this.collect(Collectors.toList());
     }
 
     //=====Original=====
@@ -83,4 +125,7 @@ public interface EStream<T> extends Stream<T> {
     @Nonnull
     @Override
     EStream<T> onClose(Runnable closeHandler);
+
+    interface PredicateFunction<T> extends Function<T, Boolean> {
+    }
 }

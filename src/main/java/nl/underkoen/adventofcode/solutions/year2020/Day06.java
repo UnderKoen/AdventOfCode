@@ -2,12 +2,10 @@ package nl.underkoen.adventofcode.solutions.year2020;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
+import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.solutions.Solution;
-import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Day06 extends Solution {
@@ -21,23 +19,21 @@ public class Day06 extends Solution {
 
     @Override
     protected void run(Input input) {
-        for (List<String> subInput : InputUtils.asSubInputs(input)) {
-            List<Set<Character>> chars = subInput.stream()
-                    .map(String::chars)
-                    .map(s -> s.mapToObj(i -> (char) i))
-                    .map(s -> s.collect(Collectors.toSet()))
-                    .collect(Collectors.toList());
+        input.asSubInputs()
+                .map(Input::asCharacters)
+                .map(s -> s.map(cs -> cs.collect(Collectors.toSet())))
+                .map(EStream::toMutable)
+                .forEach(chars -> {
+                    a += chars.stream()
+                            .flatMap(Collection::stream)
+                            .distinct()
+                            .count();
 
-            a += chars.stream()
-                    .flatMap(Collection::stream)
-                    .distinct()
-                    .count();
+                    for (int i = 1; i < chars.size(); i++) {
+                        chars.get(0).retainAll(chars.get(i));
+                    }
 
-            for (int i = 1; i < chars.size(); i++) {
-                chars.get(0).retainAll(chars.get(i));
-            }
-
-            b += chars.get(0).size();
-        }
+                    b += chars.get(0).size();
+                });
     }
 }

@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.utils;
 
 import nl.underkoen.adventofcode.general.stream.EStream;
+import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.Spliterator;
@@ -63,6 +64,32 @@ public class StreamUtils {
                     @Override
                     public boolean tryAdvance(Consumer<? super R> action) {
                         current = action;
+                        try {
+                            return spliterator.tryAdvance(adapter);
+                        } finally {
+                            current = null;
+                        }
+                    }
+                }, parallel).onClose(s::close)
+        );
+    }
+
+    public static <T> EStream<BiHolder<Integer, T>> indexed(Stream<T> s) {
+        boolean parallel = s.isParallel();
+        Spliterator<T> spliterator = s.spliterator();
+
+        return EStream.of(
+                StreamSupport.stream(new Spliterators.AbstractSpliterator<BiHolder<Integer, T>>(
+                        spliterator.estimateSize(),
+                        spliterator.characteristics() & ~(Spliterator.SIZED | Spliterator.SUBSIZED)) {
+                    Consumer<BiHolder<Integer, T>> current;
+                    int i;
+                    final Consumer<T> adapter = t -> {
+                        current.accept(new BiHolder<>(i++, t));
+                    };
+
+                    @Override
+                    public boolean tryAdvance(Consumer<? super BiHolder<Integer, T>> action) {
                         try {
                             return spliterator.tryAdvance(adapter);
                         } finally {

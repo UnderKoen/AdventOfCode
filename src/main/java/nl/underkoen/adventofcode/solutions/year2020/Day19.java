@@ -47,7 +47,7 @@ public class Day19 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<List<String>> lists = InputUtils.asSubInputs(input);
+        List<List<String>> lists = InputUtils.asSubInputs(input).toList();
         List<String> rules = lists.get(0);
 
         Map<Long, String> r = new HashMap<>();

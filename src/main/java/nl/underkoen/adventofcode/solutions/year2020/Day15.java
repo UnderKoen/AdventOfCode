@@ -21,7 +21,7 @@ public class Day15 extends Solution {
 
     @Override
     protected void run(Input input) {
-        List<Long> nums = InputUtils.asNumberList(input).collect(Collectors.toList());
+        List<Long> nums = InputUtils.asNumbers(input).collect(Collectors.toList());
         Map<Long, Long> done = new HashMap<>();
 
         long prev = 0;
