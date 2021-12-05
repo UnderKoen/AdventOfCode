@@ -57,6 +57,10 @@ public interface EStream<T> extends Stream<T> {
         return StreamUtils.indexed(this);
     }
 
+    default <R> EStream<R> mapPairs(BiFunction<T, T, R> mapper) {
+        return StreamUtils.mapPairs(this, mapper);
+    }
+
     default BoolStream mapToBool(PredicateFunction<T> mapper) {
         return BoolStream.of(this.map(mapper));
     }

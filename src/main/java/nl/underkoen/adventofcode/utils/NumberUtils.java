@@ -88,6 +88,17 @@ public class NumberUtils {
         return x1 < 0 ? x1 + b0 : x1;
     }
 
+    public static long gcd(long a, long b) {
+        while (b > 0) b = a % (a = b);
+        return a;
+    }
+
+    public static long gcd(long[] input) {
+        long result = input[0];
+        for (int i = 1; i < input.length; i++) result = gcd(result, input[i]);
+        return result;
+    }
+
     @RequiredArgsConstructor
     public static final class NumberComputation {
         private final BiFunction<Integer, Integer, Integer> intComputation;

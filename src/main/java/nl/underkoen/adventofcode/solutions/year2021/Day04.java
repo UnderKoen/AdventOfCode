@@ -19,7 +19,6 @@ public class Day04 extends Solution {
         return new long[]{65325, 4624};
     }
 
-
     @Override
     protected void run(Input input) {
         List<Input> inputs = input.asSubInputs().toMutable();

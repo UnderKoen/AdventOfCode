@@ -15,12 +15,12 @@ public class Day01 extends Solution {
 
     @Override
     protected void run(Input input) {
-        a = input.asNumbersStream()
+        a = input.asNumbers()
                 .mapWithPrev((l1, l2) -> l1 < l2)
                 .filter(b -> b)
                 .count();
 
-        b = input.asNumbersStream()
+        b = input.asNumbers()
                 .mapWithPrev((l1, l2, l3) -> l1 + l2 + l3)
                 .mapWithPrev((l1, l2) -> l1 < l2)
                 .filter(b -> b)
