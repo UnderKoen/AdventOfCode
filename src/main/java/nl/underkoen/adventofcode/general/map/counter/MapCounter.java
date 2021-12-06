@@ -7,6 +7,10 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 public interface MapCounter<K, N extends Number> extends Map<K, N> {
+    default N sum() {
+        return values().stream().reduce(NumberUtils.addition::compute).orElseThrow();
+    }
+
     /**
      * @return the value previously assigned to the field, if no value was previously assigned the default is returned
      */
