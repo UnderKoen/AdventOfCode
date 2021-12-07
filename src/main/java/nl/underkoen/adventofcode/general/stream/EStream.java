@@ -6,10 +6,7 @@ import nl.underkoen.adventofcode.utils.StreamUtils;
 import org.apache.commons.lang3.function.TriFunction;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -75,6 +72,10 @@ public interface EStream<T> extends Stream<T> {
 
     default List<T> toMutable() {
         return this.collect(Collectors.toList());
+    }
+
+    default Set<T> toSet() {
+        return this.collect(Collectors.toSet());
     }
 
     //=====Original=====
