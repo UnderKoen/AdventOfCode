@@ -8,6 +8,8 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
+import java.util.*;
+
 #parse("File Header.java")
 public class ${NAME} extends Solution {
     @Getter private final int day = ${Day};

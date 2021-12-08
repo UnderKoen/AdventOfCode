@@ -46,6 +46,10 @@ public interface Input extends List<String> {
         return InputUtils.asSplit(this, regex);
     }
 
+    default EStream<String> asSplit() {
+        return InputUtils.asSplit(this);
+    }
+
     default EStream<Position> asPositions() {
         return InputUtils.asPositionList(this);
     }

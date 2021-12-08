@@ -5,7 +5,6 @@ import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.List;
-import java.util.stream.LongStream;
 
 public class Day07 extends Solution {
     @Getter private final int day = 7;
@@ -39,6 +38,6 @@ public class Day07 extends Solution {
     }
 
     public static long summation(long i) {
-        return LongStream.range(1, i + 1).sum();
+        return i * (i + 1) / 2;
     }
 }

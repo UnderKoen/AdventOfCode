@@ -63,6 +63,10 @@ public class InputUtils {
         return asSplitLine(input, regex).flatMap(s -> s);
     }
 
+    public EStream<String> asSplit(List<String> input) {
+        return asSplitLine(input).flatMap(s -> s);
+    }
+
     public EStream<Position> asPositionList(List<String> input) {
         return asPositionList(input, DEFAULT_SPLIT);
 
