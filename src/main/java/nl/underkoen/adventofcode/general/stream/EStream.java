@@ -58,6 +58,14 @@ public interface EStream<T> extends Stream<T> {
         return StreamUtils.mapPairs(this, mapper);
     }
 
+    default EStream<T> duplicates() {
+        return StreamUtils.duplicates(this);
+    }
+
+    default EStream<T> duplicates(int amount) {
+        return StreamUtils.duplicates(this, amount);
+    }
+
     default BoolStream mapToBool(PredicateFunction<T> mapper) {
         return BoolStream.of(this.map(mapper));
     }
