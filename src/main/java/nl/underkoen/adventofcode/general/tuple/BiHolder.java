@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 /**
@@ -31,6 +33,10 @@ public class BiHolder<T, U> implements Map.Entry<T, U> {
 
     public static <K, V, O> Function<Map.Entry<K, O>, BiHolder<K, V>> keepKey(Function<Map.Entry<K, O>, V> function) {
         return t -> new BiHolder<>(t.getKey(), function.apply(t));
+    }
+
+    public static <K, V> Collector<BiHolder<K, V>, ?, Map<K, V>> toMap() {
+        return Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue);
     }
 
     public T setKey(T value) {

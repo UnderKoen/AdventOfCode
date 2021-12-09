@@ -313,6 +313,15 @@ public abstract class AbstractPosition<T extends AbstractPosition<T>> implements
         return positions;
     }
 
+    public Set<T> getDirectNeighbours() {
+        Set<T> positions = new HashSet<>();
+        neighboursRecursion(positions, convert(), 0);
+        positions.remove(convert());
+
+        positions.removeIf(p -> p.distance(this) != 1);
+        return positions;
+    }
+
     private void neighboursRecursion(Set<T> positions, T current, int dimension) {
         if (dimension >= current.getDimensions()) {
             positions.add(current);
