@@ -5,10 +5,7 @@ import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,6 +88,11 @@ public class InputUtils {
                     position.addY(1);
                     return s.map(c -> map.apply(c, position.add(1, 0).copy()));
                 });
+    }
+
+    public Map<Position, Character> asCharMap(List<String> input) {
+        return mapChar(input, (c, p) -> new BiHolder<>(p, c))
+                .collect(BiHolder.toMap());
     }
 
     public char[][] as2dArray(List<String> input) {

@@ -6,10 +6,12 @@ import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import org.apache.commons.lang3.function.TriFunction;
 
+import java.util.Comparator;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -165,5 +167,24 @@ public class StreamUtils {
                     }
                 }, parallel).onClose(s::close)
         );
+    }
+
+    public static <T> EStream<T> filter(Stream<T> s, Predicate<T> predicate, Consumer<T> onRemove) {
+        return EStream.of(s)
+                .filter(t -> {
+                    if (predicate.test(t)) {
+                        return true;
+                    } else {
+                        onRemove.accept(t);
+                        return false;
+                    }
+                });
+    }
+
+    public static <T> EStream<T> reverse(Stream<T> s) {
+        return EStream.of(s)
+                .indexed()
+                .sorted(Comparator.comparingInt(b -> -b.getKey()))
+                .map(BiHolder::getValue);
     }
 }

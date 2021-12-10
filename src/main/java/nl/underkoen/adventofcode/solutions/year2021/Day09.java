@@ -3,7 +3,6 @@ package nl.underkoen.adventofcode.solutions.year2021;
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
-import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.*;
@@ -29,9 +28,7 @@ public class Day09 extends Solution {
 
     @Override
     protected void run(Input input) {
-        Map<Position, Character> map = input
-                .mapChar((c, p) -> new BiHolder<>(p, c))
-                .collect(BiHolder.toMap());
+        Map<Position, Character> map = input.asCharMap();
 
         for (Position position : map.keySet()) {
             int depth = Character.getNumericValue(map.get(position));

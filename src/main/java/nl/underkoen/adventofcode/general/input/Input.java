@@ -7,6 +7,7 @@ import nl.underkoen.adventofcode.utils.InputUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 public interface Input extends List<String> {
@@ -60,6 +61,10 @@ public interface Input extends List<String> {
 
     default <T> EStream<T> mapChar(BiFunction<Character, Position, T> map) {
         return InputUtils.mapChar(this, map);
+    }
+
+    default Map<Position, Character> asCharMap() {
+        return InputUtils.asCharMap(this);
     }
 
     default char[][] as2dArray() {

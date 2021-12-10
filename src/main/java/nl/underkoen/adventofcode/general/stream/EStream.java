@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 public interface EStream<T> extends Stream<T> {
     static <T> EStream<T> of(Stream<T> stream) {
+        if (stream instanceof EStream<T> s) return s;
         return new ImplEStream<>(stream);
     }
 
@@ -42,6 +43,10 @@ public interface EStream<T> extends Stream<T> {
                 .map(BoolStream::of);
     }
 
+    static EStream<Character> of(String s) {
+        return of(s.chars().mapToObj(c -> (char) c));
+    }
+
     default <R> EStream<R> mapWithPrev(BiFunction<T, T, R> mapper) {
         return StreamUtils.mapWithPrev(this, mapper);
     }
@@ -64,6 +69,14 @@ public interface EStream<T> extends Stream<T> {
 
     default EStream<T> duplicates(int amount) {
         return StreamUtils.duplicates(this, amount);
+    }
+
+    default EStream<T> filter(Predicate<T> predicate, Consumer<T> onRemove) {
+        return StreamUtils.filter(this, predicate, onRemove);
+    }
+
+    default EStream<T> reverse() {
+        return StreamUtils.reverse(this);
     }
 
     default BoolStream mapToBool(PredicateFunction<T> mapper) {
