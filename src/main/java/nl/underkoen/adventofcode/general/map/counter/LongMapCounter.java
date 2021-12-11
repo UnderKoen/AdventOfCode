@@ -24,6 +24,10 @@ public class LongMapCounter<K> extends HashMapCounter<K, Long> {
         super(m, defaultValue);
     }
 
+    public LongMapCounter(Map<? extends K, ? extends Long> m) {
+        super(m, 0L, 1L);
+    }
+
     public LongMapCounter(HashMapCounter<? extends K, ? extends Long> m) {
         super(m);
     }
