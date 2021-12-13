@@ -63,6 +63,10 @@ public interface EStream<T> extends Stream<T> {
         return StreamUtils.mapPairs(this, mapper);
     }
 
+    default void forEachPair(BiConsumer<T, T> consumer) {
+        StreamUtils.forEachPair(this, consumer);
+    }
+
     default EStream<T> duplicates() {
         return StreamUtils.duplicates(this);
     }

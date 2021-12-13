@@ -2,11 +2,11 @@ package nl.underkoen.adventofcode.solutions.year2019;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
+import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.solutions.Solution;
+import nl.underkoen.adventofcode.utils.PositionUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,9 +21,8 @@ public class Day08 extends Solution {
     }
 
     @Override
-    public long[] getCorrectOutput() {
-        System.out.println("Should out put FAHEF in big letters");
-        return new long[]{1330};
+    public String[] getCorrectOutputText() {
+        return new String[]{"1330", "FAHEF"};
     }
 
     @Override
@@ -54,16 +53,19 @@ public class Day08 extends Solution {
                 })
                 .orElseThrow();
 
-        StringBuilder image = new StringBuilder();
+        Set<Position> positions = new HashSet<>();
 
+        Position current = new Position();
         for (int j = 0; j < imageLayer.size(); j++) {
             char c = imageLayer.get(j);
-            if (c == '0') image.append("  ");
-            else image.append("##");
-            if (j % 25 == 24) image.append('\n');
+            if (c != '0') positions.add(current.copy());
+            current.addX(1);
+            if (j % 25 == 24) {
+                current.addY(1);
+                current.setX(0);
+            }
         }
 
-        //Should print FAHEF
-        System.out.println(image);
+        textB = PositionUtils.asLettersString(positions);
     }
 }

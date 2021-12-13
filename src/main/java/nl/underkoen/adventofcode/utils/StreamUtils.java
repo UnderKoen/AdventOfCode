@@ -9,6 +9,7 @@ import org.apache.commons.lang3.function.TriFunction;
 import java.util.Comparator;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -134,6 +135,11 @@ public class StreamUtils {
                     }
                 }, parallel).onClose(s::close)
         );
+    }
+
+    public static <T> void forEachPair(Stream<T> s, BiConsumer<T, T> consumer) {
+        StreamUtils.mapPairs(s, BiHolder::new)
+                .forEach(p -> consumer.accept(p.getKey(), p.getValue()));
     }
 
     public static <T> EStream<T> duplicates(Stream<T> s) {

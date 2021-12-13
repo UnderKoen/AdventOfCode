@@ -8,8 +8,8 @@ import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.PositionUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.LongStream;
 
 import static nl.underkoen.adventofcode.solutions.year2019.opcode.OpcodeRunner.parse;
 import static nl.underkoen.adventofcode.solutions.year2019.opcode.OpcodeRunner.process;
@@ -39,9 +39,8 @@ public class Day11 extends Solution {
     }
 
     @Override
-    public long[] getCorrectOutput() {
-        System.out.println("Should out put AHCHZEPK in big letters");
-        return new long[]{2184};
+    public String[] getCorrectOutputText() {
+        return new String[]{"2184", "AHCHZEPK"};
     }
 
     @Override
@@ -52,20 +51,11 @@ public class Day11 extends Solution {
 
         Map<Position, Long> canvas = run(program, 1);
 
-        Position min = PositionUtils.min(canvas.keySet());
-        Position max = PositionUtils.max(canvas.keySet());
+        List<Position> positions = canvas.keySet().stream()
+                .filter(p -> canvas.get(p) > 0)
+                .peek(p -> p.mulY(-1))
+                .toList();
 
-        LongStream.range(min.getY(), max.getY() + 1)
-                .map(y -> -y).sorted().map(y -> -y)
-                .mapToObj(y -> LongStream.range(min.getX(), max.getX())
-                        .mapToObj(x -> new Position(x, y))
-                        .mapToLong(pos -> canvas.getOrDefault(pos, 0L))
-                        .mapToObj(l -> l == 0 ? "  " : "##")
-                        .reduce(String::concat)
-                        .orElse("")
-                )
-                .forEachOrdered(System.out::println);
-
-        //Should output AHCHZEPK
+        textB = PositionUtils.asLettersString(positions);
     }
 }

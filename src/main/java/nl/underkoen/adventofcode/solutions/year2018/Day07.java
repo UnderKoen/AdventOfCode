@@ -16,7 +16,7 @@ public class Day07 extends Solution {
 
     @Override
     public String[] getCorrectOutputText() {
-        return new String[]{"GKPTSLUXBIJMNCADFOVHEWYQRZ"};
+        return new String[]{"GKPTSLUXBIJMNCADFOVHEWYQRZ", "920"};
     }
 
     @Override

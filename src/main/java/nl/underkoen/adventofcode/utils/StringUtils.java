@@ -2,6 +2,9 @@ package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @UtilityClass
 public class StringUtils {
     public String reverse(String str) {
@@ -21,5 +24,18 @@ public class StringUtils {
                 .map(c -> Character.toString(c))
                 .mapToInt(Integer::parseInt)
                 .toArray();
+    }
+
+    public String combineMultilines(List<? extends Object> objects) {
+        List<StringBuilder> lines = new ArrayList<>();
+        for (Object object : objects) {
+            String[] split = object.toString().split("\n");
+            for (int i = 0; i < split.length; i++) {
+                if (lines.size() <= i) lines.add(new StringBuilder());
+                lines.get(i).append(split[i]);
+            }
+        }
+
+        return String.join("\n", lines);
     }
 }

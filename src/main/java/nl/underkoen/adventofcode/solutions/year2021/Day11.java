@@ -28,7 +28,7 @@ public class Day11 extends Solution {
         );
 
 
-        for (int i = 0; b != 0; i++) {
+        for (int i = 0; b == 0; i++) {
             map.keySet().forEach(map::increase);
 
             Set<Position> flashes = new HashSet<>();

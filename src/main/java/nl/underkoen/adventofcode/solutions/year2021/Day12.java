@@ -4,7 +4,6 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.map.collection.HashMapSet;
 import nl.underkoen.adventofcode.general.map.collection.MapSet;
-import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.ArrayList;
@@ -26,27 +25,20 @@ public class Day12 extends Solution {
         MapSet<String, String> map = new HashMapSet<>();
 
         input.asSplit("-")
-                .mapPairs(BiHolder::new)
-                .forEach(b -> map.add(b.getKey(), b.getValue()));
+                .forEachPair(map::add);
 
-        map.invert().forEach((s, strings) -> strings.forEach(s2 -> map.add(s, s2)));
+        map.addAll(map.invert());
 
-        Set<String> test = new HashSet<>();
-
-        paths(map, List.of("start"), "start", test, true);
-        a = test.size();
-
-        test.clear();
-        paths(map, List.of("start"), "start", test, false);
-        b = test.size();
+        a = paths(map, List.of("start"), "start", new HashSet<>(), true);
+        b = paths(map, List.of("start"), "start", new HashSet<>(), false);
     }
 
     public static long paths(MapSet<String, String> map, List<String> path, String last, Set<String> paths, boolean doubleVisit) {
-        if ("end".equals(last)) {
-            paths.add(String.join(",", path));
-            return 1;
-        }
         long l = 0;
+        if ("end".equals(last)) {
+            if (paths.add(String.join(",", path))) l++;
+            return l;
+        }
         for (String s : map.get(last)) {
             if (s.equals("start")) continue;
             boolean b = doubleVisit;
@@ -54,7 +46,7 @@ public class Day12 extends Solution {
                 if (doubleVisit) continue;
                 else b = true;
             }
-            ;
+
             List<String> p = new ArrayList<>(path);
             p.add(s);
             l += paths(map, p, s, paths, b);

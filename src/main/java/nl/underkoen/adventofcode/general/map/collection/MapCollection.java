@@ -16,6 +16,17 @@ public interface MapCollection<K, V, C extends Collection<V>> extends Map<K, C> 
     @Contract(mutates = "this")
     void add(K key, V value);
 
+    @Contract(mutates = "this")
+    default void addAll(K key, Collection<V> value) {
+        for (V v : value) {
+            add(key, v);
+        }
+    }
+
+    default void addAll(Map<K, ? extends Collection<V>> map) {
+        map.forEach(this::addAll);
+    }
+
     /**
      * Deletes a value from the collection of a given key.
      *
