@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Contract;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
-public interface MapCounter<K, N extends Number> extends Map<K, N> {
+public interface MapCounter<K, N extends Number & Comparable<N>> extends Map<K, N> {
     default N sum() {
         return values().stream().reduce(NumberUtils.addition::compute).orElseThrow();
     }
@@ -48,6 +48,10 @@ public interface MapCounter<K, N extends Number> extends Map<K, N> {
      */
     @Contract(mutates = "this")
     N compute(K key, Number with, NumberUtils.NumberComputation computation);
+
+    N max();
+
+    N min();
 
     @Contract(mutates = "this", value = "null -> fail")
     default void increaseAll(Iterable<K> values) {

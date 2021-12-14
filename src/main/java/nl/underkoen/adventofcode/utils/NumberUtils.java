@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Contract;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -15,35 +16,45 @@ public class NumberUtils {
             Float::sum,
             Long::sum,
             (s1, s2) -> (short) (s1 + s2),
-            (b1, b2) -> (byte) (b1 + b2));
+            (b1, b2) -> (byte) (b1 + b2),
+            BigInteger::add
+    );
     public static final NumberComputation subtraction = new NumberComputation(
             (i1, i2) -> (i1 - i2),
             (d1, d2) -> (d1 - d2),
             (f1, f2) -> (f1 - f2),
             (l1, l2) -> (l1 - l2),
             (s1, s2) -> (short) (s1 - s2),
-            (b1, b2) -> (byte) (b1 - b2));
+            (b1, b2) -> (byte) (b1 - b2),
+            BigInteger::subtract
+    );
     public static final NumberComputation multiplication = new NumberComputation(
             (i1, i2) -> (i1 * i2),
             (d1, d2) -> (d1 * d2),
             (f1, f2) -> (f1 * f2),
             (l1, l2) -> (l1 * l2),
             (s1, s2) -> (short) (s1 * s2),
-            (b1, b2) -> (byte) (b1 * b2));
+            (b1, b2) -> (byte) (b1 * b2),
+            BigInteger::multiply
+    );
     public static final NumberComputation division = new NumberComputation(
             (i1, i2) -> (i1 / i2),
             (d1, d2) -> (d1 / d2),
             (f1, f2) -> (f1 / f2),
             (l1, l2) -> (l1 / l2),
             (s1, s2) -> (short) (s1 / s2),
-            (b1, b2) -> (byte) (b1 / b2));
+            (b1, b2) -> (byte) (b1 / b2),
+            BigInteger::divide
+    );
     public static final NumberComputation modulo = new NumberComputation(
             (i1, i2) -> (i1 % i2),
             (d1, d2) -> (d1 % d2),
             (f1, f2) -> (f1 % f2),
             (l1, l2) -> (l1 % l2),
             (s1, s2) -> (short) (s1 % s2),
-            (b1, b2) -> (byte) (b1 % b2));
+            (b1, b2) -> (byte) (b1 % b2),
+            BigInteger::mod
+    );
 
     public long toNumber(int[] digits) {
         return toNumber(digits, digits.length);
@@ -107,6 +118,7 @@ public class NumberUtils {
         private final BiFunction<Long, Long, Long> longComputation;
         private final BiFunction<Short, Short, Short> shortComputation;
         private final BiFunction<Byte, Byte, Byte> byteComputation;
+        private final BiFunction<BigInteger, BigInteger, BigInteger> bigIntegerComputation;
 
         @SuppressWarnings("unchecked")
         @Contract(pure = true, value = "_, null -> fail; null, _ -> fail")
@@ -123,9 +135,13 @@ public class NumberUtils {
                 return (T) shortComputation.apply(a.shortValue(), b.shortValue());
             } else if (a instanceof Byte) {
                 return (T) byteComputation.apply(a.byteValue(), b.byteValue());
-            } else {
+            } else if (a instanceof BigInteger && b instanceof BigInteger) {
+                return (T) bigIntegerComputation.apply((BigInteger) a, (BigInteger) b);
+            } else if (a instanceof Integer) {
                 return (T) intComputation.apply(a.intValue(), b.intValue());
             }
+
+            throw new IllegalArgumentException(String.format("NumberComputation doesn't know number of type: %s", a.getClass().getName()));
         }
     }
 }

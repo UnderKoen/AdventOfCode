@@ -3,10 +3,11 @@ package nl.underkoen.adventofcode.general.map.counter;
 import nl.underkoen.adventofcode.utils.NumberUtils;
 
 import javax.annotation.Nonnull;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HashMapCounter<K, N extends Number> extends HashMap<K, N> implements MapCounter<K, N> {
+public class HashMapCounter<K, N extends Number & Comparable<N>> extends HashMap<K, N> implements MapCounter<K, N> {
     private final N defaultValue;
     private final Number defaultIncrement;
 
@@ -30,7 +31,7 @@ public class HashMapCounter<K, N extends Number> extends HashMap<K, N> implement
         this(m, defaultValue, 1);
     }
 
-    public HashMapCounter(HashMapCounter<? extends K, ? extends N> m) {
+    public HashMapCounter(HashMapCounter<? extends K, N> m) {
         this(m, m.defaultValue, m.defaultIncrement);
     }
 
@@ -52,6 +53,15 @@ public class HashMapCounter<K, N extends Number> extends HashMap<K, N> implement
         return n;
     }
 
+    @Override
+    public N max() {
+        return values().stream().max(Comparator.naturalOrder()).orElse(defaultValue);
+    }
+
+    @Override
+    public N min() {
+        return values().stream().min(Comparator.naturalOrder()).orElse(defaultValue);
+    }
 
     @Override
     public HashMapCounter<K, N> with(@Nonnull N defaultValue, @Nonnull Number defaultIncrease) {
