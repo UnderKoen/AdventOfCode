@@ -297,6 +297,14 @@ public abstract class AbstractPosition<T extends AbstractPosition<T>> implements
         return r;
     }
 
+    public long sumCoords() {
+        long r = 0;
+        for (long coord : coords) {
+            r += coord;
+        }
+        return r;
+    }
+
     public boolean inside(AbstractPosition<?> position1, AbstractPosition<?> position2) {
         AbstractPosition<?> min = position1.min(position2);
         AbstractPosition<?> max = position1.max(position2);

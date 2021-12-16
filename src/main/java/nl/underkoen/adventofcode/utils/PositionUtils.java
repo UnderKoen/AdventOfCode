@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.utils;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import nl.underkoen.adventofcode.general.input.Input;
+import nl.underkoen.adventofcode.general.map.counter.LongMapCounter;
 import nl.underkoen.adventofcode.general.position.AbstractPosition;
 import nl.underkoen.adventofcode.general.position.Position;
 
@@ -50,16 +51,16 @@ public class PositionUtils {
         return between(origin, origin.copyAdd(width - 1, height - 1));
     }
 
-    public static <T extends AbstractPosition<T>> Map<T, Long> countNeighbours(Iterable<T> positions) {
+    public static <T extends AbstractPosition<T>> LongMapCounter<T> countNeighbours(Iterable<T> positions) {
         return countNeighbours(positions, p -> true);
     }
 
-    public static <T extends AbstractPosition<T>> Map<T, Long> countNeighbours(Iterable<T> positions, Predicate<T> filter) {
-        Map<T, Long> amount = new HashMap<>();
+    public static <T extends AbstractPosition<T>> LongMapCounter<T> countNeighbours(Iterable<T> positions, Predicate<T> filter) {
+        LongMapCounter<T> amount = new LongMapCounter<>();
         for (T position : positions) {
             position.getNeighbours().stream()
                     .filter(filter)
-                    .forEach(p -> MapUtils.increaseLong(amount, p));
+                    .forEach(amount::increase);
         }
         return amount;
     }

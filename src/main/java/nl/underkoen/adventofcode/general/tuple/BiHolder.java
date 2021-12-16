@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class BiHolder<T, U> implements Map.Entry<T, U> {
-    private T key;
-    private U value;
+public class BiHolder<K, V> implements Map.Entry<K, V> {
+    private K key;
+    private V value;
 
     public static <K, V> Function<K, BiHolder<K, V>> hold(Function<K, V> function) {
         return t -> new BiHolder<>(t, function.apply(t));
@@ -39,32 +39,36 @@ public class BiHolder<T, U> implements Map.Entry<T, U> {
         return Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue);
     }
 
-    public T setKey(T value) {
-        T old = this.key;
+    public BiHolder(Map.Entry<K, V> entry) {
+        this(entry.getKey(), entry.getValue());
+    }
+
+    public K setKey(K value) {
+        K old = this.key;
         this.key = value;
         return old;
     }
 
     @Override
-    public U setValue(U value) {
-        U old = this.value;
+    public V setValue(V value) {
+        V old = this.value;
         this.value = value;
         return old;
     }
 
-    public <K> BiHolder<K, U> mapKey(Function<T, K> map) {
+    public <M> BiHolder<M, V> mapKey(Function<K, M> map) {
         return map(map, v -> v);
     }
 
-    public <V> BiHolder<T, V> mapValue(Function<U, V> map) {
+    public <M> BiHolder<K, M> mapValue(Function<V, M> map) {
         return map(v -> v, map);
     }
 
-    public <K, V> BiHolder<K, V> map(Function<T, K> keyMap, Function<U, V> valueMap) {
+    public <MK, MV> BiHolder<MK, MV> map(Function<K, MK> keyMap, Function<V, MV> valueMap) {
         return new BiHolder<>(keyMap.apply(key), valueMap.apply(value));
     }
 
-    public <V> V reduce(BiFunction<T, U, V> reduce) {
+    public <R> R reduce(BiFunction<K, V, R> reduce) {
         return reduce.apply(key, value);
     }
 

@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.general.stream;
 
 import com.google.common.primitives.Booleans;
+import nl.underkoen.adventofcode.general.map.counter.LongMapCounter;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.utils.StreamUtils;
 import org.apache.commons.lang3.function.TriFunction;
@@ -45,6 +46,11 @@ public interface EStream<T> extends Stream<T> {
 
     static EStream<Character> of(String s) {
         return of(s.chars().mapToObj(c -> (char) c));
+    }
+
+    static <K, V> EStream<BiHolder<K, V>> of(Map<K, V> map) {
+        return EStream.of(map.entrySet())
+                .map(BiHolder::new);
     }
 
     default <R> EStream<R> mapWithPrev(BiFunction<T, T, R> mapper) {
@@ -101,6 +107,18 @@ public interface EStream<T> extends Stream<T> {
 
     default Set<T> toSet() {
         return this.collect(Collectors.toSet());
+    }
+
+    default <K, V> Map<K, V> toMap(Function<T, K> keyMap, Function<T, V> valueMapper) {
+        return this.collect(Collectors.toMap(keyMap, valueMapper));
+    }
+
+    default <V> Map<T, V> toMap(Function<T, V> valueMapper) {
+        return this.collect(Collectors.toMap(k -> k, valueMapper));
+    }
+
+    default LongMapCounter<T> counted() {
+        return collect(Collectors.toMap(k -> k, k -> 1L, Long::sum, LongMapCounter::new));
     }
 
     //=====Original=====
