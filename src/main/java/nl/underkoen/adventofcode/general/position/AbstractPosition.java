@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.general.position;
 
 import lombok.Getter;
 import lombok.Setter;
+import nl.underkoen.adventofcode.general.position.area.Area;
 import nl.underkoen.adventofcode.general.stream.EStream;
 
 import java.util.Arrays;
@@ -312,6 +313,10 @@ public abstract class AbstractPosition<T extends AbstractPosition<T>> implements
             if (coords[i] < min.coords[i] || coords[i] > max.coords[i]) return false;
         }
         return true;
+    }
+
+    public boolean inside(Area<?> area) {
+        return inside(area.min(), area.max());
     }
 
     public Set<T> getNeighbours() {

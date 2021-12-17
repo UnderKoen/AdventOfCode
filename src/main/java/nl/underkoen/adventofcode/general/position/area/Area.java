@@ -50,4 +50,12 @@ public class Area<T extends AbstractPosition<T>> {
                 .filter(p -> p.inside(p1, p2))
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public String toString() {
+        return "Area{" +
+                "p1=" + p1 +
+                ", p2=" + p2 +
+                '}';
+    }
 }
