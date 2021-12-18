@@ -29,8 +29,7 @@ public class Day17 extends Solution {
         long maxX = area.max().getX() * 2;
         long minY = area.min().getY();
         long maxY = -minY;
-
-        for (long x = 0; x < maxX; x++) {
+        for (long x = 1; x < maxX; x++) {
             for (long y = minY; y < maxY; y++) {
                 List<Position> traject = traject(x, y, area);
                 if (traject == null) continue;
