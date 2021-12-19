@@ -4,6 +4,7 @@ import nl.underkoen.adventofcode.utils.NumberUtils;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nonnull;
+import java.util.Comparator;
 import java.util.Map;
 
 public interface MapCounter<K, N extends Number & Comparable<N>> extends Map<K, N> {
@@ -52,6 +53,14 @@ public interface MapCounter<K, N extends Number & Comparable<N>> extends Map<K, 
     N max();
 
     N min();
+
+    default K maxKey() {
+        return keySet().stream().max(Comparator.comparing(this::get)).orElse(null);
+    }
+
+    default K minKey() {
+        return keySet().stream().min(Comparator.comparing(this::get)).orElse(null);
+    }
 
     @Contract(mutates = "this", value = "null -> fail")
     default void increaseAll(Iterable<K> values) {

@@ -59,8 +59,18 @@ public class HashMapCounter<K, N extends Number & Comparable<N>> extends HashMap
     }
 
     @Override
+    public K maxKey() {
+        return keySet().stream().max(Comparator.comparing(this::get)).orElse(null);
+    }
+
+    @Override
     public N min() {
         return values().stream().min(Comparator.naturalOrder()).orElse(defaultValue);
+    }
+
+    @Override
+    public K minKey() {
+        return keySet().stream().min(Comparator.comparing(this::get)).orElse(null);
     }
 
     @Override
