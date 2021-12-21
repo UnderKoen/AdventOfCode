@@ -51,6 +51,10 @@ public class Area<T extends AbstractPosition<T>> {
                 .collect(Collectors.toSet());
     }
 
+    public Area<T> expanded(T with) {
+        return new Area<>(min().sub(with), max().add(with));
+    }
+
     @Override
     public String toString() {
         return "Area{" +
