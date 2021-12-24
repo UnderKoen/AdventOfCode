@@ -2,10 +2,8 @@ package nl.underkoen.adventofcode.solutions.year2021;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import lombok.EqualsAndHashCode;
+import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.solutions.Solution;
 
@@ -157,9 +155,7 @@ public class Day23 extends Solution {
         return v;
     }
 
-    @EqualsAndHashCode
-    @RequiredArgsConstructor
-    @ToString
+    @Data
     public static class State {
         public static BiMap<Character, Integer> cols = HashBiMap.create(Map.of(
                 'A', 0,
@@ -205,10 +201,6 @@ public class Day23 extends Solution {
 
         public Character pop(int i) {
             return col(i).remove(0);
-        }
-
-        public void push(int i, Character c) {
-            col(i).add(0, c);
         }
 
         public List<Character> col(char c) {

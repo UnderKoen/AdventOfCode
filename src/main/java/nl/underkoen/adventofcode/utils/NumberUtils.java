@@ -69,6 +69,14 @@ public class NumberUtils {
         return r;
     }
 
+    public long digit(long num, int i) {
+        for (int j = 0; j < i; j++) {
+            num /= 10;
+        }
+
+        return num % 10;
+    }
+
     /**
      * Finds a number where each modulo of mods gives remainders
      * Reworked https://rosettacode.org/wiki/Chinese_remainder_theorem#Java
