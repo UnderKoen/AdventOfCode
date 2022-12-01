@@ -4,7 +4,7 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
 import nl.underkoen.adventofcode.general.position.area.Area;
-import nl.underkoen.adventofcode.general.stream.MapStream;
+import nl.underkoen.adventofcode.general.stream.EMapStream;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.GraphUtils;
 import org.jgrapht.Graph;
@@ -27,7 +27,7 @@ public class Day15 extends Solution {
     protected void run(Input input) {
         Map<Position, Character> charMap = input.asCharMap();
 
-        Map<Position, Integer> map = MapStream.of(charMap)
+        Map<Position, Integer> map = EMapStream.of(charMap)
                 .mapValue(Character::getNumericValue)
                 .mapMulti((position, value, consumer) -> {
                     for (int x = 0; x < 5; x++) {

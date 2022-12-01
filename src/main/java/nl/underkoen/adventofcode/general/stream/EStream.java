@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.general.stream;
 
 import com.google.common.primitives.Booleans;
+import com.google.common.primitives.Longs;
 import nl.underkoen.adventofcode.general.map.counter.LongMapCounter;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.utils.StreamUtils;
@@ -32,16 +33,28 @@ public interface EStream<T> extends Stream<T> {
                 .map(EStream::of);
     }
 
-    static EStream<BoolStream> of(Boolean[][] array) {
+    static EStream<EBoolStream> of(Boolean[][] array) {
         return of(Arrays.stream(array))
                 .map(Arrays::stream)
-                .map(BoolStream::of);
+                .map(EBoolStream::of);
     }
 
-    static EStream<BoolStream> of(boolean[][] array) {
+    static EStream<EBoolStream> of(boolean[][] array) {
         return of(Arrays.stream(array))
                 .map(Booleans::asList)
-                .map(BoolStream::of);
+                .map(EBoolStream::of);
+    }
+
+    static EStream<ELongStream> of(Long[][] array) {
+        return of(Arrays.stream(array))
+                .map(Arrays::stream)
+                .map(ELongStream::of);
+    }
+
+    static EStream<ELongStream> of(long[][] array) {
+        return of(Arrays.stream(array))
+                .map(Longs::asList)
+                .map(ELongStream::of);
     }
 
     static EStream<Character> of(String s) {
@@ -89,16 +102,28 @@ public interface EStream<T> extends Stream<T> {
         return StreamUtils.reverse(this);
     }
 
-    default BoolStream mapToBool(PredicateFunction<T> mapper) {
-        return BoolStream.of(this.map(mapper));
+    default EBoolStream mapToBool(PredicateFunction<T> mapper) {
+        return EBoolStream.of(this.map(mapper));
     }
 
-    default BoolStream flatMapToBool(Function<T, Stream<Boolean>> mapper) {
-        return BoolStream.of(this.flatMap(mapper));
+    default EBoolStream flatMapToBool(Function<T, Stream<Boolean>> mapper) {
+        return EBoolStream.of(this.flatMap(mapper));
     }
 
-    default BoolStream mapMultiToBool(BiConsumer<T, Consumer<Boolean>> mapper) {
-        return BoolStream.of(this.mapMulti(mapper));
+    default EBoolStream mapMultiToBool(BiConsumer<T, Consumer<Boolean>> mapper) {
+        return EBoolStream.of(this.mapMulti(mapper));
+    }
+
+    default ELongStream mapToELong(Function<T, Long> mapper) {
+        return ELongStream.of(this.map(mapper));
+    }
+
+    default ELongStream flatMapToELong(Function<T, Stream<Long>> mapper) {
+        return ELongStream.of(this.flatMap(mapper));
+    }
+
+    default ELongStream mapMultiELong(BiConsumer<T, Consumer<Long>> mapper) {
+        return ELongStream.of(this.mapMulti(mapper));
     }
 
     default List<T> toMutable() {

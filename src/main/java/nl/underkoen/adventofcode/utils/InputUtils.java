@@ -2,6 +2,7 @@ package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
 import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.general.stream.ELongStream;
 import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 
@@ -25,25 +26,24 @@ public class InputUtils {
         }
     }
 
-    public EStream<Long> asNumbers(List<String> input) {
+    public ELongStream asNumbers(List<String> input) {
         return asNumbers(input, DEFAULT_SPLIT);
     }
 
-    public EStream<Long> asNumbers(List<String> input, String regex) {
-        return EStream.of(input)
-                .flatMap(s -> Arrays.stream(s.split(regex)))
-                .map(InputUtils::tryParse)
+    public ELongStream asNumbers(List<String> input, String regex) {
+        return asSplit(input, regex)
+                .mapToELong(InputUtils::tryParse)
                 .filter(Objects::nonNull);
     }
 
-    public EStream<EStream<Long>> asLineNumbers(List<String> input) {
+    public EStream<ELongStream> asLineNumbers(List<String> input) {
         return asLineNumbers(input, DEFAULT_SPLIT);
     }
 
-    public EStream<EStream<Long>> asLineNumbers(List<String> input, String regex) {
+    public EStream<ELongStream> asLineNumbers(List<String> input, String regex) {
         return EStream.of(input)
                 .map(s -> EStream.of(s.split(regex)))
-                .map(s -> s.map(InputUtils::tryParse)
+                .map(s -> s.mapToELong(InputUtils::tryParse)
                         .filter(Objects::nonNull));
     }
 
@@ -114,9 +114,9 @@ public class InputUtils {
                 ).map(EStream::of);
     }
 
-    public EStream<EStream<Long>> asAllNumbers(List<String> input) {
+    public EStream<ELongStream> asAllNumbers(List<String> input) {
         return asRegexGroupList(input, "(-?\\d+)")
-                .map(s -> s.map(Long::parseLong));
+                .map(s -> s.mapToELong(Long::parseLong));
     }
 
     public EStream<List<String>> asSubInputs(List<String> input) {

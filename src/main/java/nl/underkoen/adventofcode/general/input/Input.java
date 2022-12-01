@@ -1,6 +1,7 @@
 package nl.underkoen.adventofcode.general.input;
 
 import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.general.stream.ELongStream;
 import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.utils.InputUtils;
@@ -19,19 +20,19 @@ public interface Input extends List<String> {
         return of(new ArrayList<>());
     }
 
-    default EStream<Long> asNumbers() {
+    default ELongStream asNumbers() {
         return InputUtils.asNumbers(this);
     }
 
-    default EStream<Long> asNumbers(String regex) {
+    default ELongStream asNumbers(String regex) {
         return InputUtils.asNumbers(this, regex);
     }
 
-    default EStream<EStream<Long>> asLineNumbers() {
+    default EStream<ELongStream> asLineNumbers() {
         return InputUtils.asLineNumbers(this);
     }
 
-    default EStream<EStream<Long>> asLineNumbers(String regex) {
+    default EStream<ELongStream> asLineNumbers(String regex) {
         return InputUtils.asLineNumbers(this, regex);
     }
 
@@ -75,7 +76,7 @@ public interface Input extends List<String> {
         return InputUtils.asRegexGroupList(this, regex);
     }
 
-    default EStream<EStream<Long>> asAllNumbers() {
+    default EStream<ELongStream> asAllNumbers() {
         return InputUtils.asAllNumbers(this);
     }
 

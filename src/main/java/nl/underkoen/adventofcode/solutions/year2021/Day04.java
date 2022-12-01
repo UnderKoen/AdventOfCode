@@ -2,7 +2,7 @@ package nl.underkoen.adventofcode.solutions.year2021;
 
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
-import nl.underkoen.adventofcode.general.stream.BoolStream;
+import nl.underkoen.adventofcode.general.stream.EBoolStream;
 import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.MatrixUtils;
@@ -75,12 +75,12 @@ public class Day04 extends Solution {
 
         public boolean isBingo() {
             if (EStream.of(marked)
-                    .mapToBool(BoolStream::all)
+                    .mapToBool(EBoolStream::all)
                     .any()
             ) return true;
 
             return EStream.of(MatrixUtils.rotateMatrixRight(marked))
-                    .mapToBool(BoolStream::all)
+                    .mapToBool(EBoolStream::all)
                     .any();
         }
 
