@@ -86,7 +86,7 @@ public class StreamUtils {
         return EStream.of(
                 StreamSupport.stream(new Spliterators.AbstractSpliterator<BiHolder<Integer, T>>(
                         spliterator.estimateSize(),
-                        spliterator.characteristics() & ~(Spliterator.SIZED | Spliterator.SUBSIZED)) {
+                        spliterator.characteristics() & ~(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED)) {
                     Consumer<? super BiHolder<Integer, T>> current;
                     int i;
                     final Consumer<T> adapter = t -> {
@@ -102,6 +102,11 @@ public class StreamUtils {
                             current = null;
                         }
                     }
+
+//                    @Override
+//                    public Comparator<? super BiHolder<Integer, T>> getComparator() {
+//                        return Comparator.comparingInt(BiHolder::getKey);
+//                    }
                 }, parallel).onClose(s::close)
         );
     }
