@@ -1,5 +1,6 @@
 package nl.underkoen.adventofcode.utils;
 
+import com.google.common.collect.Streams;
 import nl.underkoen.adventofcode.general.map.counter.HashMapCounter;
 import nl.underkoen.adventofcode.general.map.counter.MapCounter;
 import nl.underkoen.adventofcode.general.stream.EStream;
@@ -80,35 +81,7 @@ public class StreamUtils {
     }
 
     public static <T> EStream<BiHolder<Integer, T>> indexed(Stream<T> s) {
-        boolean parallel = s.isParallel();
-        Spliterator<T> spliterator = s.spliterator();
-
-        return EStream.of(
-                StreamSupport.stream(new Spliterators.AbstractSpliterator<BiHolder<Integer, T>>(
-                        spliterator.estimateSize(),
-                        spliterator.characteristics() & ~(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.SORTED)) {
-                    Consumer<? super BiHolder<Integer, T>> current;
-                    int i;
-                    final Consumer<T> adapter = t -> {
-                        current.accept(new BiHolder<>(i++, t));
-                    };
-
-                    @Override
-                    public boolean tryAdvance(Consumer<? super BiHolder<Integer, T>> action) {
-                        current = action;
-                        try {
-                            return spliterator.tryAdvance(adapter);
-                        } finally {
-                            current = null;
-                        }
-                    }
-
-//                    @Override
-//                    public Comparator<? super BiHolder<Integer, T>> getComparator() {
-//                        return Comparator.comparingInt(BiHolder::getKey);
-//                    }
-                }, parallel).onClose(s::close)
-        );
+        return EStream.of(Streams.mapWithIndex(s, (o, i) -> new BiHolder<>((int) i, o)));
     }
 
     public static <T, R> EStream<R> mapPairs(Stream<T> s, BiFunction<T, T, R> mapper) {

@@ -25,7 +25,7 @@ dependencies {
     annotationProcessor("info.picocli", "picocli-codegen", "4.6.2")
 
     implementation("org.jetbrains", "annotations", "23.0.0")
-    implementation("com.google.guava", "guava", "31.0.1-jre")
+    implementation("com.google.guava", "guava", "31.1-jre")
     implementation("org.jgrapht", "jgrapht-core", "1.5.1")
     implementation("org.apache.httpcomponents", "httpclient", "4.5.13")
     implementation("org.apache.commons", "commons-lang3", "3.12.0")
