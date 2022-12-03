@@ -6,6 +6,7 @@ import nl.underkoen.adventofcode.utils.StringUtils;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public interface ESet<T> extends Set<T> {
@@ -54,5 +55,9 @@ public interface ESet<T> extends Set<T> {
 
     default ESet<T> symmetricDifference(Set<T> set) {
         return ESet.of(Sets.symmetricDifference(this, set));
+    }
+
+    default Optional<T> any() {
+        return stream().findAny();
     }
 }

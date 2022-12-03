@@ -1,12 +1,9 @@
 package nl.underkoen.adventofcode.solutions.year2022;
 
-import com.google.common.collect.Sets;
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
+import nl.underkoen.adventofcode.general.sets.ESet;
 import nl.underkoen.adventofcode.solutions.Solution;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class Day03 extends Solution {
     @Getter private final int day = 3;
@@ -19,47 +16,32 @@ public class Day03 extends Solution {
 
     @Override
     protected void run(Input input) {
-        Set<Character> characters = new HashSet<>();
+        ESet<Character> badge = ESet.of();
         int count = 0;
-
         
         for (String s : input) {
-            String s1 = s.substring(0, s.length() / 2);
-            String s2 = s.substring(s.length() / 2);
+            ESet<Character> s1 = ESet.chars(s.substring(0, s.length() / 2));
+            ESet<Character> s2 = ESet.chars(s.substring(s.length() / 2));
 
-            z:
-            for (char c1 : s1.toCharArray()) {
-                for (char c2 : s2.toCharArray()) {
-                    if (c1 == c2) {
-                        if (Character.isUpperCase(c1)) {
-                            a += Character.compare(c1, 'A') + 27;
-                        } else {
-                            a += Character.compare(c1, 'a') + 1;
-                        }
-                        break z;
-                    }
-                }
-            }
+            a += calc(s1.intersection(s2).any().orElseThrow());
 
-            Set<Character> t = new HashSet<>();
+            ESet<Character> line = ESet.chars(s);
 
-            for (char c : s.toCharArray()) {
-                t.add(c);
-            }
-
-
-            if (count == 0) characters = t;
-            else characters = Sets.intersection(characters, t);
+            if (count == 0) badge = line;
+            else badge = badge.intersection(line);
 
             if (count == 2) {
-                char c = characters.stream().findAny().orElseThrow();
-                if (Character.isUpperCase(c)) {
-                    b += Character.compare(c, 'A') + 27;
-                } else {
-                    b += Character.compare(c, 'a') + 1;
-                }
+                b += calc(badge.any().orElseThrow());
                 count = 0;
             } else count++;
+        }
+    }
+
+    public long calc(char c) {
+        if (Character.isUpperCase(c)) {
+            return Character.compare(c, 'A') + 27;
+        } else {
+            return Character.compare(c, 'a') + 1;
         }
     }
 }
