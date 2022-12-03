@@ -1,30 +1,31 @@
 package nl.underkoen.adventofcode.general.map.collection;
 
+import nl.underkoen.adventofcode.general.sets.ESet;
+
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-public class HashMapSet<K, V> extends AbstractMapCollection<K, V, Set<V>> implements MapSet<K, V> {
+public class HashMapSet<K, V> extends AbstractMapCollection<K, V, ESet<V>> implements MapSet<K, V> {
     public HashMapSet() {
         super();
     }
 
-    public HashMapSet(Map<? extends K, ? extends Set<V>> m) {
+    public HashMapSet(Map<? extends K, ? extends ESet<V>> m) {
         super(m);
     }
 
     @Override
-    protected Set<V> createCollection() {
-        return new HashSet<>();
+    protected ESet<V> createCollection() {
+        return ESet.of(new HashSet<>());
     }
 
     @Override
-    protected Set<V> copyCollection(Set<V> original) {
-        return new HashSet<>(original);
+    protected ESet<V> copyCollection(ESet<V> original) {
+        return ESet.of(new HashSet<>(original));
     }
 
     @Override
-    protected MapCollection<K, V, Set<V>> constructMap() {
+    protected MapCollection<K, V, ESet<V>> constructMap() {
         return new HashMapSet<>();
     }
 

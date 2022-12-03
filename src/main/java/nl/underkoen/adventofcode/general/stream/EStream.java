@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.general.stream;
 import com.google.common.primitives.Booleans;
 import com.google.common.primitives.Longs;
 import nl.underkoen.adventofcode.general.map.counter.LongMapCounter;
+import nl.underkoen.adventofcode.general.sets.ESet;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import nl.underkoen.adventofcode.utils.StreamUtils;
 import org.apache.commons.lang3.function.TriFunction;
@@ -130,8 +131,8 @@ public interface EStream<T> extends Stream<T> {
         return this.collect(Collectors.toList());
     }
 
-    default Set<T> toSet() {
-        return this.collect(Collectors.toSet());
+    default ESet<T> toSet() {
+        return ESet.of(this.collect(Collectors.toSet()));
     }
 
     default <K, V> Map<K, V> toMap(Function<T, K> keyMap, Function<T, V> valueMapper) {

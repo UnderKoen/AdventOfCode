@@ -1,9 +1,10 @@
 package nl.underkoen.adventofcode.general.map.collection;
 
-import java.util.Set;
+import nl.underkoen.adventofcode.general.sets.ESet;
+
 import java.util.function.Supplier;
 
-public interface MapSet<K, V> extends MapCollection<K, V, Set<V>> {
+public interface MapSet<K, V> extends MapCollection<K, V, ESet<V>> {
     /**
      * Inverts this map to a MapSet, see {@link #invert(Supplier)} for more information
      *

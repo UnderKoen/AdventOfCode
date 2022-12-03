@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.underkoen.adventofcode.general.position.multi.Area;
 import nl.underkoen.adventofcode.general.position.multi.Line;
+import nl.underkoen.adventofcode.general.sets.ESet;
+import nl.underkoen.adventofcode.general.sets.HashESet;
 import nl.underkoen.adventofcode.general.stream.EStream;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.LongUnaryOperator;
@@ -320,15 +321,15 @@ public abstract class AbstractPosition<T extends AbstractPosition<T>> implements
         return inside(area.min(), area.max());
     }
 
-    public Set<T> getNeighbours() {
-        Set<T> positions = new HashSet<>();
+    public ESet<T> getNeighbours() {
+        ESet<T> positions = new HashESet<>();
         neighboursRecursion(positions, convert(), 0);
         positions.remove(convert());
         return positions;
     }
 
-    public Set<T> getDirectNeighbours() {
-        Set<T> positions = new HashSet<>();
+    public ESet<T> getDirectNeighbours() {
+        ESet<T> positions = new HashESet<>();
         neighboursRecursion(positions, convert(), 0);
         positions.remove(convert());
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.map.collection.HashMapSet;
 import nl.underkoen.adventofcode.general.map.collection.MapSet;
+import nl.underkoen.adventofcode.general.sets.HashESet;
 import nl.underkoen.adventofcode.solutions.Solution;
 import nl.underkoen.adventofcode.utils.MapUtils;
 
@@ -38,7 +39,7 @@ public class Day21 extends Solution {
 
         MapSet<String, String> possible = new HashMapSet<>();
         for (String aller : allergies) {
-            possible.put(aller, new HashSet<>(ingredients));
+            possible.put(aller, new HashESet<>(ingredients));
         }
 
         for (Dish dish : dishes) {

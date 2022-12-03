@@ -3,12 +3,13 @@ package nl.underkoen.adventofcode.general.position.multi;
 import nl.underkoen.adventofcode.general.map.collection.HashMapList;
 import nl.underkoen.adventofcode.general.map.collection.MapList;
 import nl.underkoen.adventofcode.general.position.AbstractPosition;
+import nl.underkoen.adventofcode.general.sets.ESet;
+import nl.underkoen.adventofcode.general.sets.HashESet;
 import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.utils.PositionUtils;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Area<T extends AbstractPosition<T>> implements Iterable<T> {
     private final T min;
@@ -43,18 +44,18 @@ public class Area<T extends AbstractPosition<T>> implements Iterable<T> {
         return max;
     }
 
-    public Set<T> neighbours(T position) {
+    public ESet<T> neighbours(T position) {
         return position.getNeighbours()
                 .stream()
                 .filter(p -> p.inside(min, max))
-                .collect(Collectors.toSet());
+                .toSet();
     }
 
-    public Set<T> directNeighbours(T position) {
+    public ESet<T> directNeighbours(T position) {
         return position.getDirectNeighbours()
                 .stream()
                 .filter(p -> p.inside(min, max))
-                .collect(Collectors.toSet());
+                .toSet();
     }
 
     public long size() {
@@ -67,10 +68,10 @@ public class Area<T extends AbstractPosition<T>> implements Iterable<T> {
         return r;
     }
 
-    public Set<T> corners() {
-        if (min.equals(max)) return Set.of(min);
+    public ESet<T> corners() {
+        if (min.equals(max)) return ESet.of(min);
 
-        Set<T> corners = new LinkedHashSet<>();
+        ESet<T> corners = ESet.of(new LinkedHashSet<>());
         long[] p1a = min.asArray();
         long[] p2a = max.asArray();
 
@@ -118,9 +119,9 @@ public class Area<T extends AbstractPosition<T>> implements Iterable<T> {
         return true;
     }
 
-    public Set<Area<T>> without(Area<T> other) {
-        if (within(other)) return Set.of();
-        if (!hasOverlap(other)) return Set.of(this);
+    public ESet<Area<T>> without(Area<T> other) {
+        if (within(other)) return ESet.of();
+        if (!hasOverlap(other)) return ESet.of(this);
 
         int dims = Math.max(min.getDimensions(), max.getDimensions());
 
@@ -137,7 +138,7 @@ public class Area<T extends AbstractPosition<T>> implements Iterable<T> {
             coords.add(n, c4 + 1);
         }
 
-        Set<Area<T>> areas = new HashSet<>();
+        ESet<Area<T>> areas = new HashESet<>();
         subCubes(min, max, coords, dims, areas);
         areas.removeIf(a -> a.within(other));
 

@@ -1,11 +1,11 @@
 package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
+import nl.underkoen.adventofcode.general.sets.ESet;
 import nl.underkoen.adventofcode.general.stream.EStream;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -50,7 +50,7 @@ public class StringUtils {
         return asStream(s).collect(Collectors.toList());
     }
 
-    public Set<Character> asSet(String s) {
-        return asStream(s).collect(Collectors.toSet());
+    public ESet<Character> asSet(String s) {
+        return ESet.of(asStream(s).collect(Collectors.toSet()));
     }
 }
