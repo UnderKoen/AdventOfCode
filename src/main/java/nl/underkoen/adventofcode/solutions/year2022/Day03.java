@@ -22,6 +22,7 @@ public class Day03 extends Solution {
         Set<Character> characters = new HashSet<>();
         int count = 0;
 
+        
         for (String s : input) {
             String s1 = s.substring(0, s.length() / 2);
             String s2 = s.substring(s.length() / 2);

@@ -1,14 +1,16 @@
-package nl.underkoen.adventofcode.general.position.area;
+package nl.underkoen.adventofcode.general.position.multi;
 
 import nl.underkoen.adventofcode.general.map.collection.HashMapList;
 import nl.underkoen.adventofcode.general.map.collection.MapList;
 import nl.underkoen.adventofcode.general.position.AbstractPosition;
+import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.utils.PositionUtils;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Area<T extends AbstractPosition<T>> {
+public class Area<T extends AbstractPosition<T>> implements Iterable<T> {
     private final T min;
     private final T max;
 
@@ -169,5 +171,15 @@ public class Area<T extends AbstractPosition<T>> {
                 "p1=" + min +
                 ", p2=" + max +
                 '}';
+    }
+
+    @Nonnull
+    @Override
+    public Iterator<T> iterator() {
+        return between().iterator();
+    }
+
+    public EStream<T> stream() {
+        return EStream.of(between());
     }
 }

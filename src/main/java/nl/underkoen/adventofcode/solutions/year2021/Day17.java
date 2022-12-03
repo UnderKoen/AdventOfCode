@@ -3,7 +3,7 @@ package nl.underkoen.adventofcode.solutions.year2021;
 import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.position.Position;
-import nl.underkoen.adventofcode.general.position.area.Area;
+import nl.underkoen.adventofcode.general.position.multi.Area;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 import java.util.ArrayList;

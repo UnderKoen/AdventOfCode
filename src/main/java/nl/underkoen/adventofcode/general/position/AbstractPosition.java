@@ -2,7 +2,8 @@ package nl.underkoen.adventofcode.general.position;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.underkoen.adventofcode.general.position.area.Area;
+import nl.underkoen.adventofcode.general.position.multi.Area;
+import nl.underkoen.adventofcode.general.position.multi.Line;
 import nl.underkoen.adventofcode.general.stream.EStream;
 
 import java.util.Arrays;

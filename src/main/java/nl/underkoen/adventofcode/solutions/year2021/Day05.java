@@ -4,8 +4,8 @@ import lombok.Getter;
 import nl.underkoen.adventofcode.general.input.Input;
 import nl.underkoen.adventofcode.general.map.counter.HashMapCounter;
 import nl.underkoen.adventofcode.general.map.counter.MapCounter;
-import nl.underkoen.adventofcode.general.position.Line;
 import nl.underkoen.adventofcode.general.position.Position;
+import nl.underkoen.adventofcode.general.position.multi.Line;
 import nl.underkoen.adventofcode.solutions.Solution;
 
 public class Day05 extends Solution {

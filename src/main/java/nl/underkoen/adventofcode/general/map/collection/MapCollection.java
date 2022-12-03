@@ -1,5 +1,6 @@
 package nl.underkoen.adventofcode.general.map.collection;
 
+import nl.underkoen.adventofcode.general.stream.EMapStream;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Collection;
@@ -112,4 +113,8 @@ public interface MapCollection<K, V, C extends Collection<V>> extends Map<K, C> 
      */
     @Contract(mutates = "this", value = "-> new")
     Map<K, V> reduceSelf();
+
+    default EMapStream<K, C> stream() {
+        return EMapStream.of(this);
+    }
 }

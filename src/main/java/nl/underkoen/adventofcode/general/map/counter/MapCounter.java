@@ -1,5 +1,6 @@
 package nl.underkoen.adventofcode.general.map.counter;
 
+import nl.underkoen.adventofcode.general.stream.EMapStream;
 import nl.underkoen.adventofcode.utils.NumberUtils;
 import org.jetbrains.annotations.Contract;
 
@@ -72,4 +73,8 @@ public interface MapCounter<K, N extends Number & Comparable<N>> extends Map<K, 
 
     @Contract(pure = true, value = "_ -> new")
     MapCounter<K, N> with(@Nonnull N defaultValue);
+
+    default EMapStream<K, N> stream() {
+        return EMapStream.of(this);
+    }
 }

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.underkoen.adventofcode.general.stream.EStream;
 
 import javax.annotation.Nonnull;
 import java.util.AbstractCollection;
@@ -165,5 +166,15 @@ public class LinkedList<T> extends AbstractCollection<Node<T>> {
                 return sb.append(']').toString();
             sb.append(',').append(' ');
         }
+    }
+
+    @Override
+    public EStream<Node<T>> stream() {
+        return EStream.of(super.stream());
+    }
+
+    @Override
+    public EStream<Node<T>> parallelStream() {
+        return EStream.of(super.parallelStream());
     }
 }

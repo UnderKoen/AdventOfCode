@@ -1,6 +1,8 @@
-package nl.underkoen.adventofcode.general.position;
+package nl.underkoen.adventofcode.general.position.multi;
 
 import lombok.Getter;
+import nl.underkoen.adventofcode.general.position.AbstractPosition;
+import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.utils.NumberUtils;
 
 import java.util.AbstractList;
@@ -85,5 +87,10 @@ public class Line<T extends AbstractPosition<T>> extends AbstractList<T> {
     @Override
     public String toString() {
         return String.format("Line(%s -> %s)", p1, p2);
+    }
+
+    @Override
+    public EStream<T> stream() {
+        return EStream.of(super.stream());
     }
 }

@@ -1,9 +1,12 @@
 package nl.underkoen.adventofcode.utils;
 
 import lombok.experimental.UtilityClass;
+import nl.underkoen.adventofcode.general.stream.EStream;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class StringUtils {
@@ -37,5 +40,17 @@ public class StringUtils {
         }
 
         return String.join("\n", lines);
+    }
+
+    public EStream<Character> asStream(String s) {
+        return EStream.of(s);
+    }
+
+    public List<Character> asList(String s) {
+        return asStream(s).collect(Collectors.toList());
+    }
+
+    public Set<Character> asSet(String s) {
+        return asStream(s).collect(Collectors.toSet());
     }
 }
