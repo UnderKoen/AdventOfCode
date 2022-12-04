@@ -78,4 +78,9 @@ public class ImplESet<T> implements ESet<T> {
     public void clear() {
         set.clear();
     }
+
+    @Override
+    public String toString() {
+        return set.toString();
+    }
 }
