@@ -38,6 +38,10 @@ public interface ELongStream extends EStream<Long> {
         return of(LongStream.range(startInclusive, endExclusive));
     }
 
+    static ELongStream ofIncl(long startInclusive, final long endInclusive) {
+        return of(startInclusive, endInclusive + 1);
+    }
+
     default long sum() {
         return reduce(0L, Long::sum);
     }

@@ -18,20 +18,17 @@ public class Day04 extends Solution {
 
     @Override
     public long[] getCorrectOutput() {
-        return new long[]{};
+        return new long[]{459, 779};
     }
 
     @Override
     protected void run(Input input) {
-        for (List<Long> line : input.asAllNumbers().map(EStream::toList).toList()) {
-            ESet<Long> l1 = ELongStream.of(line.get(0), -line.get(1) + 1).toSet();
-            ESet<Long> l2 = ELongStream.of(line.get(2), -line.get(3) + 1).toSet();
-
-            if (l1.containsAll(l2)) a++;
-            else if (l2.containsAll(l1)) a++;
-
-            if(l1.stream().anyMatch(l2::contains)) b++;
-            else if(l2.stream().anyMatch(l1::contains)) b++;
-        }
+        input.asNumbers("[-,]")
+                .mapPairs(ELongStream::ofIncl)
+                .map(EStream::toSet)
+                .forEachPair((l1, l2) -> {
+                    if (l1.containsAll(l2) || l2.containsAll(l1)) a++;
+                    if (l1.containsAny(l2) || l2.containsAny(l1)) b++;
+                });
     }
 }

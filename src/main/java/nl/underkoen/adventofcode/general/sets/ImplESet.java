@@ -6,6 +6,10 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 public class ImplESet<T> implements ESet<T> {
@@ -82,5 +86,38 @@ public class ImplESet<T> implements ESet<T> {
     @Override
     public String toString() {
         return set.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return set.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ImplESet<?> s) {
+            return set.equals(s.set);
+        }
+        return set.equals(obj);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+        return set.spliterator();
+    }
+
+    @Override
+    public <T1> T1[] toArray(IntFunction<T1[]> generator) {
+        return set.toArray(generator);
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super T> filter) {
+        return set.removeIf(filter);
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        set.forEach(action);
     }
 }

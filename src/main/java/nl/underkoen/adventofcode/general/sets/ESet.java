@@ -13,7 +13,7 @@ public interface ESet<T> extends Set<T> {
     static <T> ESet<T> of() {
         return new ImplESet<>(Set.of());
     }
-    
+
     @SafeVarargs
     static <T> ESet<T> of(T... elements) {
         return new ImplESet<>(Set.of(elements));
@@ -59,5 +59,9 @@ public interface ESet<T> extends Set<T> {
 
     default Optional<T> any() {
         return stream().findAny();
+    }
+
+    default boolean containsAny(Collection<T> col) {
+        return stream().anyMatch(col::contains);
     }
 }
