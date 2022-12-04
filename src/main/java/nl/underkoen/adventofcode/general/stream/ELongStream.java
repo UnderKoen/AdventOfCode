@@ -34,12 +34,12 @@ public interface ELongStream extends EStream<Long> {
         return of(Longs.asList(array));
     }
 
-    static ELongStream of(long startInclusive, final long endExclusive) {
+    static ELongStream range(long startInclusive, final long endExclusive) {
         return of(LongStream.range(startInclusive, endExclusive));
     }
 
-    static ELongStream ofIncl(long startInclusive, final long endInclusive) {
-        return of(startInclusive, endInclusive + 1);
+    static ELongStream rangeIncl(long startInclusive, final long endInclusive) {
+        return range(startInclusive, endInclusive + 1);
     }
 
     default long sum() {
