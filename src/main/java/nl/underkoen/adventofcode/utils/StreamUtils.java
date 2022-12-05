@@ -3,6 +3,7 @@ package nl.underkoen.adventofcode.utils;
 import com.google.common.collect.Streams;
 import nl.underkoen.adventofcode.general.map.counter.HashMapCounter;
 import nl.underkoen.adventofcode.general.map.counter.MapCounter;
+import nl.underkoen.adventofcode.general.stream.EMapStream;
 import nl.underkoen.adventofcode.general.stream.EStream;
 import nl.underkoen.adventofcode.general.tuple.BiHolder;
 import org.apache.commons.lang3.function.TriFunction;
@@ -80,6 +81,7 @@ public class StreamUtils {
         );
     }
 
+    //TODO return MapStream, implement filter an stuff in this
     public static <T> EStream<BiHolder<Integer, T>> indexed(Stream<T> s) {
         return EStream.of(Streams.mapWithIndex(s, (o, i) -> new BiHolder<>((int) i, o)));
     }
@@ -115,6 +117,13 @@ public class StreamUtils {
                     }
                 }, parallel).onClose(s::close)
         );
+    }
+
+    public static <T> EStream<T> takeNth(Stream<T> s, int n) {
+        return EStream.of(s)
+                .indexed()
+                .filter(b -> b.getKey() % n == 0)
+                .map(BiHolder::getValue);
     }
 
     public static <T, R> EStream<R> mapPairs(Stream<T> s, BiFunction<T, T, R> mapper) {

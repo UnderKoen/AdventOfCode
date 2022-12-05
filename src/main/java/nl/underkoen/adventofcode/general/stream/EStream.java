@@ -85,6 +85,11 @@ public interface EStream<T> extends Stream<T> {
         return StreamUtils.grouped(this, amount);
     }
 
+    //TODO impl in sub streams
+    default EStream<T> takeNth(int n) {
+        return StreamUtils.takeNth(this, n);
+    }
+
     default <R> EStream<R> mapPairs(BiFunction<T, T, R> mapper) {
         return StreamUtils.mapPairs(this, mapper);
     }
