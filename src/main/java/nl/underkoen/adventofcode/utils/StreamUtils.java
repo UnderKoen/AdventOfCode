@@ -84,26 +84,28 @@ public class StreamUtils {
         return EStream.of(Streams.mapWithIndex(s, (o, i) -> new BiHolder<>((int) i, o)));
     }
 
-    public static <T, R> EStream<R> mapPairs(Stream<T> s, BiFunction<T, T, R> mapper) {
+    public static <T> EStream<EStream<T>> grouped(Stream<T> s, long amount) {
         boolean parallel = s.isParallel();
         Spliterator<T> spliterator = s.spliterator();
 
         return EStream.of(
-                StreamSupport.stream(new Spliterators.AbstractSpliterator<R>(
+                StreamSupport.stream(new Spliterators.AbstractSpliterator<EStream<T>>(
                         spliterator.estimateSize(),
                         spliterator.characteristics() & ~(Spliterator.SIZED | Spliterator.SUBSIZED)) {
-                    Consumer<? super R> current;
-                    T prev;
+                    Consumer<? super EStream<T>> current;
+                    Stream.Builder<T> builder = Stream.builder();
+                    long i = 0;
                     final Consumer<T> adapter = t -> {
-                        if (prev == null) prev = t;
-                        else {
-                            current.accept(mapper.apply(prev, t));
-                            prev = null;
+                        builder.accept(t);
+                        if (++i >= amount) {
+                            i = 0;
+                            current.accept(EStream.of(builder.build()));
+                            builder = Stream.builder();
                         }
                     };
 
                     @Override
-                    public boolean tryAdvance(Consumer<? super R> action) {
+                    public boolean tryAdvance(Consumer<? super EStream<T>> action) {
                         current = action;
                         try {
                             return spliterator.tryAdvance(adapter);
@@ -113,6 +115,13 @@ public class StreamUtils {
                     }
                 }, parallel).onClose(s::close)
         );
+    }
+
+    public static <T, R> EStream<R> mapPairs(Stream<T> s, BiFunction<T, T, R> mapper) {
+        return EStream.of(s)
+                .grouped(2)
+                .map(EStream::toList)
+                .map(l -> mapper.apply(l.get(0), l.get(1)));
     }
 
     public static <T> void forEachPair(Stream<T> s, BiConsumer<T, T> consumer) {
@@ -133,7 +142,7 @@ public class StreamUtils {
                         spliterator.estimateSize(),
                         spliterator.characteristics() & ~(Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.DISTINCT)) {
                     Consumer<? super T> current;
-                    final MapCounter<T, Integer> map = new HashMapCounter<T, Integer>(0);
+                    final MapCounter<T, Integer> map = new HashMapCounter<>(0);
                     final Consumer<T> adapter = t -> {
                         if (map.increase(t) + 1 == amount) {
                             current.accept(t);

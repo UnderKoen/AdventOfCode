@@ -79,6 +79,12 @@ public interface EStream<T> extends Stream<T> {
         return StreamUtils.indexed(this);
     }
 
+    //TODO would be nice if this could return an LongStream if this was orignal an LongStream,
+    //TODO that will also have the result of making extensions easier for new types.
+    default EStream<EStream<T>> grouped(long amount) {
+        return StreamUtils.grouped(this, amount);
+    }
+
     default <R> EStream<R> mapPairs(BiFunction<T, T, R> mapper) {
         return StreamUtils.mapPairs(this, mapper);
     }
