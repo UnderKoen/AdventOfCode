@@ -97,6 +97,10 @@ public interface Input extends List<String> {
         return InputUtils.asString(this);
     }
 
+    default Input transpose() {
+        return Input.of(InputUtils.transpose(this));
+    }
+
     //=====Original=====
     @Override
     EStream<String> stream();

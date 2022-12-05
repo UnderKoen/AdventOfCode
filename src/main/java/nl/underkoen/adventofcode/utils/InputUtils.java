@@ -163,4 +163,20 @@ public class InputUtils {
     public String asString(List<String> input) {
         return String.join("\n", input);
     }
+
+    public List<String> transpose(List<String> input) {
+        List<StringBuilder> strings = new ArrayList<>();
+
+        for (String s : input) {
+            int i = 0;
+            for (char c : s.toCharArray()) {
+                if (strings.size() <= i) strings.add(new StringBuilder());
+                StringBuilder b = strings.get(i++);
+
+                b.append(c);
+            }
+        }
+
+        return strings.stream().map(StringBuilder::toString).toList();
+    }
 }
