@@ -64,6 +64,10 @@ public class BiHolder<K, V> implements Map.Entry<K, V> {
         return map(v -> v, map);
     }
 
+    public <M> BiHolder<K, M> mapValue(BiFunction<K, V, M> map) {
+        return new BiHolder<>(key, map.apply(key, value));
+    }
+
     public <MK, MV> BiHolder<MK, MV> map(Function<K, MK> keyMap, Function<V, MV> valueMap) {
         return new BiHolder<>(keyMap.apply(key), valueMap.apply(value));
     }
