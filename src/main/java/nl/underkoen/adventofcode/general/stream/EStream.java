@@ -90,6 +90,18 @@ public interface EStream<T> extends Stream<T> {
         return StreamUtils.takeNth(this, n);
     }
 
+    default EStream<T> takeN(int n) {
+        return StreamUtils.indexed(this)
+                .filter(b -> b.getKey() < n)
+                .map(BiHolder::getValue);
+    }
+
+    default EStream<T> dropN(int n) {
+        return StreamUtils.indexed(this)
+                .filter(b -> b.getKey() >= n)
+                .map(BiHolder::getValue);
+    }
+
     default <R> EStream<R> mapPairs(BiFunction<T, T, R> mapper) {
         return StreamUtils.mapPairs(this, mapper);
     }

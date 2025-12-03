@@ -90,6 +90,16 @@ public interface EMapStream<K, V> extends EStream<BiHolder<K, V>> {
         return EMapStream.of(EStream.super.reverse());
     }
 
+    @Override
+    default EMapStream<K, V> takeN(int n) {
+        return EMapStream.of(EStream.super.takeN(n));
+    }
+
+    @Override
+    default EMapStream<K, V> dropN(int n) {
+        return EMapStream.of(EStream.super.dropN(n));
+    }
+
     //=====Original=====
     @Override
     EMapStream<K, V> filter(Predicate<? super BiHolder<K, V>> predicate);

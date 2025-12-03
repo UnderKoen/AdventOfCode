@@ -56,6 +56,16 @@ public interface EBoolStream extends EStream<Boolean> {
         return EBoolStream.of(EStream.super.reverse());
     }
 
+    @Override
+    default EBoolStream takeN(int n) {
+        return EBoolStream.of(EStream.super.takeN(n));
+    }
+
+    @Override
+    default EBoolStream dropN(int n) {
+        return EBoolStream.of(EStream.super.dropN(n));
+    }
+
     //=====Original=====
     @Override
     EBoolStream filter(Predicate<? super Boolean> predicate);

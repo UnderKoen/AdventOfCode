@@ -55,7 +55,7 @@ public interface ELongStream extends EStream<Long> {
     }
 
     default Optional<Long> max() {
-        return min(Long::compareTo);
+        return max(Long::compareTo);
     }
 
     default LongStream unboxed() {
@@ -81,6 +81,16 @@ public interface ELongStream extends EStream<Long> {
     @Override
     default ELongStream reverse() {
         return ELongStream.of(EStream.super.reverse());
+    }
+
+    @Override
+    default ELongStream takeN(int n) {
+        return ELongStream.of(EStream.super.takeN(n));
+    }
+
+    @Override
+    default ELongStream dropN(int n) {
+        return ELongStream.of(EStream.super.dropN(n));
     }
 
     //=====Original=====
